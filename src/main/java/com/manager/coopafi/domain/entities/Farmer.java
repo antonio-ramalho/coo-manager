@@ -1,10 +1,5 @@
 package com.manager.coopafi.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.manager.coopafi.domain.valueObjects.Address;
-import com.manager.coopafi.domain.valueObjects.Cpf;
-import com.manager.coopafi.domain.valueObjects.Email;
-import com.manager.coopafi.domain.valueObjects.Phone;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,25 +14,22 @@ public class Farmer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    @Embedded
-    private Cpf cpf;
-    @Embedded
-    private Email email;
-    @Embedded
-    private Phone phone;
-    @Embedded
-    private Address address;
+    @OneToOne
+    @JoinColumn(name = "nat_person")
+    private NaturalPerson person;
+    public Farmer() {
+    }
 
-    public Farmer() {}
+    public Farmer(NaturalPerson person) {
+        this.person = person;
+    }
 
-    public Farmer(Long id, Cpf cpf, Address address, Email email, String name, Phone phone) {
-        this.id = id;
-        this.cpf = cpf;
-        this.address = address;
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
+    public NaturalPerson getPerson() {
+        return person;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -50,29 +42,5 @@ public class Farmer implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public Cpf getCpf() {
-        return cpf;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Phone getPhone() {
-        return phone;
     }
 }

@@ -51,7 +51,7 @@ public class InputPurchase implements Serializable {
     }
 
     public void insertFarmer(Farmer farmer) {
-        this.farmer = Objects.requireNonNull(farmer);
+        this.farmer = farmer;
     }
 
     public void addPurchaseItems(InputPurchaseItem item) {

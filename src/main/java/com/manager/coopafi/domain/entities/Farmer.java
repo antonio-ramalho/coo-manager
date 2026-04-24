@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -56,10 +55,10 @@ public class Farmer implements Serializable {
     }
 
     public void linkCaf(Caf caf) {
-        this.caf = Objects.requireNonNull(caf);
+        this.caf = caf;
     }
 
     public void linkCertificate(OrganicCertificate certificate) {
-        this.certificate = Objects.requireNonNull(certificate);
+        this.certificate = certificate;
     }
 }

@@ -51,6 +51,6 @@ public class InputPurchaseItem implements Serializable {
     }
 
     protected void linkToPurchase(InputPurchase purchase) {
-        this.inputPurchase = Objects.requireNonNull(purchase);
+        this.inputPurchase = purchase;
     }
 }

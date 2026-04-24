@@ -1,0 +1,55 @@
+package com.manager.coopafi.domain.entities;
+
+import com.manager.coopafi.domain.valueObjects.Address;
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "tb_consumerUnit")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class ConsumerUnit implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
+
+    @Embedded
+    private Address deliveryAddress;
+
+    @OneToOne
+    @JoinColumn(name = "jur_person")
+    private JuridicPerson juridicPerson;
+
+    @OneToMany(mappedBy = "consumerUnit", cascade = CascadeType.PERSIST)
+    private List<Agent> agents = new ArrayList<>();
+
+    public ConsumerUnit(Agent agent, Address deliveryAddress, JuridicPerson  juridicPerson) {
+        addAgent(agent);
+        this.deliveryAddress = deliveryAddress;
+        this.juridicPerson = juridicPerson;
+    }
+
+    public void addAgent(Agent agent) {
+        this.agents.add(agent);
+        agent.setConsumerUnit(this);
+    }
+
+    public void removeAgent(Agent agent) {
+        this.agents.remove(agent);
+        agent.setConsumerUnit(null);
+    }
+}

@@ -1,16 +1,10 @@
 package com.manager.coopafi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.manager.coopafi.domain.valueObjects.CafNumber;
 import com.manager.coopafi.enums.DocumentStatus;
-import com.manager.coopafi.enums.SettlementType;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_caf")
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Caf implements Serializable {
+public class OrganicCertificate implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,30 +24,29 @@ public class Caf implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    @Embedded
-    private CafNumber cafNumber;
-    @Enumerated(EnumType.STRING)
-    private SettlementType settlementType;
 
     @Enumerated(EnumType.STRING)
     private DocumentStatus documentStatus;
 
+    private String certificateNumber;
     private LocalDate expirationDate;
+    private String institutionName;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "caf", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "certificate", cascade = CascadeType.PERSIST)
     private List<Farmer> farmers = new ArrayList<>();
 
-    public Caf(CafNumber cafNumber, LocalDate expirationDate, SettlementType settlementType) {
+    public OrganicCertificate(String certificateNumber, LocalDate expirationDate, String institutionName) {
         validateExpiration(expirationDate);
-        this.cafNumber = cafNumber;
+        this.certificateNumber = certificateNumber;
         this.expirationDate = expirationDate;
-        this.settlementType = settlementType;
+        this.institutionName = institutionName;
         this.documentStatus = DocumentStatus.ACTIVE;
     }
 
     private void validateExpiration(LocalDate date) {
         if (date.isBefore(LocalDate.now())) {
-            throw new DomainException("Não é possível registrar uma CAF já vencida.");
+            throw new DomainException("Não é possível registrar um certificado vencido.");
         }
     }
 
@@ -73,11 +65,11 @@ public class Caf implements Serializable {
 
     public void addFarmer(Farmer farmer) {
         this.farmers.add(farmer);
-        farmer.setCaf(this);
+        farmer.setCertificate(this);
     }
 
     public void removeFarmer(Farmer farmer) {
         this.farmers.remove(farmer);
-        farmer.setCaf(null);
+        farmer.setCertificate(null);
     }
 }

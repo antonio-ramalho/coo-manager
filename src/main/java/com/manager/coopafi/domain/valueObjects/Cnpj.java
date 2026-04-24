@@ -3,15 +3,19 @@ package com.manager.coopafi.domain.valueObjects;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
+
 import java.util.Objects;
 
 @Embeddable
-public final class Cnpj {
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED,  force = true)
+public class Cnpj {
 
     @Column(name = "cnpj")
-    private final String cnpjNumber;
-
-    protected Cnpj() { this.cnpjNumber = null; }
+    String cnpjNumber;
 
     public Cnpj(String cnpj) {
         ifNull(cnpj);
@@ -31,6 +35,4 @@ public final class Cnpj {
             throw new DomainException("O CNPJ deve conter exatamente 14 dígitos.");
         }
     }
-
-    public String getCnpjNumber() { return cnpjNumber; }
 }

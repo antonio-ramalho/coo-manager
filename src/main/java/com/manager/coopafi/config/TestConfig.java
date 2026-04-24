@@ -1,9 +1,12 @@
 package com.manager.coopafi.config;
 
+import com.manager.coopafi.domain.entities.Caf;
 import com.manager.coopafi.domain.entities.Farmer;
 import com.manager.coopafi.domain.entities.JuridicPerson;
 import com.manager.coopafi.domain.entities.NaturalPerson;
 import com.manager.coopafi.domain.valueObjects.*;
+import com.manager.coopafi.enums.SettlementType;
+import com.manager.coopafi.repositories.CafRepository;
 import com.manager.coopafi.repositories.FarmerRepository;
 import com.manager.coopafi.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private CafRepository cafRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -78,6 +84,14 @@ public class TestConfig implements CommandLineRunner {
         Farmer f3 = new Farmer(p3);
         Farmer f4 = new Farmer(p4);
 
+        Caf c1 = new Caf(new CafNumber("PR-12345-6789"),LocalDate.now().plusYears(2),SettlementType.REGULAR);
+        Caf c2 = new Caf(new CafNumber("PR-14345-6789"),LocalDate.now().plusYears(3),SettlementType.REGULAR);
+
+        f1.setCaf(c1);
+        f2.setCaf(c2);
+        f3.setCaf(c1);
+
+        cafRepository.saveAll(Arrays.asList(c1, c2));
         farmerRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
     }
 }

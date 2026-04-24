@@ -11,19 +11,19 @@ import java.util.Objects;
 @Embeddable
 @Value
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class Email {
+public class Ncm {
 
-    @Column(name = "email")
-    String address;
+    @Column(name = "ncm_code")
+    String code;
 
-    public Email(String adress) {
-        validate(adress);
-        this.address = adress.toLowerCase();
+    public Ncm(String code) {
+        validate(code);
+        this.code = code;
     }
 
-    private void validate(String valor) {
-        if (Objects.isNull(valor) || !valor.contains("@")) {
-            throw new DomainException("E-mail inválido.");
+    private void validate(String code) {
+        if (Objects.isNull(code) || !code.matches("\\d{8}")) {
+            throw new DomainException("O código NCM deve conter exatamente 8 dígitos numéricos.");
         }
     }
 }

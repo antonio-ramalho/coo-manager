@@ -3,15 +3,19 @@ package com.manager.coopafi.domain.valueObjects;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
+
 import java.util.Objects;
 
 @Embeddable
-public final class CafNumber {
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+public class CafNumber {
 
     @Column(name = "ricaf_number")
-    private final String value;
-
-    protected CafNumber() { this.value = null; }
+    String value;
 
     public CafNumber(String value) {
         validate(value);
@@ -27,6 +31,4 @@ public final class CafNumber {
             throw new DomainException("Formato de RICAF inválido.");
         }
     }
-
-    public String getValue() { return value; }
 }

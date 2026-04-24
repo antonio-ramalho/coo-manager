@@ -1,5 +1,10 @@
 package com.manager.coopafi.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum SettlementType {
     REGULAR("Agricultor Familiar Regular"),
     SETTLED("Assentado da Reforma Agrária"),
@@ -9,12 +14,4 @@ public enum SettlementType {
     EXTRACTIVIST("Extrativista");
 
     private final String description;
-
-    SettlementType(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }

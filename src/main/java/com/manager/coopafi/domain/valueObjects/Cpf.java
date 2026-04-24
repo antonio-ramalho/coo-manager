@@ -3,16 +3,19 @@ package com.manager.coopafi.domain.valueObjects;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.util.Objects;
 
 @Embeddable
-public final class Cpf {
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED,  force = true)
+public class Cpf {
 
     @Column(name = "cpf")
-    private final String cpfNumber;
-
-    protected Cpf() { this.cpfNumber = null; }
+    String cpfNumber;
 
     public Cpf(String cpfNumber) {
         ifNull(cpfNumber);
@@ -45,9 +48,5 @@ public final class Cpf {
         if (digito != (value.charAt(9) - '0')) {
             throw new DomainException("Dígito verificador do CPF inválido.");
         }
-    }
-
-    public String getCpfNumber() {
-        return cpfNumber;
     }
 }

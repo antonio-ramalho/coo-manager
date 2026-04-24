@@ -5,6 +5,11 @@ import com.manager.coopafi.domain.valueObjects.BirthDate;
 import com.manager.coopafi.domain.valueObjects.Email;
 import com.manager.coopafi.domain.valueObjects.Phone;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,12 +17,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_person")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Person implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @Embedded
     private Address address;
@@ -28,44 +38,10 @@ public abstract class Person implements Serializable {
     @Embedded
     private BirthDate birthDate;
 
-    protected Person() {}
-
     public Person(Address address, Email email, Phone phone, BirthDate birthDate) {
         this.address = address;
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Phone getPhone() {
-        return phone;
-    }
-
-    public BirthDate getBirthDate() {
-        return birthDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

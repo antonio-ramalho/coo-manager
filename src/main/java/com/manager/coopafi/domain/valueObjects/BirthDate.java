@@ -3,18 +3,21 @@ package com.manager.coopafi.domain.valueObjects;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
 @Embeddable
-public final class BirthDate {
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED,  force = true)
+public class BirthDate {
 
     @Column(name = "birth_date")
-    private final LocalDate date;
-    protected BirthDate() {
-        this.date = null;
-    }
+    LocalDate date;
 
     public BirthDate(LocalDate date) {
         validateNotNull(date);
@@ -36,18 +39,9 @@ public final class BirthDate {
     }
 
     private void validateMinimumAge(LocalDate date) {
-        // Regra de negócio: Exemplo de maioridade para o cadastro
         int age = Period.between(date, LocalDate.now()).getYears();
         if (age < 18) {
             throw new DomainException("O titular deve ter pelo menos 18 anos.");
         }
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public int getAge() {
-        return Period.between(this.date, LocalDate.now()).getYears();
     }
 }

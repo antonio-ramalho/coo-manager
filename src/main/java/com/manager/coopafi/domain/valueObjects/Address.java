@@ -1,39 +1,33 @@
 package com.manager.coopafi.domain.valueObjects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.util.Objects;
 
 @Embeddable
-public final class Address {
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+public class Address {
 
     @Embedded
-    private final Cep cep;
+    Cep cep;
     @Column(name = "street")
-    private final String street;
+    String street;
     @Column(name = "neighborhood")
-    private final String neighborhood;
+    String neighborhood;
     @Column(name = "city")
-    private final String city;
+    String city;
     @Column(name = "number")
-    @JsonProperty("Number")
-    private final String addressNumber;
-
-    protected Address() {
-        this.cep = null;
-        this.street = null;
-        this.neighborhood = null;
-        this.city = null;
-        this.addressNumber = null;
-    }
+    String addressNumber;
 
     public Address(Cep cep, String street, String neighborhood, String city, String number) {
         validateInput(street, neighborhood, city, number);
-
         this.cep = Objects.requireNonNull(cep, "CEP é obrigatório.");
         this.street = street;
         this.neighborhood = neighborhood;
@@ -52,21 +46,5 @@ public final class Address {
         if (Objects.isNull(value) || value.trim().isEmpty()) {
             throw new DomainException(inputName + " não pode estar vazio.");
         }
-    }
-
-    public String getAddressNumber() {
-        return addressNumber;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getNeighborhood() {
-        return neighborhood;
-    }
-
-    public String getStreet() {
-        return street;
     }
 }

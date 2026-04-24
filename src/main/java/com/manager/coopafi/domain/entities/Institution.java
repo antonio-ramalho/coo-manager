@@ -1,5 +1,6 @@
 package com.manager.coopafi.domain.entities;
 
+import com.manager.coopafi.enums.InstitutionSphere;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,32 +10,30 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_farmer")
+@Table(name = "tb_institution")
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Farmer implements Serializable {
+public class Institution implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
     @OneToOne
-    @JoinColumn(name = "nat_person")
-    private NaturalPerson person;
+    @JoinColumn(name = "jur_person")
+    private JuridicPerson juridicPerson;
 
-    @ManyToOne
-    @JoinColumn(name = "caf_id")
-    private Caf caf;
+    @Enumerated(EnumType.STRING)
+    private InstitutionSphere institutionSphere;
 
-    @ManyToOne
-    @JoinColumn(name = "certificate_id")
-    private OrganicCertificate certificate;
-
-    public Farmer(NaturalPerson person) {
-        this.person = person;
+    public Institution(InstitutionSphere institutionSphere, JuridicPerson juridicPerson) {
+        this.institutionSphere = institutionSphere;
+        this.juridicPerson = juridicPerson;
     }
 }

@@ -4,29 +4,27 @@ import com.manager.coopafi.domain.valueObjects.*;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_natural_person")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class NaturalPerson extends Person {
 
     private String name;
     @Embedded
     private Cpf cpf;
 
-    protected NaturalPerson() {}
-
     public NaturalPerson(Address address, Email email, Phone phone,
                          String name, Cpf cpf, BirthDate birthDate) {
         super(address, email, phone, birthDate);
         this.name = name;
         this.cpf = cpf;
-    }
-
-    public Cpf getCpf() {
-        return cpf;
-    }
-
-    public String getName() {
-        return name;
     }
 }

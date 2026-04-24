@@ -66,6 +66,12 @@ public class InputBatch implements Serializable {
         updateStatusByStock();
     }
 
+    public void increaseQuantity(Integer amount) {
+        checkStock(amount);
+        this.currentQuantity += amount;
+        updateStatusByStock();
+    }
+
     public boolean isAvailable() {
         return productStatus == ProductInventoryStatus.IN_STOCK && !isExpired();
     }

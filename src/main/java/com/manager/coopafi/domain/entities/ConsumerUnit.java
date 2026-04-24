@@ -10,11 +10,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_consumerUnit")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ConsumerUnit implements Serializable {
@@ -45,11 +45,15 @@ public class ConsumerUnit implements Serializable {
 
     public void addAgent(Agent agent) {
         this.agents.add(agent);
-        agent.setConsumerUnit(this);
+        agent.assignConsumerUnit(this);
     }
 
     public void removeAgent(Agent agent) {
         this.agents.remove(agent);
-        agent.setConsumerUnit(null);
+        agent.assignConsumerUnit(null);
+    }
+
+    public void updateDeliveryAddress(Address deliveryAddress) {
+        this.deliveryAddress = Objects.requireNonNull(deliveryAddress);
     }
 }

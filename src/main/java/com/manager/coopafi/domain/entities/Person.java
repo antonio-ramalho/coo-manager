@@ -18,7 +18,6 @@ import java.util.Objects;
 @Table(name = "tb_person")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Person implements Serializable {
@@ -43,5 +42,17 @@ public abstract class Person implements Serializable {
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
+    }
+
+    public void updateAddress(Address address) {
+        this.address = Objects.requireNonNull(address);
+    }
+
+    public void updateEmail(Email email) {
+        this.email = Objects.requireNonNull(email);
+    }
+
+    public void updatePhone(Phone phone) {
+        this.phone = Objects.requireNonNull(phone);
     }
 }

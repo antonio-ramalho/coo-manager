@@ -15,7 +15,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_farmer")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Farmer implements Serializable {
@@ -54,5 +53,13 @@ public class Farmer implements Serializable {
     public void removeInputPurchase(InputPurchase inputPurchase) {
         this.inputPurchases.remove(inputPurchase);
         inputPurchase.setFarmer(null);
+    }
+
+    public void linkCaf(Caf caf) {
+        this.caf = Objects.requireNonNull(caf);
+    }
+
+    public void linkCertificate(OrganicCertificate certificate) {
+        this.certificate = Objects.requireNonNull(certificate);
     }
 }

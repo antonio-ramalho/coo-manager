@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class OrganicCertificate implements Serializable {
@@ -65,11 +64,20 @@ public class OrganicCertificate implements Serializable {
 
     public void addFarmer(Farmer farmer) {
         this.farmers.add(farmer);
-        farmer.setCertificate(this);
+        farmer.linkCertificate(this);
     }
 
     public void removeFarmer(Farmer farmer) {
         this.farmers.remove(farmer);
-        farmer.setCertificate(null);
+        farmer.linkCertificate(null);
+    }
+
+    public void renewDocument(LocalDate newExpirationDate) {
+        expirationDate = newExpirationDate;
+        this.documentStatus = DocumentStatus.ACTIVE;
+    }
+
+    public void suspendDocument() {
+        this.documentStatus = DocumentStatus.SUSPENDED;
     }
 }

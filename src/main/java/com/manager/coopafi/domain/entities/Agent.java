@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_agent")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Agent implements Serializable {
@@ -39,5 +39,13 @@ public class Agent implements Serializable {
     public Agent(String cargo, NaturalPerson natPerson) {
         this.cargo = cargo;
         this.natPerson = natPerson;
+    }
+
+    public void changeCargo(String cargo) {
+        this.cargo = Objects.requireNonNull(cargo);
+    }
+
+    protected void assignConsumerUnit(ConsumerUnit unit) {
+        this.consumerUnit = Objects.requireNonNull(unit);
     }
 }

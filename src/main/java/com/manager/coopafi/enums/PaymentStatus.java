@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PaymentStatus {
-    PENDENT("Pendente"),
+    PAID("Pendente"),
     CANCELED("Cancelado"),
     COMPLETED("Vencido");
 

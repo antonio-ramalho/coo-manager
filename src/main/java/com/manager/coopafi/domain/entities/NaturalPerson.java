@@ -9,10 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "tb_natural_person")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class NaturalPerson extends Person {
@@ -26,5 +27,9 @@ public class NaturalPerson extends Person {
         super(address, email, phone, birthDate);
         this.name = name;
         this.cpf = cpf;
+    }
+
+    public void updateName(String newName) {
+        this.name = Objects.requireNonNull(newName);
     }
 }

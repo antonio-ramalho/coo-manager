@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_product")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Product implements Serializable {
@@ -43,5 +43,21 @@ public abstract class Product implements Serializable {
         this.productCatalogStatus = ProductCatalogStatus.ACTIVE;
         this.productName = productName;
         this.productPrice = productPrice;
+    }
+
+    public void updatePrice(Price productPrice) {
+        this.productPrice = Objects.requireNonNull(productPrice);
+    }
+
+    public void updateProductName(String productName) {
+        this.productName = Objects.requireNonNull(productName);
+    }
+
+    public void activate() {
+        this.productCatalogStatus = ProductCatalogStatus.ACTIVE;
+    }
+
+    public void deactivate() {
+        this.productCatalogStatus = ProductCatalogStatus.INACTIVE;
     }
 }

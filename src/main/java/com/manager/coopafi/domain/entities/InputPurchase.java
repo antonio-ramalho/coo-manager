@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "tb_input_purchase")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class InputPurchase implements Serializable {
@@ -46,19 +45,28 @@ public class InputPurchase implements Serializable {
     public InputPurchase(Farmer farmer) {
         this.farmer = farmer;
         this.purchaseDate = LocalDateTime.now();
-        this.status = PaymentStatus.PENDENT;
+        this.status = PaymentStatus.PAID;
         this.totalValue = new Price(new BigDecimal(0));
     }
 
     public void addPurchaseItems(InputPurchaseItem item) {
         this.purchaseItems.add(item);
         this.totalValue = item.getTotalPrice().add(this.totalValue);
-        item.setInputPurchase(this);
+        item.linkToPurchase(this);
     }
 
     public void removePurchaseItems(InputPurchaseItem item) {
         this.purchaseItems.remove(item);
         this.totalValue = this.totalValue.subtract(item.getTotalPrice());
-        item.setInputPurchase(null);
+        item.getInputBatch().increaseQuantity(item.getQuantity());
+        item.linkToPurchase(null);
+    }
+
+    public void markAsPaid() {
+        this.status = PaymentStatus.PAID;
+    }
+
+    public void cancelPurchase() {
+        this.status = PaymentStatus.CANCELED;
     }
 }

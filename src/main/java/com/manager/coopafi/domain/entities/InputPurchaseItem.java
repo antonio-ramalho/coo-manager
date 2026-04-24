@@ -6,15 +6,14 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_input_purchase_item")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class InputPurchaseItem implements Serializable {
@@ -33,8 +32,6 @@ public class InputPurchaseItem implements Serializable {
 
     private Integer quantity;
     @Embedded
-    private Price appliedPrice;
-    @Embedded
     private Price totalPrice;
 
     @ManyToOne
@@ -42,7 +39,6 @@ public class InputPurchaseItem implements Serializable {
     private InputBatch inputBatch;
 
     public InputPurchaseItem(Price appliedPrice, InputBatch inputBatch, Integer quantity) {
-        this.appliedPrice = appliedPrice;
         this.inputBatch = inputBatch;
         this.quantity = quantity;
         this.totalPrice = calculateTotalPrice(quantity, appliedPrice);
@@ -52,5 +48,9 @@ public class InputPurchaseItem implements Serializable {
     public Price calculateTotalPrice(Integer quantity, Price appliedPrice) {
         BigDecimal newQuantity = BigDecimal.valueOf(quantity);
         return appliedPrice.multiply(newQuantity);
+    }
+
+    protected void linkToPurchase(InputPurchase purchase) {
+        this.inputPurchase = Objects.requireNonNull(purchase);
     }
 }

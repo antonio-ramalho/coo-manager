@@ -87,9 +87,9 @@ public class TestConfig implements CommandLineRunner {
         Caf c1 = new Caf(new CafNumber("PR-12345-6789"),LocalDate.now().plusYears(2),SettlementType.REGULAR);
         Caf c2 = new Caf(new CafNumber("PR-14345-6789"),LocalDate.now().plusYears(3),SettlementType.REGULAR);
 
-        f1.setCaf(c1);
-        f2.setCaf(c2);
-        f3.setCaf(c1);
+        f1.linkCaf(c1);
+        f2.linkCaf(c2);
+        f3.linkCaf(c1);
 
         cafRepository.saveAll(Arrays.asList(c1, c2));
         farmerRepository.saveAll(Arrays.asList(f1, f2, f3, f4));

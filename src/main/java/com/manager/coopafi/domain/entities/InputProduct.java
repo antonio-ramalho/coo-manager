@@ -15,11 +15,11 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_input_product")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class InputProduct extends Product{
@@ -38,5 +38,19 @@ public class InputProduct extends Product{
         this.expirationDate = expirationDate;
         this.productCode = productCode;
         this.entryDate = LocalDate.now();
+    }
+
+    public void updateExpirationDate(LocalDate newDate) {
+        this.expirationDate = Objects.requireNonNull(newDate);
+    }
+
+    public void addInputBatch(InputBatch batch) {
+        this.inputBatches.add(batch);
+        batch.setInputProduct(this);
+    }
+
+    public void removeInputBatch(InputBatch batch) {
+        this.inputBatches.remove(batch);
+        batch.setInputProduct(null);
     }
 }

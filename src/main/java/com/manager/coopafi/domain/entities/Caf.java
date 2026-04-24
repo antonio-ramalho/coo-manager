@@ -20,7 +20,6 @@ import java.util.List;
 @Entity
 @Table(name = "tb_caf")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Caf implements Serializable {
@@ -73,11 +72,20 @@ public class Caf implements Serializable {
 
     public void addFarmer(Farmer farmer) {
         this.farmers.add(farmer);
-        farmer.setCaf(this);
+        farmer.linkCaf(this);
     }
 
     public void removeFarmer(Farmer farmer) {
         this.farmers.remove(farmer);
-        farmer.setCaf(null);
+        farmer.linkCaf(null);
+    }
+
+    public void renewDocument(LocalDate newExpirationDate) {
+        expirationDate = newExpirationDate;
+        this.documentStatus = DocumentStatus.ACTIVE;
+    }
+
+    public void suspendDocument() {
+        this.documentStatus = DocumentStatus.SUSPENDED;
     }
 }

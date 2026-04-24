@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "tb_institution")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Institution implements Serializable {

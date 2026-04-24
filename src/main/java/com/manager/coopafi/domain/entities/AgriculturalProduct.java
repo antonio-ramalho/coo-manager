@@ -16,7 +16,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_agricultural_product")
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AgriculturalProduct extends Product {

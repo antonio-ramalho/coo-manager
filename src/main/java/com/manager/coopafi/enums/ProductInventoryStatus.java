@@ -5,12 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ProductStatus {
-    AVAILABLE("Disponível"),
+public enum ProductInventoryStatus {
     IN_STOCK("Em Estoque"),
     OUT_OF_STOCK("Esgotado"),
-    EXPIRED("Vencido"),
-    INACTIVE("Inativo");
+    EXPIRED("Vencido");
 
     private final String description;
 }

@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 @Embeddable
@@ -19,7 +20,24 @@ public class Price {
 
     public Price(BigDecimal value) {
         validate(value);
-        this.value = value;
+        this.value = value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public Price add(Price other) {
+        if (Objects.isNull(other)) return this;
+        return new Price(this.value.add(other.getValue()));
+    }
+
+    public Price subtract(Price other) {
+        if (Objects.isNull(other)) return this;
+        return new Price(this.value.subtract(other.getValue()));
+    }
+
+    public Price multiply(BigDecimal quantity) {
+        if (Objects.isNull(quantity) || quantity.compareTo(BigDecimal.ZERO) <= 0) {
+            return new Price(BigDecimal.ZERO);
+        }
+        return new Price(this.value.multiply(quantity));
     }
 
     private void validate(BigDecimal value) {

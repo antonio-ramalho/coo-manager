@@ -47,12 +47,12 @@ public class Farmer implements Serializable {
 
     public void addInputPurchase(InputPurchase inputPurchase) {
         this.inputPurchases.add(inputPurchase);
-        inputPurchase.setFarmer(this);
+        inputPurchase.insertFarmer(this);
     }
 
     public void removeInputPurchase(InputPurchase inputPurchase) {
         this.inputPurchases.remove(inputPurchase);
-        inputPurchase.setFarmer(null);
+        inputPurchase.insertFarmer(null);
     }
 
     public void linkCaf(Caf caf) {

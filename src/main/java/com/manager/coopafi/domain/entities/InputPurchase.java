@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_input_purchase")
@@ -47,6 +48,10 @@ public class InputPurchase implements Serializable {
         this.purchaseDate = LocalDateTime.now();
         this.status = PaymentStatus.PAID;
         this.totalValue = new Price(new BigDecimal(0));
+    }
+
+    public void insertFarmer(Farmer farmer) {
+        this.farmer = Objects.requireNonNull(farmer);
     }
 
     public void addPurchaseItems(InputPurchaseItem item) {

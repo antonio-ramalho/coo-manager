@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.manager.coopafi.domain.valueObjects.Price;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,6 +41,9 @@ public class Farmer implements Serializable {
     @OneToMany(mappedBy = "farmer", cascade = CascadeType.PERSIST)
     private List<InputPurchase> inputPurchases = new ArrayList<>();
 
+    @OneToMany(mappedBy = "farmer", cascade = CascadeType.PERSIST)
+    private List<FarmerContract> farmerContracts = new ArrayList<>();
+
     public Farmer(NaturalPerson person) {
         this.person = Objects.requireNonNull(person);
     }
@@ -60,5 +64,10 @@ public class Farmer implements Serializable {
 
     public void linkCertificate(OrganicCertificate certificate) {
         this.certificate = certificate;
+    }
+
+    public void enrollInContract(Contract contract, Price specificCota) {
+        FarmerContract participation = new FarmerContract(contract, this, specificCota);
+        this.farmerContracts.add(participation);
     }
 }

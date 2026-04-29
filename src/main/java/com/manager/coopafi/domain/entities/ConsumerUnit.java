@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +37,9 @@ public class ConsumerUnit implements Serializable {
     @OneToMany(mappedBy = "consumerUnit", cascade = CascadeType.PERSIST)
     private List<Agent> agents = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "consumers")
+    private List<Contract> contracts = new ArrayList<>();
+
     public ConsumerUnit(Agent agent, Address deliveryAddress, JuridicPerson  juridicPerson) {
         addAgent(agent);
         this.deliveryAddress = deliveryAddress;
@@ -55,5 +58,9 @@ public class ConsumerUnit implements Serializable {
 
     public void updateDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = Objects.requireNonNull(deliveryAddress);
+    }
+
+    public List<Contract> getContracts() {
+        return Collections.unmodifiableList(contracts);
     }
 }

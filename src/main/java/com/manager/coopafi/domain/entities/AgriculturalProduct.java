@@ -4,6 +4,7 @@ import com.manager.coopafi.domain.valueObjects.Ncm;
 import com.manager.coopafi.domain.valueObjects.Price;
 import com.manager.coopafi.enums.CultivationType;
 import com.manager.coopafi.enums.MeasureUnit;
+import com.manager.coopafi.enums.ProductGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,9 +24,13 @@ public class AgriculturalProduct extends Product {
     @Enumerated(EnumType.STRING)
     private CultivationType cultivationType;
 
+    @Enumerated(EnumType.STRING)
+    private ProductGroup productGroup;
+
     public AgriculturalProduct(MeasureUnit measureUnit, Ncm ncm, String productName, Price productPrice,
-                               CultivationType cultivationType) {
+                               CultivationType cultivationType, ProductGroup productGroup) {
         super(measureUnit, ncm, productName, productPrice);
         this.cultivationType = cultivationType;
+        this.productGroup = productGroup;
     }
 }

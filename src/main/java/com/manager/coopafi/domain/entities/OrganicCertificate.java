@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "tb_organic_certificates")
 @Entity
 @Getter
 @NoArgsConstructor

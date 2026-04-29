@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_institution")
@@ -28,11 +30,18 @@ public class Institution implements Serializable {
     @JoinColumn(name = "jur_person")
     private JuridicPerson juridicPerson;
 
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.PERSIST)
+    private List<Contract> contracts = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private InstitutionSphere institutionSphere;
 
     public Institution(InstitutionSphere institutionSphere, JuridicPerson juridicPerson) {
         this.institutionSphere = institutionSphere;
         this.juridicPerson = juridicPerson;
+    }
+
+    public List<Contract> getContracts() {
+        return Collections.unmodifiableList(contracts);
     }
 }

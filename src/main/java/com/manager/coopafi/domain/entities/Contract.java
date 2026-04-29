@@ -66,13 +66,8 @@ public class Contract implements Serializable {
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContractedProduct> products = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "tb_contract_consumers",
-            joinColumns = @JoinColumn(name = "contract_id"),
-            inverseJoinColumns = @JoinColumn(name = "consumer_unit_id")
-    )
-    private List<ConsumerUnit> consumers = new ArrayList<>();
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContractConsumer> contractConsumers = new ArrayList<>();
 
     public Contract(LocalDate finalContractDate, Price totalContractValue, Price globalLimit,
                     ParticipationLimitRule participationRule, ProductDeliveryRule productDeliveryRule,
@@ -96,10 +91,9 @@ public class Contract implements Serializable {
 
     public void addConsumerUnit(ConsumerUnit unit) {
         if (unit == null) return;
-        if (!this.consumers.contains(unit)) {
-            this.consumers.add(unit);
-            unit.getContracts().add(this);
-        }
+        ContractConsumer association = new ContractConsumer(this, unit);
+        this.contractConsumers.add(association);
+        unit.getContractConsumers().add(association);
     }
 
     public void addFarmerParticipation(Farmer farmer, Price specificCota) {

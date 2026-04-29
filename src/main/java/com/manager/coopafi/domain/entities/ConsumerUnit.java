@@ -37,8 +37,8 @@ public class ConsumerUnit implements Serializable {
     @OneToMany(mappedBy = "consumerUnit", cascade = CascadeType.PERSIST)
     private List<Agent> agents = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "consumers")
-    private List<Contract> contracts = new ArrayList<>();
+    @OneToMany(mappedBy = "consumer", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<ContractConsumer> contractConsumers = new ArrayList<>();
 
     public ConsumerUnit(Agent agent, Address deliveryAddress, JuridicPerson  juridicPerson) {
         addAgent(agent);
@@ -58,9 +58,5 @@ public class ConsumerUnit implements Serializable {
 
     public void updateDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = Objects.requireNonNull(deliveryAddress);
-    }
-
-    public List<Contract> getContracts() {
-        return Collections.unmodifiableList(contracts);
     }
 }

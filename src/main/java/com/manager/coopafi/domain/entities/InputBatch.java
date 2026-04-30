@@ -1,11 +1,13 @@
 package com.manager.coopafi.domain.entities;
 
+import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.enums.ProductInventoryStatus;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,13 +33,18 @@ public class InputBatch implements Serializable {
     @Enumerated(EnumType.STRING)
     private ProductInventoryStatus productStatus;
 
-    private Integer originalQuantity;
-    private Integer currentQuantity;
+    @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "original_quantity"))
+    private Quantity originalQuantity;
+
+    @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "current_quantity"))
+    private Quantity currentQuantity;
 
     @OneToMany(mappedBy = "inputBatch")
     private List<InputPurchaseItem> inputPurchaseItems;
 
-    public InputBatch(Integer currentQuantity, InputProduct inputProduct, Integer originalQuantity) {
+    public InputBatch(Quantity currentQuantity, InputProduct inputProduct, Quantity originalQuantity) {
         this.currentQuantity = currentQuantity;
         this.inputProduct = inputProduct;
         this.originalQuantity = originalQuantity;
@@ -54,21 +61,21 @@ public class InputBatch implements Serializable {
         }
     }
 
-    public void checkStock(Integer amount) {
-        if (amount > currentQuantity) {
+    public void checkStock(Quantity amount) {
+        if (amount.compareTo(this.currentQuantity) > 0) {
             throw  new DomainException("Existem apenas: " + currentQuantity + " em estoque!");
         }
     }
 
-    public void decreaseQuantity(Integer amount) {
+    public void decreaseQuantity(@NonNull Quantity amount) {
         checkStock(amount);
-        this.currentQuantity -= amount;
+        this.currentQuantity = this.currentQuantity.subtract(amount);
         updateStatusByStock();
     }
 
-    public void increaseQuantity(Integer amount) {
+    public void increaseQuantity(@NonNull Quantity amount) {
         checkStock(amount);
-        this.currentQuantity += amount;
+        this.currentQuantity = this.currentQuantity.add(amount);
         updateStatusByStock();
     }
 
@@ -77,7 +84,7 @@ public class InputBatch implements Serializable {
     }
 
     public void updateStatusByStock() {
-        if (currentQuantity == 0) {
+        if (currentQuantity.equals(new Quantity(BigDecimal.ZERO))) {
             this.productStatus = ProductInventoryStatus.OUT_OF_STOCK;
         }
     }

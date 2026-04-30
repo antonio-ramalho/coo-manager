@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.domain.valueObjects.Price;
+import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.enums.DocumentStatus;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
@@ -68,7 +69,7 @@ public class FarmerContract implements Serializable {
         this.accumulatedValue = this.accumulatedValue.add(deliveryValue);
     }
 
-    public void addProductQuota(ContractedProduct product, Double maxQuantity) {
+    public void addProductQuota(ContractedProduct product, Quantity maxQuantity) {
         FarmerItemQuota quota = new FarmerItemQuota(this, product, maxQuantity);
         this.farmerItemQuotas.add(quota);
     }

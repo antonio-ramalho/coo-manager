@@ -2,6 +2,7 @@ package com.manager.coopafi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manager.coopafi.domain.valueObjects.Price;
+import com.manager.coopafi.domain.valueObjects.Quantity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,10 +24,9 @@ public class InputPurchaseItem extends BaseReceiptItem <InputPurchase> {
     @JoinColumn(name = "input_batch_id")
     private InputBatch inputBatch;
 
-    public InputPurchaseItem(Integer quantity, Price appliedPrice, InputBatch inputBatch) {
+    public InputPurchaseItem(Quantity quantity, Price appliedPrice, InputBatch inputBatch) {
         super(quantity, appliedPrice);
         this.inputBatch = inputBatch;
-        this.inputBatch.decreaseQuantity(quantity);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class Caf implements Serializable {
 
     private LocalDate expirationDate;
     @JsonIgnore
-    @OneToMany(mappedBy = "caf", cascade = CascadeType.PERSIST, orphanRemoval = false)
+    @OneToMany(mappedBy = "caf")
     private List<Farmer> farmers = new ArrayList<>();
 
     public Caf(CafNumber cafNumber, LocalDate expirationDate, SettlementType settlementType) {
@@ -71,11 +71,19 @@ public class Caf implements Serializable {
     }
 
     public void addFarmer(Farmer farmer) {
+        if (farmer.getCaf() != null && !farmer.getCaf().equals(this)) {
+            throw new DomainException("O farmer já está vinculado a outra CAF: "
+                    + farmer.getCaf().getId()
+                    + ". É necessário desvinculá-lo primeiro.");
+        }
         this.farmers.add(farmer);
         farmer.linkCaf(this);
     }
 
     public void removeFarmer(Farmer farmer) {
+        if (!this.farmers.contains(farmer) || !this.equals(farmer.getCaf())) {
+            throw new DomainException("Operação inválida: Este agricultor não pertence a esta CAF.");
+        }
         this.farmers.remove(farmer);
         farmer.linkCaf(null);
     }

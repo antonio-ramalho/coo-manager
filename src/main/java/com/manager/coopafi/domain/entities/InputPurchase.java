@@ -35,6 +35,7 @@ public class InputPurchase extends BaseReceipt <InputPurchaseItem> {
     public void addItem(InputPurchaseItem item) {
         this.purchaseItems.add(item);
         this.totalValue = item.getTotalPrice().add(this.totalValue);
+        item.getInputBatch().decreaseQuantity(item.getQuantity());
         item.linkToBaseReceipt(this);
     }
 

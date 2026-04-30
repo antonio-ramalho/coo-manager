@@ -1,5 +1,6 @@
 package com.manager.coopafi.domain.entities;
 
+import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -31,23 +33,27 @@ public class FarmerItemQuota implements Serializable {
     @JoinColumn(name = "contracted_product_id")
     private ContractedProduct contractedProduct;
 
-    private Double maxQuantity;
-    private Double deliveryQuantity;
+    @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "max_quantity"))
+    private Quantity maxQuantity;
+    @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "delivery_quantity"))
+    private Quantity deliveryQuantity;
 
-    public FarmerItemQuota(FarmerContract farmerContract, ContractedProduct contractedProduct, Double maxQuantity) {
+    public FarmerItemQuota(FarmerContract farmerContract, ContractedProduct contractedProduct, Quantity maxQuantity) {
         this.farmerContract = Objects.requireNonNull(farmerContract,  "É preciso existir um agricultor");
         this.contractedProduct = Objects.requireNonNull(contractedProduct, "É preciso existir um produto contratado");
         this.maxQuantity = maxQuantity;
-        this.deliveryQuantity = 0.0;
+        this.deliveryQuantity = new Quantity(BigDecimal.ZERO);
     }
 
-    public void registerDelivery(Double deliveryQuantity) {
+    public void registerDelivery(Quantity deliveryQuantity) {
         if (this.maxQuantity != null) {
-            Double projectedQuantity = this.deliveryQuantity + deliveryQuantity;
+            Quantity projectedQuantity = this.deliveryQuantity.add(deliveryQuantity);
             if (projectedQuantity.compareTo(this.maxQuantity) > 0) {
                 throw new DomainException("A entrega excede a cota individual do agricultor neste contrato.");
             }
         }
-        this.deliveryQuantity += deliveryQuantity;
+        this.deliveryQuantity = this.deliveryQuantity.add(deliveryQuantity);
     }
 }

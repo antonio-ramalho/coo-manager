@@ -33,7 +33,7 @@ public class OrganicCertificate implements Serializable {
     private String institutionName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "certificate", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "certificate", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Farmer> farmers = new ArrayList<>();
 
     public OrganicCertificate(String certificateNumber, LocalDate expirationDate, String institutionName) {

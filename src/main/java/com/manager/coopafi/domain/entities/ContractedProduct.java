@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,7 +35,7 @@ public class ContractedProduct implements Serializable {
     @JoinColumn(name = "product_id")
     private AgriculturalProduct product;
 
-    @OneToMany(mappedBy = "contractedProduct", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "contractedProduct")
     private List<FarmerItemQuota>  farmerItemQuotas;
 
     public ContractedProduct(Contract contract, AgriculturalProduct product, Price fixedPrice, String contractedName) {

@@ -34,10 +34,10 @@ public class ConsumerUnit implements Serializable {
     @JoinColumn(name = "jur_person")
     private JuridicPerson juridicPerson;
 
-    @OneToMany(mappedBy = "consumerUnit", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "consumerUnit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Agent> agents = new ArrayList<>();
 
-    @OneToMany(mappedBy = "consumer", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "consumer")
     private List<ContractConsumer> contractConsumers = new ArrayList<>();
 
     public ConsumerUnit(Agent agent, Address deliveryAddress, JuridicPerson  juridicPerson) {

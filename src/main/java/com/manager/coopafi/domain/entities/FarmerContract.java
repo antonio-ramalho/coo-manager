@@ -46,7 +46,7 @@ public class FarmerContract implements Serializable {
     @JoinColumn(name = "farmer_id")
     private Farmer farmer;
 
-    @OneToMany(mappedBy = "farmerContract", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "farmerContract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FarmerItemQuota> farmerItemQuotas = new ArrayList<>();
 
     public FarmerContract(Contract contract, Farmer farmer, Price specificCota) {

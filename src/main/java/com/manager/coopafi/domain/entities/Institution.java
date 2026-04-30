@@ -30,7 +30,7 @@ public class Institution implements Serializable {
     @JoinColumn(name = "jur_person")
     private JuridicPerson juridicPerson;
 
-    @OneToMany(mappedBy = "institution", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Contract> contracts = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

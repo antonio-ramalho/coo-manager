@@ -40,7 +40,7 @@ public class Caf implements Serializable {
 
     private LocalDate expirationDate;
     @JsonIgnore
-    @OneToMany(mappedBy = "caf", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "caf", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Farmer> farmers = new ArrayList<>();
 
     public Caf(CafNumber cafNumber, LocalDate expirationDate, SettlementType settlementType) {

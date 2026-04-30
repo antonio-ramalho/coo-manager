@@ -19,7 +19,7 @@ public class InputPurchase extends BaseReceipt <InputPurchaseItem> {
     @JoinColumn(name = "farmer_id")
     private Farmer farmer;
 
-    @OneToMany(mappedBy = "inputPurchase", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "inputPurchase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InputPurchaseItem> purchaseItems = new ArrayList<>();
 
     public InputPurchase(Farmer farmer) {

@@ -29,7 +29,7 @@ public class InputProduct extends Product{
     private LocalDate entryDate;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "inputProduct", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "inputProduct", cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<InputBatch> inputBatches = new ArrayList<>();
 
     public InputProduct(MeasureUnit measureUnit, Ncm ncm, String productName, Price productPrice,

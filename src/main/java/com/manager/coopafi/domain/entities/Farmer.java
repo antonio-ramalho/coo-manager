@@ -41,6 +41,7 @@ public class Farmer implements Serializable {
     @OneToMany(mappedBy = "farmer", cascade = CascadeType.PERSIST)
     private List<InputPurchase> inputPurchases = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "farmer")
     private List<FarmerContract> farmerContracts = new ArrayList<>();
 

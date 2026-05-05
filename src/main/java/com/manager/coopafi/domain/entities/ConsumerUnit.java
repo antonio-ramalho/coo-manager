@@ -1,6 +1,8 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.domain.valueObjects.Address;
+import com.manager.coopafi.enums.UserStatus;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,6 +29,9 @@ public class ConsumerUnit implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @Embedded
     private Address deliveryAddress;
 
@@ -44,6 +49,14 @@ public class ConsumerUnit implements Serializable {
         addAgent(agent);
         this.deliveryAddress = deliveryAddress;
         this.juridicPerson = juridicPerson;
+        this.status = UserStatus.ACTIVE;
+    }
+
+    public void deactivate() {
+        if (this.status == UserStatus.INACTIVE) {
+            throw new DomainException("Esta Unidade Consumidora já está inativa.");
+        }
+        this.status = UserStatus.INACTIVE;
     }
 
     public void addAgent(Agent agent) {

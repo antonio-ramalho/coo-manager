@@ -1,6 +1,8 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.enums.InstitutionSphere;
+import com.manager.coopafi.enums.UserStatus;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +28,9 @@ public class Institution implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @OneToOne
     @JoinColumn(name = "jur_person")
     private JuridicPerson juridicPerson;
@@ -39,6 +44,14 @@ public class Institution implements Serializable {
     public Institution(InstitutionSphere institutionSphere, JuridicPerson juridicPerson) {
         this.institutionSphere = institutionSphere;
         this.juridicPerson = juridicPerson;
+        this.status = UserStatus.ACTIVE;
+    }
+
+    public void deactivate() {
+        if (this.status == UserStatus.INACTIVE) {
+            throw new DomainException("Esta Instituição já está inativa.");
+        }
+        this.status = UserStatus.INACTIVE;
     }
 
     public List<Contract> getContracts() {

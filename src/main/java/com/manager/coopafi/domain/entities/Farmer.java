@@ -2,6 +2,8 @@ package com.manager.coopafi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manager.coopafi.domain.valueObjects.Price;
+import com.manager.coopafi.enums.UserStatus;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,6 +27,10 @@ public class Farmer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @OneToOne
     @JoinColumn(name = "nat_person")
     private NaturalPerson person;
@@ -47,6 +53,14 @@ public class Farmer implements Serializable {
 
     public Farmer(NaturalPerson person) {
         this.person = Objects.requireNonNull(person);
+        this.status = UserStatus.ACTIVE;
+    }
+
+    public void deactivate() {
+        if (this.status == UserStatus.INACTIVE) {
+            throw new DomainException("Este agricultor já está inativo.");
+        }
+        this.status = UserStatus.INACTIVE;
     }
 
     public void addInputPurchase(InputPurchase inputPurchase) {

@@ -23,7 +23,7 @@ public class Address {
     String neighborhood;
     @Column(name = "city")
     String city;
-    @Column(name = "number")
+    @Column(name = "addressNumber")
     String addressNumber;
 
     public Address(Cep cep, String street, String neighborhood, String city, String number) {

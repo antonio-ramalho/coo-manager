@@ -13,12 +13,12 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Email {
 
-    @Column(name = "email")
-    String address;
+    @Column(name = "addressEmail")
+    String addressEmail;
 
     public Email(String adress) {
         validate(adress);
-        this.address = adress.toLowerCase();
+        this.addressEmail = adress.toLowerCase();
     }
 
     private void validate(String valor) {

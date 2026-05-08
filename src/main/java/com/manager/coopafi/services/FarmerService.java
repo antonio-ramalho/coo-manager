@@ -16,7 +16,7 @@ import com.manager.coopafi.repositories.CafRepository;
 import com.manager.coopafi.repositories.FarmerRepository;
 import com.manager.coopafi.repositories.NaturalPersonRepository;
 import com.manager.coopafi.repositories.OrganicCertificateRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -37,11 +37,13 @@ public class FarmerService {
     @Autowired
     private OrganicCertificateRepository certificateRepository;
 
+    @Transactional(readOnly = true)
     public List<FarmerMinDto> findByStatus() {
         List<Farmer> list = farmerRepository.findByStatus(UserStatus.ACTIVE);
         return list.stream().map(FarmerMinDto::new).toList();
     }
 
+    @Transactional(readOnly = true)
     public FarmerDto findByStatusAndId(Long id) {
         Optional<Farmer> obj = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, id);
         if (obj.isEmpty()) {
@@ -52,14 +54,13 @@ public class FarmerService {
 
     @Transactional
     public FarmerDto insert(FarmerInsertDto dto) {
-        Cpf cpf = new Cpf(dto.cpfNumber());
-        Cep cep = new Cep(dto.cepNumber());
-        BirthDate birthDate = new BirthDate(dto.birthDate());
-        Phone  phone = new Phone(dto.phoneNumber());
-        Email email = new Email(dto.addressEmail());
-        Address address = new Address(cep, dto.street(), dto.neighborhood(), dto.city(), dto.addressNumber());
 
-        NaturalPerson nt = new NaturalPerson(address, email, phone, dto.name(), cpf, birthDate);
+        Address address = new Address(new Cep(dto.cepNumber()), dto.street(), dto.neighborhood(),
+                dto.city(), dto.addressNumber());
+
+        NaturalPerson nt = new NaturalPerson(address, new Email(dto.addressEmail()), new Phone(dto.phoneNumber()),
+                dto.name(), new Cpf(dto.cpfNumber()), new BirthDate(dto.birthDate()));
+
         nt = personRepository.save(nt);
         Farmer farmer = new Farmer(nt);
 
@@ -79,6 +80,14 @@ public class FarmerService {
 
         farmer = farmerRepository.save(farmer);
         return new FarmerDto(farmer);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Farmer farmer = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, id)
+                .orElseThrow(() -> new DomainException("Agricultor não encontrado."));
+        farmer.deactivate();
+        farmerRepository.save(farmer);
     }
 
     private void updateData(Farmer farmer, FarmerUpdateDto dto) {
@@ -121,13 +130,5 @@ public class FarmerService {
                     .orElseThrow(() -> new DomainException("Certificado orgânico não encontrado."));
             farmer.linkCertificate(certificate);
         }
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        Farmer farmer = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, id)
-                .orElseThrow(() -> new DomainException("Agricultor não encontrado."));
-        farmer.deactivate();
-        farmerRepository.save(farmer);
     }
 }

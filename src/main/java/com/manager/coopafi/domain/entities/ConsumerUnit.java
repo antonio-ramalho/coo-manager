@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class ConsumerUnit implements Serializable {
     @OneToMany(mappedBy = "consumer")
     private List<ContractConsumer> contractConsumers = new ArrayList<>();
 
-    public ConsumerUnit(Agent agent, Address deliveryAddress, JuridicPerson  juridicPerson) {
-        addAgent(agent);
+    public ConsumerUnit(@NonNull List<Agent> agents, Address deliveryAddress, JuridicPerson  juridicPerson) {
+        agents.forEach(this::addAgent);
         this.deliveryAddress = deliveryAddress;
         this.juridicPerson = juridicPerson;
         this.status = UserStatus.ACTIVE;
@@ -60,11 +62,17 @@ public class ConsumerUnit implements Serializable {
     }
 
     public void addAgent(Agent agent) {
+        if (agent == null) {
+            throw new DomainException("Não é possível cadastrar uma unidade sem um Agente.");
+        }
         this.agents.add(agent);
         agent.assignConsumerUnit(this);
     }
 
     public void removeAgent(Agent agent) {
+        if (agents.size() == 1) {
+            throw new DomainException("Não é possível remover o único representante desta unidade.");
+        }
         this.agents.remove(agent);
         agent.assignConsumerUnit(null);
     }

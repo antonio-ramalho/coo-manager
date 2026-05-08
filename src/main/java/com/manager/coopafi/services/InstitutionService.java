@@ -12,7 +12,7 @@ import com.manager.coopafi.enums.UserStatus;
 import com.manager.coopafi.exceptions.DomainException;
 import com.manager.coopafi.repositories.InstitutionRepository;
 import com.manager.coopafi.repositories.JuridicPersonRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -27,11 +27,13 @@ public class InstitutionService {
     @Autowired
     private JuridicPersonRepository juridicPersonRepository;
 
+    @Transactional(readOnly = true)
     public List<InstitutionMinDto> findByStatus() {
         List<Institution> list = institutionRepository.findByStatus(UserStatus.ACTIVE);
         return list.stream().map(InstitutionMinDto::new).toList();
     }
 
+    @Transactional(readOnly = true)
     public InstitutionDto findByStatusAndId(Long id) {
         Optional<Institution> obj = institutionRepository.findByStatusAndId(UserStatus.ACTIVE, id);
         if (obj.isEmpty()) {
@@ -70,6 +72,14 @@ public class InstitutionService {
         return new InstitutionDto(institution);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Institution institution = institutionRepository.findByStatusAndId(UserStatus.ACTIVE, id)
+                .orElseThrow(() -> new DomainException("Instituição não encontrada."));
+        institution.deactivate();
+        institutionRepository.save(institution);
+    }
+
     private void updateData(Institution institution, InstitutionUpdateDto dto) {
         JuridicPerson juridicPerson = institution.getJuridicPerson();
 
@@ -104,14 +114,6 @@ public class InstitutionService {
             Address newAddress = new Address(newCep, newStreet, newCity, newNeighborhood, newAddressNumber);
             juridicPerson.updateAddress(newAddress);
         }
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        Institution institution = institutionRepository.findByStatusAndId(UserStatus.ACTIVE, id)
-                .orElseThrow(() -> new DomainException("Instituição não encontrada."));
-        institution.deactivate();
-        institutionRepository.save(institution);
     }
 }
 

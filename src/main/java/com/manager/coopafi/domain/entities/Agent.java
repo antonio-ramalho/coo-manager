@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -46,6 +45,6 @@ public class Agent implements Serializable {
     }
 
     protected void assignConsumerUnit(ConsumerUnit unit) {
-        this.consumerUnit = Objects.requireNonNull(unit);
+        this.consumerUnit = unit;
     }
 }

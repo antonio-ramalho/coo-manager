@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -52,15 +53,17 @@ public class ConsumerUnitTestConfig implements CommandLineRunner {
 
         // INSTANCIAÇÃO DO AGENTE E DA UNIDADE
         Agent scholarAgent = new Agent("Diretora Geral", naturalPersonInst1);
+        List<Agent> g1List = List.of(scholarAgent);
         ConsumerUnit scholarUnit = new ConsumerUnit(
-                scholarAgent,
+                g1List,
                 juridicPersonInst1.getAddress(),
                 juridicPersonInst1
         );
 
         Agent hospitalAgent = new Agent("Gerente de Logística", naturalPersonInst2);
+        List<Agent> g2List = List.of(hospitalAgent);
         ConsumerUnit hospitalUnit = new ConsumerUnit(
-                hospitalAgent,
+                g2List,
                 new Address(new Cep("85015000"), "Rua Lateral de Carga", "Hospitalar", "Guarapuava", "S/N"),
                 juridicPersonInst2
         );

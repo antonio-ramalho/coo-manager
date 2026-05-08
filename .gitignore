@@ -1,33 +1,45 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# --- IDEs and Editors (Global) ---
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/
+*.sublime-workspace
 .project
-.settings
-.springBeans
-.sts4-cache
+.classpath
+.settings/
+*.launch
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# --- Backend (Spring Boot / Java) ---
+backend/target/
+backend/out/
+backend/*.class
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# --- Frontend (Angular / Node) ---
+# Compiled output
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+frontend/bazel-out/
 
-### VS Code ###
-.vscode/
+# Dependencies
+frontend/node_modules/
+
+# Angular cache & logs
+frontend/.angular/cache
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/connect.lock
+frontend/coverage
+frontend/testem.log
+frontend/.sass-cache/
+
+# --- System Files (Global) ---
+.DS_Store
+Thumbs.db

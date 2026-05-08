@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface JuridicPersonRepository extends JpaRepository<JuridicPerson, Long> {
     Optional<JuridicPerson> findByCnpj(Cnpj cnpj);
+    boolean existsByCnpj(Cnpj cnpj);
 }

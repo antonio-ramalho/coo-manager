@@ -12,4 +12,5 @@ import java.util.Optional;
 @Repository
 public interface NaturalPersonRepository extends JpaRepository<NaturalPerson, Long> {
     Optional<NaturalPerson> findByCpf(Cpf cpf);
+    boolean  existsByCpf(Cpf cpf);
 }

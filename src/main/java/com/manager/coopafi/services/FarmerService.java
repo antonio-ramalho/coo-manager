@@ -61,6 +61,10 @@ public class FarmerService {
         NaturalPerson nt = new NaturalPerson(address, new Email(dto.addressEmail()), new Phone(dto.phoneNumber()),
                 dto.name(), new Cpf(dto.cpfNumber()), new BirthDate(dto.birthDate()));
 
+        if (personRepository.existsByCpf(nt.getCpf())) {
+            throw new DomainException("O CPF informado já está cadastrado.");
+        }
+
         nt = personRepository.save(nt);
         Farmer farmer = new Farmer(nt);
 

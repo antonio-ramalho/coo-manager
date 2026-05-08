@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.domain.valueObjects.*;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -19,6 +20,7 @@ import java.util.Objects;
 public class JuridicPerson extends Person {
 
     @Embedded
+    @Column(unique = true)
     private Cnpj cnpj;
     private String tradeName;
     private String legalName;

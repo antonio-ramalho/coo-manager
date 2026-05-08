@@ -52,6 +52,11 @@ public class InstitutionService {
         BirthDate birthDate = new BirthDate(dto.birthDate());
 
         JuridicPerson juridicPerson = new JuridicPerson(address, email, phone, birthDate, cnpj, dto.legalName(), dto.tradeName());
+
+        if (juridicPersonRepository.existsByCnpj(juridicPerson.getCnpj())) {
+            throw new DomainException("O CNPJ informado já está cadastrado no sistema.");
+        }
+
         juridicPerson = juridicPersonRepository.save(juridicPerson);
 
         InstitutionSphere sphere = InstitutionSphere.valueOf(dto.institutionSphere());

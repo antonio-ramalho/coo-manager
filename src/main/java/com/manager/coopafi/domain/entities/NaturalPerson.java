@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.domain.valueObjects.*;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -20,6 +21,7 @@ public class NaturalPerson extends Person {
 
     private String name;
     @Embedded
+    @Column(unique = true)
     private Cpf cpf;
 
     public NaturalPerson(Address address, Email email, Phone phone,

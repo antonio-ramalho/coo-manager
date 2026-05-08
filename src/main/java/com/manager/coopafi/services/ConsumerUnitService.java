@@ -65,6 +65,10 @@ public class ConsumerUnitService {
                 new BirthDate(dto.birthDate()), new Cnpj(dto.cnpj()), dto.legalName(), dto.tradeName()
         );
 
+        if (juridicPersonRepository.existsByCnpj(juridicPerson.getCnpj())) {
+            throw new DomainException("O CNPJ informado já está cadastrado no sistema.");
+        }
+
         juridicPerson = juridicPersonRepository.save(juridicPerson);
 
         Address deliveryAddress = new Address(
@@ -121,6 +125,11 @@ public class ConsumerUnitService {
                 juridicAddress, new Email(dtoAgent.agentEmail()), new Phone(dtoAgent.agentPhone()),
                 dtoAgent.agentName(), new Cpf(dtoAgent.agentCpf()), new BirthDate(dtoAgent.agentBirthDate())
         );
+
+        if (naturalPersonRepository.existsByCpf(agentPerson.getCpf())) {
+            throw new DomainException("O CPF informado já está cadastrado.");
+        }
+
         agentPerson = naturalPersonRepository.save(agentPerson);
 
         return new Agent(dtoAgent.agentCargo(), agentPerson);

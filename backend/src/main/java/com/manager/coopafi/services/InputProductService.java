@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InputProductService {
@@ -24,25 +23,23 @@ public class InputProductService {
     private InputProductRepository inputProductRepository;
 
     @Transactional(readOnly = true)
-    public List<InputProductMinDto> findByStatus() {
+    public List<InputProductMinDto> findAllByStatus() {
         List<InputProduct> list = inputProductRepository.findByProductCatalogStatus(ProductCatalogStatus.ACTIVE);
         return list.stream().map(InputProductMinDto::new).toList();
     }
 
     @Transactional(readOnly = true)
     public InputProductDto findByStatusAndId(Long id) {
-        Optional<InputProduct> obj = inputProductRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id);
-        if (obj.isEmpty()) {
-            throw new DomainException("Produto não encontrado.");
-        }
-        return new InputProductDto(obj.get());
+        InputProduct obj = inputProductRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id)
+                .orElseThrow(() -> new DomainException("Produto não encontrado."));
+        return new InputProductDto(obj);
     }
 
     @Transactional
     public InputProductDto insert(InputProductInsertDto dto) {
         MeasureUnit unit = MeasureUnit.fromString(dto.measureUnit());
         InputProduct product = new InputProduct(unit, new Ncm(dto.ncmValue()), dto.productName(),
-                new Price(new BigDecimal(dto.priceValue())), new ExpirationDate(dto.expirationDate()), dto.productCode());
+                new Price(new BigDecimal(dto.priceValue())), dto.productCode());
 
         inputProductRepository.save(product);
         return new InputProductDto(product);
@@ -71,10 +68,6 @@ public class InputProductService {
 
         if (dto.productName() != null) {
             product.updateProductName(dto.productName());
-        }
-
-        if (dto.expirationDate() != null) {
-            product.updateExpirationDate(new ExpirationDate(dto.expirationDate()));
         }
 
         if (dto.priceValue() != null) {

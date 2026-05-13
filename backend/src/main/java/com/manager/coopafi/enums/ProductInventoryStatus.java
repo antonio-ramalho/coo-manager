@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum ProductInventoryStatus {
     IN_STOCK("Em Estoque"),
     OUT_OF_STOCK("Esgotado"),
-    EXPIRED("Vencido");
+    EXPIRED("Vencido"),
+    INACTIVE("Desativado");
 
     private final String description;
 }

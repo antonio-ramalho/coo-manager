@@ -9,7 +9,6 @@ import com.manager.coopafi.dto.agent.AgentUpdateDto;
 import com.manager.coopafi.enums.UserStatus;
 import com.manager.coopafi.exceptions.DomainException;
 import com.manager.coopafi.repositories.ConsumerUnitRepository;
-import com.manager.coopafi.repositories.NaturalPersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +18,6 @@ public class AgentService {
 
     @Autowired
     private ConsumerUnitRepository consumerUnitRepository;
-
-    @Autowired
-    private NaturalPersonRepository naturalPersonRepository;
 
     @Transactional
     public AgentDto updateAgent(Long unitId, Long agentId, AgentUpdateDto dto) {

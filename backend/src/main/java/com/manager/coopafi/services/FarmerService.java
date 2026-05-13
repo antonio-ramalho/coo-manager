@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FarmerService {
@@ -38,18 +37,17 @@ public class FarmerService {
     private OrganicCertificateRepository certificateRepository;
 
     @Transactional(readOnly = true)
-    public List<FarmerMinDto> findByStatus() {
+    public List<FarmerMinDto> findAllByStatus() {
         List<Farmer> list = farmerRepository.findByStatus(UserStatus.ACTIVE);
         return list.stream().map(FarmerMinDto::new).toList();
     }
 
     @Transactional(readOnly = true)
     public FarmerDto findByStatusAndId(Long id) {
-        Optional<Farmer> obj = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, id);
-        if (obj.isEmpty()) {
-            throw new DomainException("Agricultor não encontrado.");
-        }
-        return new FarmerDto(obj.get());
+        Farmer obj = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, id)
+                .orElseThrow(() -> new DomainException("Agricultor não encontrado"));
+
+        return new FarmerDto(obj);
     }
 
     @Transactional

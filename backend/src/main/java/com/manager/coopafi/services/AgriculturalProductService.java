@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AgriculturalProductService {
@@ -27,18 +26,16 @@ public class AgriculturalProductService {
     private AgriculturalProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public List<AgriculturalProductMinDto> findByStatus() {
+    public List<AgriculturalProductMinDto> findAllByStatus() {
         List<AgriculturalProduct> list = productRepository.findByProductCatalogStatus(ProductCatalogStatus.ACTIVE);
         return list.stream().map(AgriculturalProductMinDto::new).toList();
     }
 
     @Transactional(readOnly = true)
     public AgriculturalProductDto findByStatusAndId(Long id) {
-        Optional<AgriculturalProduct> obj = productRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id);
-        if (obj.isEmpty()) {
-            throw new DomainException("Produto não encontrado.");
-        }
-        return new AgriculturalProductDto(obj.get());
+        AgriculturalProduct obj = productRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id)
+                .orElseThrow(() -> new DomainException("Produto agricola não encontrado."));
+        return new AgriculturalProductDto(obj);
     }
 
     @Transactional

@@ -33,7 +33,7 @@ public class ConsumerUnitService {
     private ConsumerUnitRepository consumerUnitRepository;
 
     @Transactional(readOnly = true)
-    public List<ConsumerUnitMinDto> findByStatus() {
+    public List<ConsumerUnitMinDto> findAllByStatus() {
         List<ConsumerUnit> list = consumerUnitRepository.findByStatus(UserStatus.ACTIVE);
         return list.stream().map(ConsumerUnitMinDto::new).toList();
     }

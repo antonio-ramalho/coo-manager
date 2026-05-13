@@ -18,8 +18,8 @@ public class AgriculturalProductResources {
     private AgriculturalProductService service;
 
     @GetMapping
-    public ResponseEntity<List<AgriculturalProductMinDto>> findByStatus() {
-        List <AgriculturalProductMinDto> list = service.findByStatus();
+    public ResponseEntity<List<AgriculturalProductMinDto>> findAllByStatus() {
+        List <AgriculturalProductMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 

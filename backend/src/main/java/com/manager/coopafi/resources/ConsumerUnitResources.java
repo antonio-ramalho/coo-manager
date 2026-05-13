@@ -1,8 +1,6 @@
 package com.manager.coopafi.resources;
 
-import com.manager.coopafi.dto.agent.AgentUpdateDto;
 import com.manager.coopafi.dto.consumerunit.*;
-import com.manager.coopafi.enums.UserStatus;
 import com.manager.coopafi.services.ConsumerUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +15,8 @@ public class ConsumerUnitResources {
     private ConsumerUnitService service;
 
     @GetMapping
-    public ResponseEntity<List<ConsumerUnitMinDto>> findByStatus() {
-        List<ConsumerUnitMinDto> list = service.findByStatus();
+    public ResponseEntity<List<ConsumerUnitMinDto>> findAllByStatus() {
+        List<ConsumerUnitMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 

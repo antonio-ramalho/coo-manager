@@ -18,8 +18,8 @@ public class InputProductResources {
     private InputProductService service;
 
     @GetMapping
-    public ResponseEntity<List<InputProductMinDto>> findByStatus() {
-        List <InputProductMinDto> list = service.findByStatus();
+    public ResponseEntity<List<InputProductMinDto>> findAllByStatus() {
+        List <InputProductMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 
@@ -31,8 +31,8 @@ public class InputProductResources {
 
     @PostMapping
     public ResponseEntity<InputProductDto> insert(@RequestBody InputProductInsertDto dto) {
-        InputProductDto newFarmer = service.insert(dto);
-        return ResponseEntity.ok().body(newFarmer);
+        InputProductDto newProduct = service.insert(dto);
+        return ResponseEntity.ok().body(newProduct);
     }
 
     @PatchMapping(value = "/{id}")

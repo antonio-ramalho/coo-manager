@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InstitutionService {
@@ -28,18 +27,16 @@ public class InstitutionService {
     private JuridicPersonRepository juridicPersonRepository;
 
     @Transactional(readOnly = true)
-    public List<InstitutionMinDto> findByStatus() {
+    public List<InstitutionMinDto> findAllByStatus() {
         List<Institution> list = institutionRepository.findByStatus(UserStatus.ACTIVE);
         return list.stream().map(InstitutionMinDto::new).toList();
     }
 
     @Transactional(readOnly = true)
     public InstitutionDto findByStatusAndId(Long id) {
-        Optional<Institution> obj = institutionRepository.findByStatusAndId(UserStatus.ACTIVE, id);
-        if (obj.isEmpty()) {
-            throw new DomainException("Instituição não encontrada.");
-        }
-        return new InstitutionDto(obj.get());
+        Institution obj = institutionRepository.findByStatusAndId(UserStatus.ACTIVE, id)
+            .orElseThrow(() -> new DomainException("Instituição não encontrada."));
+        return new InstitutionDto(obj);
     }
 
     @Transactional

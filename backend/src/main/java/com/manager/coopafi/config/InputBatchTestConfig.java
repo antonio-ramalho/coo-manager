@@ -2,6 +2,7 @@ package com.manager.coopafi.config;
 
 import com.manager.coopafi.domain.entities.InputBatch;
 import com.manager.coopafi.domain.entities.InputProduct;
+import com.manager.coopafi.domain.valueObjects.ExpirationDate;
 import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.repositories.InputBatchRepository;
 import com.manager.coopafi.repositories.InputProductRepository;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Configuration
@@ -40,19 +42,22 @@ public class InputBatchTestConfig implements CommandLineRunner {
         InputBatch batchMudas = new InputBatch(
                 new Quantity(BigDecimal.valueOf(1000)), // Quantidade atual
                 mudaTomate,
-                new Quantity(BigDecimal.valueOf(1000))  // Quantidade original
-        );
+                new Quantity(BigDecimal.valueOf(1000)), // Quantidade original
+                new ExpirationDate(LocalDate.now().plusMonths(6))
+                );
 
         InputBatch batchSementes = new InputBatch(
                 new Quantity(BigDecimal.valueOf(500)), // Quantidade atual
                 sementesMilho,
-                new Quantity(BigDecimal.valueOf(500))  // Quantidade original
+                new Quantity(BigDecimal.valueOf(500)),  // Quantidade original
+                new ExpirationDate(LocalDate.now().plusDays(6))
         );
 
         InputBatch batchAdubo = new InputBatch(
                 new Quantity(BigDecimal.valueOf(200)), // Quantidade atual
                 aduboNPK,
-                new Quantity(BigDecimal.valueOf(200))  // Quantidade original
+                new Quantity(BigDecimal.valueOf(200)),  // Quantidade original
+                new ExpirationDate(LocalDate.now().plusYears(2))
         );
 
         inputBatchRepository.saveAll(Arrays.asList(batchMudas, batchSementes, batchAdubo));

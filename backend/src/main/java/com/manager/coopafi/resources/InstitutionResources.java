@@ -18,8 +18,8 @@ public class InstitutionResources {
     private InstitutionService service;
 
     @GetMapping
-    public ResponseEntity<List<InstitutionMinDto>> findByStatus() {
-        List<InstitutionMinDto> list = service.findByStatus();
+    public ResponseEntity<List<InstitutionMinDto>> findAllByStatus() {
+        List<InstitutionMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 

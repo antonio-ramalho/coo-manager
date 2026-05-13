@@ -31,7 +31,6 @@ public class InputProductTestConfig implements CommandLineRunner {
                 new Ncm("06021900"),
                 "Mudas de Tomate",
                 new Price(BigDecimal.valueOf(2.50)),
-                new ExpirationDate(LocalDate.now().plusMonths(2)),
                 "MUD-TOM-001"
         );
 
@@ -41,7 +40,6 @@ public class InputProductTestConfig implements CommandLineRunner {
                 new Ncm("10059090"),
                 "Sementes de Milho Híbrido",
                 new Price(BigDecimal.valueOf(85.00)),
-                new ExpirationDate(LocalDate.now().plusYears(1)),
                 "SEM-MIL-002"
         );
 
@@ -51,7 +49,6 @@ public class InputProductTestConfig implements CommandLineRunner {
                 new Ncm("31051000"),
                 "Adubo NPK 10-10-10",
                 new Price(BigDecimal.valueOf(35.50)),
-                new ExpirationDate(LocalDate.now().plusMonths(6)),
                 "ADU-NPK-003"
         );
 

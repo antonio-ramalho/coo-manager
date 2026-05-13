@@ -32,12 +32,4 @@ public class DispatchTerm extends BaseReceipt<DispatchTermItem> {
         this.totalValue = item.getTotalPrice().add(this.totalValue);
         item.linkToBaseReceipt(this);
     }
-
-    @Override
-    public void removeItem(DispatchTermItem item) {
-        if (this.dispatchItems.remove(item)) {
-            this.totalValue = this.totalValue.subtract(item.getTotalPrice());
-            item.linkToBaseReceipt(null);
-        }
-    }
 }

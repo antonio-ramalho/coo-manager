@@ -31,13 +31,11 @@ public abstract class BaseReceipt <T extends BaseReceiptItem<?>> implements Seri
 
     public  BaseReceipt() {
         this.emissionDate = LocalDateTime.now();
-        this.status = PaymentStatus.PAID;
+        this.status = PaymentStatus.PENDING;
         this.totalValue = new Price(BigDecimal.ZERO);
     }
 
     public abstract void addItem(T item);
-
-    public abstract void removeItem(T item);
 
     public void markAsPaid() {
         this.status = PaymentStatus.PAID;

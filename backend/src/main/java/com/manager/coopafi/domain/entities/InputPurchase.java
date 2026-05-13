@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.enums.PaymentStatus;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,21 +34,25 @@ public class InputPurchase extends BaseReceipt <InputPurchaseItem> {
 
     @Override
     public void addItem(InputPurchaseItem item) {
+        checkIsPending();
         this.purchaseItems.add(item);
         this.totalValue = item.getTotalPrice().add(this.totalValue);
         item.getInputBatch().decreaseQuantity(item.getQuantity());
         item.linkToBaseReceipt(this);
     }
 
-    @Override
-    public void removeItem(InputPurchaseItem item) {
-        this.purchaseItems.remove(item);
-        this.totalValue = this.totalValue.subtract(item.getTotalPrice());
-        item.getInputBatch().increaseQuantity(item.getQuantity());
-        item.linkToBaseReceipt(null);
+    private void checkIsPending() {
+        if (this.status != PaymentStatus.PENDING) {
+            throw new DomainException("Não é possível alterar uma compra cancelada ou paga.");
+        }
     }
 
     public void cancelPurchase() {
+        checkIsPending();
         this.status = PaymentStatus.CANCELED;
+
+        for (InputPurchaseItem item : this.purchaseItems) {
+            item.getInputBatch().increaseQuantity(item.getQuantity());
+        }
     }
 }

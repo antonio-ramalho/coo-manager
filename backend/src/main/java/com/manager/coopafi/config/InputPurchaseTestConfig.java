@@ -1,14 +1,12 @@
 package com.manager.coopafi.config;
 
-import com.manager.coopafi.domain.entities.Farmer;
-import com.manager.coopafi.domain.entities.InputBatch;
-import com.manager.coopafi.domain.entities.InputPurchase;
-import com.manager.coopafi.domain.entities.InputPurchaseItem;
+import com.manager.coopafi.domain.entities.*;
 import com.manager.coopafi.domain.valueObjects.Price;
 import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.repositories.FarmerRepository;
 import com.manager.coopafi.repositories.InputBatchRepository;
 import com.manager.coopafi.repositories.InputPurchaseRepository;
+import com.manager.coopafi.repositories.NaturalPersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

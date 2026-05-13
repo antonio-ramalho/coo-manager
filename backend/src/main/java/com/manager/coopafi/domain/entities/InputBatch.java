@@ -66,7 +66,7 @@ public class InputBatch implements Serializable {
     }
 
     public boolean isAvailable() {
-        return productStatus == ProductInventoryStatus.IN_STOCK && !isExpired();
+        return productStatus == ProductInventoryStatus.IN_STOCK;
     }
 
     public void updateExpirationDate(ExpirationDate newDate) {
@@ -94,6 +94,9 @@ public class InputBatch implements Serializable {
     }
 
     public void decreaseQuantity(@NonNull Quantity amount) {
+        if (!isAvailable() || isExpired()) {
+            throw new DomainException("Lote vencido ou sem estoque.");
+        }
         checkStock(amount);
         this.currentQuantity = this.currentQuantity.subtract(amount);
         updateStatusByStock();

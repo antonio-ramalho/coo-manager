@@ -17,21 +17,21 @@ public class InputPurchaseCascadeTest {
     @Autowired
     private InputPurchaseRepository inputPurchaseRepository;
     @Autowired
-    private FarmerRepository farmerRepository;
-    @Autowired
     private InputBatchRepository inputBatchRepository;
     @Autowired
     private NaturalPersonRepository naturalPersonRepository;
     @Autowired
     private InputProductRepository inputProductRepository;
+    @Autowired
+    private FarmerRepository farmerRepository;
 
     @Test
     @DisplayName("Deve salvar uma Compra e seus Itens automaticamente via Cascade")
     void shouldSavePurchaseAndItemsViaCascade() {
-        Farmer farmer = farmerRepository.save(createValidFarmer());
+        Farmer person = farmerRepository.save(createValidFarmer());
         InputBatch batch = inputBatchRepository.save(createValidInputBatch());
 
-        InputPurchase purchase = new InputPurchase(farmer);
+        InputPurchase purchase = new InputPurchase(person);
 
         Quantity buyQuantity = new Quantity(new BigDecimal("10.000"));
         Price appliedPrice = new Price(new BigDecimal("5.00"));

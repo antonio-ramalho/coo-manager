@@ -8,7 +8,6 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -52,11 +51,11 @@ public class InputBatch implements Serializable {
     }
 
     public boolean isExpired() {
-        return inputProduct.getExpirationDate().isBefore(LocalDate.now());
+        return inputProduct.getExpirationDate().isExpired();
     }
 
     public void updateStatusByDate() {
-        if (inputProduct.getExpirationDate().isBefore(LocalDate.now())) {
+        if (inputProduct.getExpirationDate().isExpired()) {
             this.productStatus = ProductInventoryStatus.EXPIRED;
         }
     }

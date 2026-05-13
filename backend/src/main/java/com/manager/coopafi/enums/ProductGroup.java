@@ -1,5 +1,6 @@
 package com.manager.coopafi.enums;
 
+import com.manager.coopafi.exceptions.DomainException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,4 +12,18 @@ public enum ProductGroup {
     SPICES("Temperos");
 
     private final String description;
+
+    public static ProductGroup fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new DomainException("O grupo não pode estar em branco");
+        }
+
+        for (ProductGroup group : ProductGroup.values()) {
+            if (group.name().equalsIgnoreCase(value.trim())) {
+                return group;
+            }
+        }
+
+        throw new DomainException("Grupo invalido.");
+    }
 }

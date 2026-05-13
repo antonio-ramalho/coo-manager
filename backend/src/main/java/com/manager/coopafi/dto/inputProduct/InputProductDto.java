@@ -19,7 +19,7 @@ public record InputProductDto(
                 entity.getId(),
                 entity.getProductName(),
                 entity.getProductCode(),
-                entity.getExpirationDate(),
+                entity.getExpirationDate().getValue(),
                 entity.getEntryDate(),
                 entity.getMeasureUnit().name(),
                 entity.getNcm().getCode(),

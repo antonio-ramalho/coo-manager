@@ -4,6 +4,7 @@ import com.manager.coopafi.domain.valueObjects.Ncm;
 import com.manager.coopafi.domain.valueObjects.Price;
 import com.manager.coopafi.enums.MeasureUnit;
 import com.manager.coopafi.enums.ProductCatalogStatus;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,7 +32,7 @@ public abstract class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     private MeasureUnit measureUnit;
     @Enumerated(EnumType.STRING)
-    ProductCatalogStatus productCatalogStatus;
+    private ProductCatalogStatus productCatalogStatus;
     @Embedded
     private Ncm ncm;
 
@@ -44,18 +45,24 @@ public abstract class Product implements Serializable {
     }
 
     public void updatePrice(Price productPrice) {
-        this.productPrice = Objects.requireNonNull(productPrice);
+        this.productPrice = Objects.requireNonNull(productPrice, "O novo preço não pode ser nulo.");
     }
 
     public void updateProductName(String productName) {
-        this.productName = Objects.requireNonNull(productName);
+        this.productName = Objects.requireNonNull(productName, "O novo nome não pode ser nulo.");
     }
 
     public void activate() {
+        if (this.productCatalogStatus == ProductCatalogStatus.ACTIVE) {
+            throw new DomainException("Este produto já está ativo.");
+        }
         this.productCatalogStatus = ProductCatalogStatus.ACTIVE;
     }
 
     public void deactivate() {
+        if (this.productCatalogStatus == ProductCatalogStatus.INACTIVE) {
+            throw new DomainException("Este produto já está inativo.");
+        }
         this.productCatalogStatus = ProductCatalogStatus.INACTIVE;
     }
 }

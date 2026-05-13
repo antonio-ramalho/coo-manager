@@ -5,6 +5,7 @@ import com.manager.coopafi.domain.valueObjects.Price;
 import com.manager.coopafi.enums.CultivationType;
 import com.manager.coopafi.enums.MeasureUnit;
 import com.manager.coopafi.enums.ProductGroup;
+import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,5 +33,19 @@ public class AgriculturalProduct extends Product {
         super(measureUnit, ncm, productName, productPrice);
         this.cultivationType = cultivationType;
         this.productGroup = productGroup;
+    }
+
+    public void changeCultivationType(CultivationType newCultivationType) {
+        if (newCultivationType == null) {
+            throw new DomainException("O tipo do produto não pode ser vazio.");
+        }
+        this.cultivationType = newCultivationType;
+    }
+
+    public void changeProductGroup(ProductGroup newProductGroup) {
+        if (newProductGroup == null) {
+            throw new DomainException("O grupo do produto não pode ser vazio.");
+        }
+        this.productGroup = newProductGroup;
     }
 }

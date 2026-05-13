@@ -40,11 +40,9 @@ public class InputProductResources {
         return ResponseEntity.ok().body(service.update(id, dto));
     }
 
-    /*
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-    */
 }

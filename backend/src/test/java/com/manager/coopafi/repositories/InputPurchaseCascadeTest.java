@@ -65,7 +65,7 @@ public class InputPurchaseCascadeTest {
                 new Ncm("31051000"),
                 "Adubo NPK 10-10-10",
                 new Price(BigDecimal.valueOf(35.50)),
-                LocalDate.now().plusMonths(6),
+                new ExpirationDate(LocalDate.now().plusMonths(6)),
                 "ADU-NPK-003"
         );
         inputProductRepository.save(product);

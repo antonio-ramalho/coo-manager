@@ -79,7 +79,6 @@ public class Contract implements Serializable {
         this.participationRule = participationRule;
         this.productDeliveryRule = productDeliveryRule;
         this.institution = Objects.requireNonNull(institution, "Um contrato deve estar vinculado a uma instituição.");
-
         this.usedContractValue = new Price(BigDecimal.ZERO);
         this.documentStatus = DocumentStatus.ACTIVE;
     }
@@ -100,6 +99,10 @@ public class Contract implements Serializable {
         FarmerContract participation = new FarmerContract(this, farmer, specificCota);
         this.farmerContracts.add(participation);
         farmer.getFarmerContracts().add(participation);
+    }
+
+    public Price getContractBalance() {
+        return this.totalContractValue.subtract(this.usedContractValue);
     }
 
     public void incrementUsedValue(Price deliveryValue) {

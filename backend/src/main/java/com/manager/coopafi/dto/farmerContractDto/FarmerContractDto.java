@@ -2,7 +2,7 @@ package com.manager.coopafi.dto.farmerContractDto;
 
 import com.manager.coopafi.domain.entities.FarmerContract;
 import com.manager.coopafi.dto.farmerItemQuota.FarmerItemQuotaDto;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public record FarmerContractDto(
@@ -11,7 +11,7 @@ public record FarmerContractDto(
         Double specificCota,
         Double accumulatedValue,
 
-        Set<FarmerItemQuotaDto> quotas
+        List<FarmerItemQuotaDto> quotas
 ) {
     public FarmerContractDto(FarmerContract entity) {
         this(
@@ -21,7 +21,7 @@ public record FarmerContractDto(
                 entity.getAccumulatedValue().getValue().doubleValue(),
                 entity.getFarmerItemQuotas().stream()
                         .map(FarmerItemQuotaDto::new)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toList())
         );
     }
 }

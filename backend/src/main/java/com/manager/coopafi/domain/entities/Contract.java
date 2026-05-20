@@ -13,9 +13,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_contracts")
@@ -75,12 +73,16 @@ public class Contract implements Serializable {
         this.initialContractDate = LocalDate.now();
         this.finalContractDate = Objects.requireNonNull(finalContractDate, "A data final é obrigatória.");
         this.totalContractValue = Objects.requireNonNull(totalContractValue, "O valor total do contrato é obrigatório.");
-        this.globalLimit = Objects.requireNonNull(globalLimit, "O limite global por agricultor é obrigatório.");
+        this.globalLimit = globalLimit;
         this.participationRule = participationRule;
         this.productDeliveryRule = productDeliveryRule;
         this.institution = Objects.requireNonNull(institution, "Um contrato deve estar vinculado a uma instituição.");
         this.usedContractValue = new Price(BigDecimal.ZERO);
         this.documentStatus = DocumentStatus.ACTIVE;
+    }
+
+    public void deactivate() {
+        this.documentStatus = DocumentStatus.INACTIVE;
     }
 
     public void addContractedProduct(AgriculturalProduct baseProduct, Price fixedPrice, String contractedName) {
@@ -96,6 +98,7 @@ public class Contract implements Serializable {
     }
 
     public void addFarmerParticipation(Farmer farmer, Price specificCota) {
+        this.participationRule.validate(this, farmer, specificCota);
         FarmerContract participation = new FarmerContract(this, farmer, specificCota);
         this.farmerContracts.add(participation);
         farmer.getFarmerContracts().add(participation);
@@ -103,6 +106,20 @@ public class Contract implements Serializable {
 
     public Price getContractBalance() {
         return this.totalContractValue.subtract(this.usedContractValue);
+    }
+
+    public void validateQuotas() {
+        Price accumulate = this.farmerContracts.stream()
+                .map(FarmerContract::getSpecificCota)
+                .reduce(new Price(BigDecimal.ZERO), Price::add);
+
+        if (accumulate.getValue().compareTo(this.totalContractValue.getValue()) > 0) {
+            throw new DomainException("A soma de todas as quotas dos agricultores supera o valor do contrato.");
+        }
+
+        if (accumulate.getValue().compareTo(this.totalContractValue.getValue()) < 0) {
+            throw new DomainException("A soma de todas as quotas dos agricultores é inferior ao valor do contrato.");
+        }
     }
 
     public void incrementUsedValue(Price deliveryValue) {

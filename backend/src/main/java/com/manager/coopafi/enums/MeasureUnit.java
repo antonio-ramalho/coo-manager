@@ -13,7 +13,7 @@ public enum MeasureUnit {
 
     private final String description;
 
-    public static MeasureUnit fromString(String value) {
+    public static MeasureUnit validateString(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new DomainException("A unidade de medida não pode estar em branco.");
         }

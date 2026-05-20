@@ -37,7 +37,7 @@ public class InputProductService {
 
     @Transactional
     public InputProductDto insert(InputProductInsertDto dto) {
-        MeasureUnit unit = MeasureUnit.fromString(dto.measureUnit());
+        MeasureUnit unit = MeasureUnit.validateString(dto.measureUnit());
         InputProduct product = new InputProduct(unit, new Ncm(dto.ncmValue()), dto.productName(),
                 new Price(new BigDecimal(dto.priceValue())), dto.productCode());
 

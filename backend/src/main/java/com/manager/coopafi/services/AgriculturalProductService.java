@@ -40,9 +40,9 @@ public class AgriculturalProductService {
 
     @Transactional
     public AgriculturalProductDto insert(AgriculturalProductInsertDto dto) {
-        MeasureUnit unit =  MeasureUnit.fromString(dto.measureUnit());
-        CultivationType type = CultivationType.fromString(dto.cultivationType());
-        ProductGroup group = ProductGroup.fromString(dto.productGroup());
+        MeasureUnit unit =  MeasureUnit.validateString(dto.measureUnit());
+        CultivationType type = CultivationType.validateString(dto.cultivationType());
+        ProductGroup group = ProductGroup.validateString(dto.productGroup());
         AgriculturalProduct product  = new AgriculturalProduct(unit, new Ncm(dto.ncmValue()), dto.productName(),
                 new Price(new BigDecimal(dto.priceValue())), type, group);
 
@@ -76,12 +76,12 @@ public class AgriculturalProductService {
         }
 
         if (dto.cultivationType() != null) {
-            CultivationType type =  CultivationType.fromString(dto.cultivationType());
+            CultivationType type =  CultivationType.validateString(dto.cultivationType());
             product.changeCultivationType(type);
         }
 
         if (dto.productGroup() != null) {
-            ProductGroup group = ProductGroup.fromString(dto.productGroup());
+            ProductGroup group = ProductGroup.validateString(dto.productGroup());
             product.changeProductGroup(group);
         }
 

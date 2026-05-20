@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.jspecify.annotations.NonNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Embeddable
 @Value
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class Price {
+public class Price implements Comparable<Price> {
 
     @Column(name = "price_value", precision = 12, scale = 2)
     BigDecimal value;
@@ -48,5 +49,10 @@ public class Price {
         if (value.compareTo(BigDecimal.ZERO) < 0) {
             throw new DomainException("O valor do preço não pode ser negativo.");
         }
+    }
+
+    @Override
+    public int compareTo(@NonNull Price other) {
+        return this.value.compareTo(other.getValue());
     }
 }

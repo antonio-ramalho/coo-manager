@@ -13,7 +13,7 @@ public enum ProductGroup {
 
     private final String description;
 
-    public static ProductGroup fromString(String value) {
+    public static ProductGroup validateString(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new DomainException("O grupo não pode estar em branco");
         }

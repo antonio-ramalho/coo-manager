@@ -7,7 +7,6 @@ import com.manager.coopafi.dto.farmerContractDto.FarmerContractDto;
 import com.manager.coopafi.dto.institution.InstitutionMinDto;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public record ContractDto (
@@ -22,8 +21,8 @@ public record ContractDto (
         String participationRule,
         String productDeliveryRule,
 
-        Set<FarmerContractDto> farmerContracts,
-        Set<ContractConsumerDto> contractConsumers,
+        List<FarmerContractDto> farmerContracts,
+        List<ContractConsumerDto> contractConsumers,
         List<ContractedProductDto> products
 ){
     public ContractDto(Contract entity) {
@@ -41,12 +40,12 @@ public record ContractDto (
 
                 entity.getFarmerContracts().stream()
                         .map(FarmerContractDto::new)
-                                .collect(Collectors.toSet()),
+                        .collect(Collectors.toList()),
 
 
                 entity.getContractConsumers().stream()
                         .map(ContractConsumerDto::new)
-                        .collect(Collectors.toSet()),
+                        .collect(Collectors.toList()),
 
                 entity.getProducts().stream()
                         .map(ContractedProductDto::new)

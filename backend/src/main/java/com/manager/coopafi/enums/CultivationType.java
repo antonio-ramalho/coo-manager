@@ -12,7 +12,7 @@ public enum CultivationType {
 
     private final String description;
 
-    public static CultivationType fromString(String value) {
+    public static CultivationType validateString(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new DomainException("O tipo não pode estar em branco.");
         }

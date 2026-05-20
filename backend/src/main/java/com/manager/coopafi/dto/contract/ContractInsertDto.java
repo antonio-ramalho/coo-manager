@@ -16,7 +16,7 @@ public record ContractInsertDto (
         String participationRule,
         String productDeliveryRule,
 
-        Set<FarmerContractInsertDto> farmerContracts,
-        Set<ContractConsumerInsertDto> contractConsumers,
+        List<FarmerContractInsertDto> farmerContracts,
+        List<ContractConsumerInsertDto> contractConsumers,
         List<ContractedProductInsertDto> products
 ) {}

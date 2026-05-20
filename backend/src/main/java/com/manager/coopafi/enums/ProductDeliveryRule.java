@@ -13,7 +13,7 @@ public enum ProductDeliveryRule {
 
     private final String description;
 
-    public static ProductDeliveryRule fromString(String value) {
+    public static ProductDeliveryRule validateString(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new DomainException("É preciso cadastrar uma regra de entrega.");
         }

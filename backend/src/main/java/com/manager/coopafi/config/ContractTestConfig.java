@@ -39,52 +39,51 @@ public class ContractTestConfig implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // Buscar uma instituição existente
+
         Institution institution = institutionRepository.findAll().stream().findFirst()
-                .orElseThrow(() -> new RuntimeException("Nenhuma instituição encontrada"));
+                .orElseThrow(() -> new RuntimeException("Instância de Instituição requerida não encontrada."));
 
-        // Criar o contrato com valores e regras
-        LocalDate finalDate = LocalDate.now().plusYears(1);
-        Price totalValue = new Price(BigDecimal.valueOf(50000.00)); // R$ 50.000
-        Price globalLimit = new Price(BigDecimal.valueOf(5000.00)); // R$ 5.000 por agricultor
+        // VALOR DO CONTRATO: R$ 30.000,00
+        Contract contract = new Contract(LocalDate.of(2026, 12, 31),
+                new Price(new BigDecimal("30000.00")), new Price(new BigDecimal("15000.00")),
+                ParticipationLimitRule.PER_CPF, ProductDeliveryRule.QUANTITY_LOCKED, institution);
 
-        Contract contract = new Contract(
-                finalDate,
-                totalValue,
-                globalLimit,
-                ParticipationLimitRule.PER_CPF,
-                ProductDeliveryRule.VALUE_ONLY,
-                institution
-        );
+        List<AgriculturalProduct> baseProducts = agriculturalProductRepository.findAll();
+        if(baseProducts.size() < 2) return; // Segurança
 
-        // Buscar farmers existentes e adicioná-los ao contrato
+        // 1. INJETANDO PRODUTOS NO EDITAL
+        // Prod 1: Tomate a R$ 10. Max Global: 1500 und = R$ 15.000
+        contract.addContractedProduct(baseProducts.get(0), new Price(new BigDecimal("10.00")),
+                "Tomate Edital", new Quantity(new BigDecimal("1500.00")));
+
+        // Prod 2: Alface a R$ 20. Max Global: 750 und = R$ 15.000
+        contract.addContractedProduct(baseProducts.get(1), new Price(new BigDecimal("20.00")),
+                "Alface Edital", new Quantity(new BigDecimal("750.00")));
+
+
+        // 2. INJETANDO AGRICULTORES COM A MATEMÁTICA EXATA
         List<Farmer> farmers = farmerRepository.findAll();
-        farmers.stream().limit(2).forEach(farmer -> {
-            Price farmerQuota = new Price(BigDecimal.valueOf(5000.00)); // R$ 5.000 por agricultor
-            contract.addFarmerParticipation(farmer, farmerQuota);
+        farmers.stream().limit(3).forEach(farmer -> {
+
+            // Cada um dos 3 agricultores ganha exatos R$ 10.000 (3 * 10k = 30k do Contrato)
+            Price farmerQuota = new Price(new BigDecimal("10000.00"));
+            FarmerContract participation = contract.addFarmerParticipation(farmer, farmerQuota);
+
+            // Produto 1: 500 tomates * R$ 10 = R$ 5.000
+            participation.addProductQuota(contract.getProducts().get(0), new Quantity(new BigDecimal("500.00")));
+
+            // Produto 2: 250 alfaces * R$ 20 = R$ 5.000
+            // Soma do agricultor = R$ 10.000 -> Bateu!
+            participation.addProductQuota(contract.getProducts().get(1), new Quantity(new BigDecimal("250.00")));
         });
 
-        // Buscar consumer units existentes e adicioná-las ao contrato
+        // 3. INJETANDO CONSUMIDORES
         List<ConsumerUnit> consumerUnits = consumerUnitRepository.findAll();
         consumerUnits.stream().limit(2).forEach(contract::addConsumerUnit);
 
-        // Buscar agricultural products e adicioná-los como contracted products
-        List<AgriculturalProduct> products = agriculturalProductRepository.findAll();
-        products.stream().limit(3).forEach(product -> {
-            Price fixedPrice = new Price(BigDecimal.valueOf(10.00)); // Preço fixo de R$ 10
-            String contractedName = "Contratação de " + product.getProductName();
-            contract.addContractedProduct(product, fixedPrice, contractedName);
-        });
+        // 4. A MAGIA ACONTECE E TUDO É SALVO (Cascade Mágico)
 
-        // Adicionar quotas de produtos para cada agricultor
-        for (FarmerContract farmerContract : contract.getFarmerContracts()) {
-            for (ContractedProduct contractedProduct : contract.getProducts()) {
-                Quantity maxQuantity = new Quantity(BigDecimal.valueOf(100.00)); // Máximo de 100 unidades
-                farmerContract.addProductQuota(contractedProduct, maxQuantity);
-            }
-        }
-
-        // Salvar o contrato (todas as entidades relacionadas serão salvas via cascade)
+        contract.validateContractIntegrity(); // Chama a validação para garantir que o Mock está perfeito
         contractRepository.save(contract);
     }
 }

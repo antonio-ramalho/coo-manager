@@ -69,7 +69,12 @@ public class FarmerContract implements Serializable {
         this.accumulatedValue = this.accumulatedValue.add(deliveryValue);
     }
 
+    public void validateProductAllocation() {
+        this.contract.getProductDeliveryRule().validateStockPerQuota(this);
+    }
+
     public void addProductQuota(ContractedProduct product, Quantity maxQuantity) {
+        this.contract.getProductDeliveryRule().validateQuotaItem(maxQuantity);
         FarmerItemQuota quota = new FarmerItemQuota(this, product, maxQuantity);
         this.farmerItemQuotas.add(quota);
     }

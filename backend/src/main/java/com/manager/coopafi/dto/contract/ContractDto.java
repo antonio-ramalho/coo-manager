@@ -29,7 +29,7 @@ public record ContractDto (
         this(
                 entity.getId(),
                 new InstitutionMinDto(entity.getInstitution()),
-                entity.getContractBalance().getValue().doubleValue(),
+                entity.calculateBalance().getValue().doubleValue(),
                 entity.getTotalContractValue().getValue().doubleValue(),
                 entity.getDocumentStatus().getDescription(),
                 entity.getInitialContractDate(),

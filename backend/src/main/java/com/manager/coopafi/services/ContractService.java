@@ -2,6 +2,7 @@ package com.manager.coopafi.services;
 
 import com.manager.coopafi.domain.entities.*;
 import com.manager.coopafi.domain.valueObjects.Price;
+import com.manager.coopafi.domain.valueObjects.Quantity;
 import com.manager.coopafi.dto.contract.ContractDto;
 import com.manager.coopafi.dto.contract.ContractInsertDto;
 import com.manager.coopafi.dto.contract.ContractMinDto;
@@ -80,7 +81,7 @@ public class ContractService {
         instantiateProduct(contract, dto.products());
         instantiateConsumerUnits(contract, dto.contractConsumers());
         instantiateFarmerContracts(contract, dto.farmerContracts());
-        contract.validateQuotas();
+        contract.validateContractIntegrity();
 
         contractRepository.save(contract);
         return new ContractDto(contract);
@@ -91,7 +92,13 @@ public class ContractService {
             AgriculturalProduct agriculturalProduct = agriculturalProductRepository.findById(dto.agriculturalProductId())
                     .orElseThrow(() -> new DomainException("Produto não encontrado no catalogo."));
 
-            contract.addContractedProduct(agriculturalProduct, new Price(new BigDecimal(dto.fixedPrice())), dto.productName());
+            Quantity quantity = null;
+            if (dto.quantity() != null) {
+                quantity = new Quantity(BigDecimal.valueOf(dto.quantity()));
+            }
+
+            contract.addContractedProduct(agriculturalProduct, new Price(new BigDecimal(dto.fixedPrice())),
+                    dto.productName(), quantity);
         }
     }
 
@@ -109,7 +116,23 @@ public class ContractService {
             Farmer farmer = farmerRepository.findByStatusAndId(UserStatus.ACTIVE, dto.farmerId())
                     .orElseThrow(() -> new DomainException("Agricultor não encontrado."));
 
-            contract.addFarmerParticipation(farmer, new Price(new BigDecimal(dto.specificCota())));
+            FarmerContract participation = contract.addFarmerParticipation(farmer,
+                    new Price(new BigDecimal(dto.specificCota())));
+
+            if (dto.quotas() == null) {
+                throw new DomainException("Não foi inserida as cotas para atender as regras.");
+            }
+
+            for (var quotaDto : dto.quotas()) {
+                ContractedProduct contractedProduct = contract.getProducts().stream()
+                        .filter(cp -> cp.getProduct().getId().equals(quotaDto.agriculturalProductId()))
+                        .findFirst()
+                        .orElseThrow(() -> new DomainException("O produto de ID " + quotaDto.agriculturalProductId() + " não faz parte deste edital."));
+
+                Quantity maxQuantity = quotaDto.maxQuantity() != null ? new Quantity(new BigDecimal(quotaDto.maxQuantity())) : null;
+
+                participation.addProductQuota(contractedProduct, maxQuantity);
+            }
         }
     }
 

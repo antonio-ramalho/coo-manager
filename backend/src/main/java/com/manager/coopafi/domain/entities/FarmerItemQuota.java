@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.entities;
 
 import com.manager.coopafi.domain.valueObjects.Quantity;
+import com.manager.coopafi.enums.ProductDeliveryRule;
 import com.manager.coopafi.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

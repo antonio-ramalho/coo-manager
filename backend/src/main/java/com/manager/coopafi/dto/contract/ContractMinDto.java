@@ -13,7 +13,7 @@ public record ContractMinDto (
         this(
                 entity.getId(),
                 entity.getInstitution().getJuridicPerson().getTradeName(),
-                entity.getContractBalance().getValue().doubleValue(),
+                entity.calculateBalance().getValue().doubleValue(),
                 entity.getTotalContractValue().getValue().doubleValue(),
                 entity.getDocumentStatus().getDescription()
         );

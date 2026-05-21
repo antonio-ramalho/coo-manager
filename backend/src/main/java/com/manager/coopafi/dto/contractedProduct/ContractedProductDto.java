@@ -6,14 +6,16 @@ public record ContractedProductDto(
         Long contractedProductId,
         String productName,
         Double fixedPrice,
-        Long agriculturalProductId
+        Long agriculturalProductId,
+        Double quantity
 ) {
     public ContractedProductDto(ContractedProduct entity) {
         this(
                 entity.getId(),
                 entity.getContractedName(),
                 entity.getFixedPrice().getValue().doubleValue(),
-                entity.getProduct().getId()
+                entity.getProduct().getId(),
+                entity.getQuantity().getAmount().doubleValue()
         );
     }
 }

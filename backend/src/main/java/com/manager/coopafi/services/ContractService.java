@@ -78,7 +78,7 @@ public class ContractService {
         Contract contract = new Contract(dto.finalContractDate(), totalContractValue,
                 globalLimit, limitRule, deliveryRule, institution);
 
-        instantiateProduct(contract, dto.products());
+        instantiateProducts(contract, dto.products());
         instantiateConsumerUnits(contract, dto.contractConsumers());
         instantiateFarmerContracts(contract, dto.farmerContracts());
         contract.validateContractIntegrity();
@@ -87,7 +87,7 @@ public class ContractService {
         return new ContractDto(contract);
     }
 
-    private void instantiateProduct(Contract contract,List <ContractedProductInsertDto> dtoList) {
+    private void instantiateProducts(Contract contract,List <ContractedProductInsertDto> dtoList) {
         for (ContractedProductInsertDto dto : dtoList) {
             AgriculturalProduct agriculturalProduct = agriculturalProductRepository.findById(dto.agriculturalProductId())
                     .orElseThrow(() -> new DomainException("Produto não encontrado no catalogo."));
@@ -137,8 +137,33 @@ public class ContractService {
     }
 
     @Transactional
-    public ContractDto update(ContractUpdateDto dto) {
-        return null;
+    public ContractDto update(Long id, ContractUpdateDto dto) {
+        Contract contract = contractRepository.findById(id)
+                .orElseThrow(() -> new DomainException("Contrato não encontrado."));
+
+        updateContractData(contract, dto);
+        contract.getProducts().clear();
+        contract.getFarmerContracts().clear();
+        contract.getContractConsumers().clear();
+
+        instantiateProducts(contract, dto.products());
+        instantiateConsumerUnits(contract, dto.contractConsumers());
+        instantiateFarmerContracts(contract, dto.farmerContracts());
+        contract.validateContractIntegrity();
+
+        contract = contractRepository.save(contract);
+        return new ContractDto(contract);
+    }
+
+    private void updateContractData(Contract contract, ContractUpdateDto dto) {
+
+        if (dto.initialContractDate() != null) {
+            contract.updateInitialDate(dto.initialContractDate());
+        }
+
+        if (dto.finalContractDate() != null) {
+            contract.updateFinalDate(dto.finalContractDate());
+        }
     }
 
     @Transactional

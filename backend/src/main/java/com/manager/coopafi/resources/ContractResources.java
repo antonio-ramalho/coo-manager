@@ -3,6 +3,7 @@ package com.manager.coopafi.resources;
 import com.manager.coopafi.dto.contract.ContractDto;
 import com.manager.coopafi.dto.contract.ContractInsertDto;
 import com.manager.coopafi.dto.contract.ContractMinDto;
+import com.manager.coopafi.dto.contract.ContractUpdateDto;
 import com.manager.coopafi.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class ContractResources {
     public ResponseEntity<ContractDto> create(@RequestBody ContractInsertDto dto) {
         ContractDto newContract = service.create(dto);
         return ResponseEntity.ok().body(newContract);
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<ContractDto> update(@PathVariable Long id, @RequestBody ContractUpdateDto dto) {
+        ContractDto obj = service.update(id, dto);
+        return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -82,6 +82,14 @@ public class Contract implements Serializable {
         this.documentStatus = DocumentStatus.ACTIVE;
     }
 
+    public void updateInitialDate(LocalDate initialContractDate) {
+        this.initialContractDate = initialContractDate;
+    }
+
+    public void updateFinalDate(LocalDate finalContractDate) {
+        this.finalContractDate = finalContractDate;
+    }
+
     public void deactivate() {
         this.documentStatus = DocumentStatus.INACTIVE;
     }

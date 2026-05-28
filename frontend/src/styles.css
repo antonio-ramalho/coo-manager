@@ -1,3 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+:root {
+  --white-background: #FFFFFF;
+  --green-highlight: #2E7D32;
+  --green-hoover: #1B5E20;
+  --green-light: #E8F5E9;
+  --ice-background: #EDF3FB;
+  --main-txt: #1C2826;
+  --auxiliary-txt: #546E7A;
+  --orange-alert: #F57C00;
+  --red-alert: #D32F2F;
+  --font-main: 'Roboto', sans-serif;
+  --medium-border: 14px;
+  --small-border: 8px;
+  --surface-base: #F3F4F6;
+  --surface-hover: #E5E7EB;
+  --border-light: #E5E7EB;
+  --placeholder-txt: #9CA3AF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @apply antialiased min-h-screen;
+
+  font-family: var(--font-main);
+  background-color: var(--ice-background);
+  color: var(--main-txt);
+}
+
+.txt-h1 {
+  @apply text-3xl md:text-4xl font-bold tracking-tight;
+  color: var(--main-txt);
+}
+
+.txt-h2 {
+  @apply text-2xl md:text-3xl font-semibold tracking-tight;
+  color: var(--main-txt);
+}
+
+.txt-body {
+  @apply text-base font-normal leading-relaxed;
+  color: var(--auxiliary-txt);
+}
+
+.txt-label {
+  @apply text-sm font-medium uppercase tracking-wide;
+  color: var(--main-txt);
+}

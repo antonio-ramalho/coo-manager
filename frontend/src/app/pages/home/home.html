@@ -1,0 +1,69 @@
+<div class="min-h-screen flex flex-col">
+
+  <header class="w-full bg-[var(--white-background)] px-8 py-4 flex items-center justify-between shadow-sm">
+
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-[var(--green-highlight)] rounded-full flex items-center justify-center text-[var(--white-background)] text-xs">
+        Logo
+      </div>
+      <span class="text-xl font-bold text-[var(--green-highlight)]">CooManager</span>
+    </div>
+
+    <div class="flex items-center gap-6">
+
+      <svg
+        lucideBell
+        class="w-6 h-6 text-[var(--auxiliary-txt)] hover:text-[var(--green-hoover)] cursor-pointer transition-colors">
+      </svg>
+
+      <div class="w-10 h-10 rounded-full bg-[var(--surface-base)] flex items-center justify-center border border-[var(--border-light)] cursor-pointer hover:bg-[var(--surface-hover)] transition-colors">
+        <svg
+          lucideUser
+          class="w-6 h-6 text-[var(--auxiliary-txt)]">
+        </svg>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="flex flex-1 gap-6 p-8">
+
+    <aside class="w-[300px] flex flex-col gap-6">
+      <app-card-user [dados]="usuarioLogado"></app-card-user>
+
+      <app-card-box>
+        <p class="txt-label text-start text-[var(--placeholder-txt)] py-4">Menu de Atalhos</p>
+      </app-card-box>
+    </aside>
+
+    <main class="flex-1 flex flex-col gap-6">
+
+      <div class="flex justify-between items-center">
+        <h1 class="txt-h1">Dashboard</h1>
+
+        <button class="flex items-center gap-2 px-4 py-2 bg-[var(--white-background)] border border-[var(--border-light)] rounded-[8px] hover:bg-[var(--surface-base)] transition-colors shadow-sm">
+          <span class="txt-body text-sm font-medium">↓ Janeiro</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <app-card-box>
+          <p class="text-center text-[var(--placeholder-txt)] py-20">Gráfico Receita 1</p>
+        </app-card-box>
+
+        <app-card-box>
+          <p class="text-center text-[var(--placeholder-txt)] py-20">Gráfico Receita 2</p>
+        </app-card-box>
+
+        <app-card-box>
+          <p class="text-center text-[var(--placeholder-txt)] py-20">Gráfico Receita 3</p>
+        </app-card-box>
+
+        <app-card-box>
+          <p class="text-center text-[var(--placeholder-txt)] py-20">Gráfico Receita 4</p>
+        </app-card-box>
+      </div>
+
+    </main>
+  </div>
+</div>

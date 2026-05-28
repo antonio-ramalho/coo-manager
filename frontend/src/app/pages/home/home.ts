@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {CardUserComponent} from './components/card-user/card-user';
 import {CardBoxComponent} from '../../shared/components/card-box/card-box';
 import {LucideBell, LucideUser} from '@lucide/angular';
+import {CardMenuComponent} from './components/card-menu/card-menu';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +11,9 @@ import {LucideBell, LucideUser} from '@lucide/angular';
     CardUserComponent,
     CardBoxComponent,
     LucideBell,
-    LucideUser
+    LucideUser,
+    CardMenuComponent,
+    RouterOutlet
   ],
   templateUrl: './home.html',
   styleUrl: './home.css',

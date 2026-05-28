@@ -50,3 +50,12 @@ body {
   @apply text-sm font-medium uppercase tracking-wide;
   color: var(--main-txt);
 }
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

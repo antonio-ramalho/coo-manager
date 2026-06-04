@@ -1,0 +1,55 @@
+<aside
+  class="relative h-screen bg-[var(--bg-surface)] border-r border-[var(--border-neutral)] shadow-sm transition-all duration-300 flex flex-col z-20"
+  [class.w-[260px]]="isExpanded"
+  [class.w-[80px]]="!isExpanded">
+
+  <div class="content-interface interface-flex-collum">
+    <button
+      (click)="toggleMenu()"
+      class="absolute -right-3 top-8 w-6 h-6 bg-white border border-[var(--border-neutral)] rounded-full flex items-center justify-center text-[var(--text-aux)] hover:text-[var(--text-main)] shadow-[var(--shadow-btn)] z-50 focus:outline-none transition-transform">
+      <svg lucideChevronLeft *ngIf="isExpanded" class="w-4 h-4"></svg>
+      <svg lucideChevronRight *ngIf="!isExpanded" class="w-4 h-4"></svg>
+    </button>
+
+    <div class="h-[72px] flex items-center px-6 gap-3 flex-shrink-0 overflow-hidden">
+      <div class="w-8 h-8 bg-[#2E7D32] rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+        Lg
+      </div>
+      <span *ngIf="isExpanded" class="text-xl font-bold text-[var(--text-main)] whitespace-nowrap">
+      CooManager
+    </span>
+    </div>
+
+    <div class="w-full h-px bg-[var(--border-neutral)]"></div>
+
+    <div class="flex-1 py-6 flex flex-col gap-4 overflow-y-auto scrollbar-hide px-4">
+
+      <div class="h-4 flex items-center px-2">
+        <span *ngIf="isExpanded" class="txt-label">Menu Principal</span>
+      </div>
+
+      <nav>
+        <ul class="flex flex-col gap-2">
+          <li>
+            <a routerLink="/home/dashboard" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Dashboard' : ''">
+              <svg lucideHome class="w-5 h-5 flex-shrink-0"></svg>
+              <span *ngIf="isExpanded" class="whitespace-nowrap">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/logistica" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Logística' : ''">
+              <svg lucideTruck class="w-5 h-5 flex-shrink-0"></svg>
+              <span *ngIf="isExpanded" class="whitespace-nowrap">Logística</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/vendas" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Vendas' : ''">
+              <svg lucideShoppingCart class="w-5 h-5 flex-shrink-0"></svg>
+              <span *ngIf="isExpanded" class="whitespace-nowrap">Vendas</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</aside>

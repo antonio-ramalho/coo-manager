@@ -1,0 +1,155 @@
+<div class="card h-full w-full flex flex-col gap-6 p-6 overflow-y-auto scrollbar-hide">
+
+  <div class="flex justify-between items-start pb-5 border-b border-(--border-neutral) shrink-0">
+
+    <div class="flex gap-4 items-center">
+      <div class="w-16 h-16 rounded-full bg-(--border-hover) shrink-0"></div>
+
+      <div class="flex flex-col">
+        <div class="flex items-center gap-3">
+          <h2 class="txt-h2">{{ cliente.nome }}</h2>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-(--text-main) border border-(--border-neutral) px-2 py-1 rounded-md bg-(--bg-surface-hover)">
+            {{ cliente.tipo }}
+          </span>
+        </div>
+        <span class="txt-aux mt-1">{{ cliente.cpf }}</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button appButton variant="surface" size="icon">
+        <svg lucideMessageCircle class="w-5 h-5"></svg>
+      </button>
+      <button appButton variant="surface" size="icon">
+        <svg lucideEdit class="w-5 h-5"></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4">
+
+    <div class="grid grid-cols-3 gap-4">
+
+      <div class="col-span-1 border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-4">
+        <h3 class="text-sm font-semibold text-(--text-main)">Informações básicas</h3>
+
+        <div class="flex gap-3 items-start">
+          <svg lucideUser class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Gênero</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.genero }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <svg lucideCalendar class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Data de nascimento</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.nascimento }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <svg lucidePhone class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Número de celular</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.celular }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <svg lucideMail class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Email</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.email }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-2 border border-(--border-neutral) rounded-(--radius-card) p-4 bg-(--bg-surface-hover) border-dashed flex items-center justify-center">
+        <span class="text-xs text-(--text-aux)">Espaço reservado (Gráficos/Dashboard do Cliente)</span>
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-3 gap-4">
+
+      <div class="flex flex-col gap-4">
+        <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-3">
+          <h3 class="text-sm font-semibold text-(--text-main) mb-1">Caf</h3>
+          <div class="flex gap-3 items-start">
+            <svg lucideFileText class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+            <div class="flex flex-col">
+              <span class="text-xs text-(--text-aux)">Caf</span>
+              <span class="text-sm font-medium text-(--text-main)">Número</span>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <svg lucideCalendar class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+            <div class="flex flex-col">
+              <span class="text-xs text-(--text-aux)">Validade</span>
+              <span class="text-sm font-medium text-(--text-main)">{{ cliente.caf.validade }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-3">
+          <h3 class="text-sm font-semibold text-(--text-main) mb-1">Certificado Orgânico</h3>
+          <div class="flex gap-3 items-start">
+            <svg lucideFileText class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+            <div class="flex flex-col">
+              <span class="text-xs text-(--text-aux)">Certificado</span>
+              <span class="text-sm font-medium text-(--text-main)">Número</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-4">
+        <h3 class="text-sm font-semibold text-(--text-main)">Endereço</h3>
+        <div class="flex gap-3 items-start">
+          <svg lucideHome class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Cidade</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.endereco.cidade }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <svg lucideMapPin class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Rua</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.endereco.rua }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <svg lucideMapPin class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <div class="flex flex-col">
+            <span class="text-xs text-(--text-aux)">Bairro</span>
+            <span class="text-sm font-medium text-(--text-main)">{{ cliente.endereco.bairro }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-3">
+        <h3 class="text-sm font-semibold text-(--text-main) mb-1">Anexos</h3>
+
+        <div *ngFor="let arquivo of cliente.anexos"
+             class="flex items-center justify-between border border-(--border-neutral) rounded-lg p-2 hover:border-(--primary-base) transition-colors cursor-pointer group">
+          <div class="flex items-center gap-2">
+            <svg lucideFileText class="w-4 h-4 text-(--text-aux) group-hover:text-(--primary-base)"></svg>
+            <div class="flex flex-col">
+              <span class="text-sm font-medium text-(--text-main)">{{ arquivo.nome }}</span>
+              <span class="text-[10px] text-(--text-aux)">{{ arquivo.tamanho }}</span>
+            </div>
+          </div>
+          <button class="text-(--text-aux) group-hover:text-(--primary-base) focus:outline-none pr-1">
+            <svg lucideDownload class="w-4 h-4"></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 min-h-30 bg-(--bg-surface-hover) border-dashed flex items-center justify-center">
+      <span class="text-xs text-(--text-aux)">Histórico de Atividades / Contratos</span>
+    </div>
+
+  </div>
+</div>

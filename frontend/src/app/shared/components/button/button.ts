@@ -2,13 +2,13 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'button[appButton]',
+  selector: 'button[appButton], a[appButton]',
   standalone: true,
   imports: [CommonModule],
   template: `
     <svg
       *ngIf="loading"
-      class="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
+      class="animate-spin -ml-1 mr-2 h-4 w-4 text-current flex-shrink-0"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -30,24 +30,34 @@ import { CommonModule } from '@angular/common';
     <ng-content></ng-content>
   `,
   host: {
-    '[class]': 'baseClasses + " " + variantClasses[variant]',
+    '[class]': 'baseClasses + " " + variantClasses[variant] + " " + sizeClasses[size]',
     '[class.opacity-70]': 'loading || disabled',
     '[class.cursor-not-allowed]': 'loading || disabled',
     '[attr.disabled]': '(loading || disabled) ? true : null',
   },
 })
 export class ButtonComponent {
-  @Input() variant: 'primary' | 'secondary' = 'primary';
+  @Input() variant: 'primary' | 'outline' | 'surface' = 'primary';
+  @Input() size: 'default' | 'icon' = 'default';
   @Input() loading = false;
   @Input() disabled = false;
 
   baseClasses =
-    'inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none text-sm';
+    'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none rounded-[var(--radius-btn)] flex-shrink-0';
 
   variantClasses = {
     primary:
-      'bg-[#2E7D32] hover:bg-[#1B5E20] text-white rounded-[8px] px-4 py-2 shadow-[var(--shadow-btn)]',
-    secondary:
-      'bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-[8px] px-4 py-2 shadow-[var(--shadow-btn)]',
+      'bg-[var(--primary-base)] hover:bg-[var(--primary-hover)] text-white shadow-[var(--shadow-btn)] border border-transparent',
+
+    outline:
+      'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] border border-[var(--border-neutral)] shadow-[var(--shadow-btn)]',
+
+    surface:
+      'bg-[var(--bg-surface)] text-[var(--text-aux)] border border-[var(--border-neutral)] hover:bg-[var(--primary-light)] hover:text-[var(--primary-base)] hover:border-[var(--primary-base)] shadow-sm',
+  };
+
+  sizeClasses = {
+    default: 'px-4 py-2 txt-body',
+    icon: 'w-10 h-10 p-2',
   };
 }

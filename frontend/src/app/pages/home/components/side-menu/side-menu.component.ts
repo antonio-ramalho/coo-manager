@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
-  LucideHouse,
+  LucideLayoutDashboard,
   LucideTruck,
   LucideShoppingCart,
   LucideDollarSign,
   LucideUsers,
   LucideChevronLeft,
-  LucideChevronRight,
+  LucideChevronRight, LucideHouse,
 } from '@lucide/angular';
 
 @Component({
@@ -18,7 +18,7 @@ import {
     CommonModule,
     RouterLink,
     RouterLinkActive,
-    LucideHouse,
+    LucideLayoutDashboard,
     LucideTruck,
     LucideShoppingCart,
     LucideDollarSign,
@@ -26,8 +26,8 @@ import {
     LucideChevronLeft,
     LucideChevronRight,
   ],
-  templateUrl: './side-menu.html',
-  styleUrl: './side-menu.css',
+  templateUrl: './side-menu.component.html',
+  styleUrl: './side-menu.component.css',
 })
 export class SideMenuComponent {
   isExpanded = true;

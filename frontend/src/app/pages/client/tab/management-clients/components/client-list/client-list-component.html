@@ -1,0 +1,50 @@
+<div class="flex flex-col">
+
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="txt-h2">Clientes</h2>
+    <div class="flex items-center gap-2">
+      <button appButton variant="surface" size="icon"><svg lucideSearch class="w-4 h-4"></svg></button>
+      <button appButton variant="surface" size="icon"><svg lucideFilter class="w-4 h-4"></svg></button>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2 pb-2">
+
+    <div *ngFor="let cliente of clientes"
+         (click)="selecionarCliente(cliente)"
+         class="card-interactive flex justify-between p-3 transition-all duration-200"
+         [ngClass]="{'border-(--primary-base) bg-(--primary-light)': cliente.selecionado}">
+
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 rounded-full bg-(--border-hover) shrink-0"></div>
+
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold text-(--text-main)">{{ cliente.nome }}</span>
+          <span class="text-xs text-(--text-aux)">{{ cliente.cpf }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-end justify-between">
+        <button class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none mb-1">
+          <svg lucideMoreHorizontal class="w-4 h-4"></svg>
+        </button>
+
+        <button appButton variant="surface" size="icon" class="w-6 h-6 p-1 rounded">
+          <svg lucideArrowRight class="w-3 h-3"></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flex items-center gap-2 mt-2">
+    <div class="w-8 h-8 rounded-md bg-(--border-neutral) hover:bg-(--border-hover) cursor-pointer"></div>
+    <div class="w-8 h-8 rounded-md bg-(--border-neutral) hover:bg-(--border-hover) cursor-pointer"></div>
+    <div class="w-8 h-8 rounded-md bg-(--border-neutral) hover:bg-(--border-hover) cursor-pointer"></div>
+
+    <button appButton variant="surface" size="icon" class="w-8 h-8 p-1 rounded-md ml-auto">
+      <svg lucideArrowRight class="w-4 h-4"></svg>
+    </button>
+  </div>
+
+</div>

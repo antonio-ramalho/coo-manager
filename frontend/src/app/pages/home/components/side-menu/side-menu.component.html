@@ -1,0 +1,112 @@
+<aside
+  class="relative h-screen bg-(--bg-surface) border-r border-(--border-neutral) shadow-sm transition-all duration-300 flex flex-col z-20"
+  [class.w-[260px]]="isExpanded"
+  [class.w-[80px]]="!isExpanded">
+
+  <button
+    (click)="toggleMenu()"
+    class="absolute -right-3 top-8 w-6 h-6 bg-white border border-(--border-neutral) rounded-full flex items-center justify-center text-(--text-aux) hover:text-(--text-main) shadow-(--shadow-btn) z-50 focus:outline-none transition-transform">
+    <svg lucideChevronLeft *ngIf="isExpanded" class="w-4 h-4"></svg>
+    <svg lucideChevronRight *ngIf="!isExpanded" class="w-4 h-4"></svg>
+  </button>
+
+  <div class="h-17.75 flex items-center pl-6 overflow-hidden shrink-0 whitespace-nowrap ">
+
+    <div class="w-8 h-8 bg-(--primary-hover) rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0">
+      Lg
+    </div>
+
+    <span
+      class="text-xl font-bold text-(--text-main) ml-4 transition-opacity duration-300"
+      [class.opacity-0]="!isExpanded"
+      [class.opacity-100]="isExpanded">
+      CooManager
+    </span>
+  </div>
+
+  <div class="w-full h-px bg-(--border-neutral) shrink-0"></div>
+
+  <div class="flex-1 py-6 flex flex-col gap-2 overflow-y-auto overflow-x-hidden scrollbar-hide">
+
+    <div class="h-6 flex items-center pl-5 mb-2 overflow-hidden whitespace-nowrap">
+      <span
+        class="txt-label transition-opacity duration-300"
+        [class.opacity-0]="!isExpanded"
+        [class.opacity-100]="isExpanded">
+        Menu Principal
+      </span>
+    </div>
+
+    <nav>
+      <ul class="flex flex-col gap-2">
+
+        <li>
+          <a routerLink="/home/dashboard" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Dashboard' : ''">
+            <div class="w-12 h-12 flex items-center justify-center shrink-0">
+              <svg lucideLayoutDashboard class="w-5 h-5"></svg>
+            </div>
+
+            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Dashboard
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/home/logistica" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Logística' : ''">
+            <div class="w-12 h-12 flex items-center justify-center shrink-0">
+              <svg lucideTruck class="w-5 h-5"></svg>
+            </div>
+            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Logística
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/home/vendas" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Vendas' : ''">
+            <div class="w-12 h-12 flex items-center justify-center shrink-0">
+              <svg lucideShoppingCart class="w-5 h-5"></svg>
+            </div>
+            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Vendas
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/home/financeiro" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Financeiro' : ''">
+            <div class="w-12 h-12 flex items-center justify-center shrink-0">
+              <svg lucideDollarSign class="w-5 h-5"></svg>
+            </div>
+            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Financeiro
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/home/clientes" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'clientes' : ''">
+            <div class="w-12 h-12 flex items-center justify-center shrink-0">
+              <svg lucideUsers class="w-5 h-5"></svg>
+            </div>
+            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Clientes
+            </span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</aside>

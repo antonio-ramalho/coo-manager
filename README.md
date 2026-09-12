@@ -16,6 +16,7 @@ Atualmente, a gestão de entrada e saída de produtos agrícolas, bem como o con
 ## Principais Tecnologias e Conceitos
 
 - Backend: Java 17+ com Spring Boot.
+- Frontend: Angular.
 - Persistência: Spring Data JPA e Hibernate para mapeamento objeto-relacional (ORM) e gestão de relacionamentos complexos.
 - Arquitetura: Camadas bem definidas (Resources, Services, Repositories, Domain) para garantir a separação de responsabilidades.
 - Segurança e Performance: Implementação de Nested DTOs (DTOs Aninhados) para otimizar o tráfego de dados e proteger as entidades de domínio.

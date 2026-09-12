@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../../../shared/components/button/button';
 import {
+  LucideCake,
   LucideCalendar,
   LucideDownload,
   LucideFileText,
@@ -10,8 +11,9 @@ import {
   LucideMapPin,
   LucideMessageCircle,
   LucidePhone,
+  LucideRoad,
   LucideSquarePen,
-  LucideUser,
+  LucideVenus,
 } from '@lucide/angular';
 
 @Component({
@@ -22,7 +24,8 @@ import {
     ButtonComponent,
     LucideMessageCircle,
     LucideSquarePen,
-    LucideUser,
+    LucideCake,
+    LucideVenus,
     LucideCalendar,
     LucidePhone,
     LucideMail,
@@ -30,8 +33,9 @@ import {
     LucideHouse,
     LucideMapPin,
     LucideDownload,
+    LucideRoad
   ],
-  templateUrl: './client-details-component.html',
+  templateUrl: './client-details.component.html',
 })
 export class ClientDetailsComponent {
   cliente = {

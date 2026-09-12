@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <svg
       *ngIf="loading"
-      class="animate-spin -ml-1 mr-2 h-4 w-4 text-current flex-shrink-0"
+      class="animate-spin -ml-1 mr-2 h-4 w-4 text-current shrink-0"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -47,13 +47,13 @@ export class ButtonComponent {
 
   variantClasses = {
     primary:
-      'bg-[var(--primary-base)] hover:bg-[var(--primary-hover)] text-white shadow-[var(--shadow-btn)] border border-transparent',
+      'bg-[var(--primary-base)] hover:bg-[var(--primary-hover)] !text-white shadow-[var(--shadow-btn)] border border-transparent cursor-pointer',
 
     outline:
-      'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] border border-[var(--border-neutral)] shadow-[var(--shadow-btn)]',
+      'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] border border-[var(--border-neutral)] shadow-[var(--shadow-btn)] cursor-pointer',
 
     surface:
-      'bg-[var(--bg-surface)] text-[var(--text-aux)] border border-[var(--border-neutral)] hover:bg-[var(--primary-light)] hover:text-[var(--primary-base)] hover:border-[var(--primary-base)] shadow-sm',
+      'bg-[var(--bg-surface)] text-[var(--text-aux)] border border-[var(--border-neutral)] hover:bg-[var(--primary-light)] hover:text-[var(--primary-base)] hover:border-[var(--primary-base)] shadow-sm cursor-pointer',
   };
 
   sizeClasses = {

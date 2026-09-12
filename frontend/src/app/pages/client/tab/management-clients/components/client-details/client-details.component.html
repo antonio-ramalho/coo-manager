@@ -1,4 +1,4 @@
-<div class="card h-full w-full flex flex-col gap-6 p-6 overflow-y-auto scrollbar-hide">
+<div class="card h-full w-full flex flex-col gap-6 p-6 overflow-hidden">
 
   <div class="flex justify-between items-start pb-5 border-b border-(--border-neutral) shrink-0">
 
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-4">
+  <div class="flex-1 flex flex-col gap-4 overflow-y-auto scrollbar-hide pb-4">
 
     <div class="grid grid-cols-3 gap-4">
 
@@ -34,14 +34,14 @@
         <h3 class="text-sm font-semibold text-(--text-main)">Informações básicas</h3>
 
         <div class="flex gap-3 items-start">
-          <svg lucideUser class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <svg lucideVenus class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
           <div class="flex flex-col">
             <span class="text-xs text-(--text-aux)">Gênero</span>
             <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.genero }}</span>
           </div>
         </div>
         <div class="flex gap-3 items-start">
-          <svg lucideCalendar class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <svg lucideCake class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
           <div class="flex flex-col">
             <span class="text-xs text-(--text-aux)">Data de nascimento</span>
             <span class="text-sm font-medium text-(--text-main)">{{ cliente.infoBasica.nascimento }}</span>
@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="flex gap-3 items-start">
-          <svg lucideMapPin class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+          <svg lucideRoad class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
           <div class="flex flex-col">
             <span class="text-xs text-(--text-aux)">Rua</span>
             <span class="text-sm font-medium text-(--text-main)">{{ cliente.endereco.rua }}</span>
@@ -147,7 +147,7 @@
 
     </div>
 
-    <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 min-h-30 bg-(--bg-surface-hover) border-dashed flex items-center justify-center">
+    <div class="border border-(--border-neutral) rounded-(--radius-card) p-4 min-h-32 bg-(--bg-surface-hover) border-dashed flex items-center justify-center shrink-0">
       <span class="text-xs text-(--text-aux)">Histórico de Atividades / Contratos</span>
     </div>
 

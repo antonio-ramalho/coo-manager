@@ -32,5 +32,5 @@ Atualmente, a gestão de entrada e saída de produtos agrícolas, bem como o con
 
 - Testes Unitários: Implementação de testes automatizados utilizando JUnit 5 e Mockito para validar a precisão dos cálculos e garantir a integridade das regras de negócio em cada componente do sistema.
 
-![Imagem do Sistema](/CooManager - Pessoal — Microsoft​ Edge 12_09_2026 15_39_44.png)
+![Imagem do Sistema](/imagem_coo.png)
 

@@ -1,6 +1,6 @@
+import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { Component } from '@angular/core';
 import { LucideArrowDown } from '@lucide/angular';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-dashboard',

@@ -1,8 +1,18 @@
 package com.manager.coopafi.repositories;
 
-import com.manager.coopafi.domain.entities.*;
-import com.manager.coopafi.domain.valueObjects.*;
-import com.manager.coopafi.enums.MeasureUnit;
+import com.manager.coopafi.infrastructure.valueObjects.*;
+import com.manager.coopafi.produtcModule.enums.MeasureUnit;
+import com.manager.coopafi.purchaseModule.entities.InputBatch;
+import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputPurchase;
+import com.manager.coopafi.purchaseModule.entities.InputPurchaseItem;
+import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
+import com.manager.coopafi.produtcModule.repositories.InputProductRepository;
+import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
+import com.manager.coopafi.personModule.entities.Farmer;
+import com.manager.coopafi.personModule.entities.NaturalPerson;
+import com.manager.coopafi.personModule.repositories.FarmerRepository;
+import com.manager.coopafi.personModule.repositories.NaturalPersonRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

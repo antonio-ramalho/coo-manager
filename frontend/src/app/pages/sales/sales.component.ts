@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sales',

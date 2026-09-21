@@ -1,0 +1,9 @@
+<div class="flex gap-2 mb-4">
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Buscar por nome, CPF ou CNPJ..."
+    class="border p-2 rounded flex-1"
+  />
+  <button (click)="operModalFilters()" class="bg-gray-200 p-2 rounded">Filtros Avançados</button>
+</div>

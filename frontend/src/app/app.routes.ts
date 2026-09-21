@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './layout/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogisticsComponent } from './pages/logistics/logistics.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { FinancialComponent } from './pages/financial/financial.component';
 import { ClientsComponent } from './pages/client/client.component';
-import { CustomerDemographicsComponent } from './pages/client/tab/customer-demographics/customer-demographics.component';
-import { ManagementClientsComponent } from './pages/client/tab/management-clients/management-clients.component';
+import { CustomerDemographicsComponent } from './pages/client/components/customer-demographics/customer-demographics.component';
+import { ManagementClientsComponent } from './pages/client/components/management-clients/management-clients.component';
 
 export const routes: Routes = [
   {

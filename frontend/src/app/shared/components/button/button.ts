@@ -58,6 +58,6 @@ export class ButtonComponent {
 
   sizeClasses = {
     default: 'px-4 py-2 txt-body',
-    icon: 'w-10 h-10 p-2',
+    icon: 'w-9 h-9 p-2',
   };
 }

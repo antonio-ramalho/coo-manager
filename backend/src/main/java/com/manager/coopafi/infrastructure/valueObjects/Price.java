@@ -1,0 +1,58 @@
+package com.manager.coopafi.infrastructure.valueObjects;
+
+import com.manager.coopafi.infrastructure.exceptions.DomainException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
+import org.jspecify.annotations.NonNull;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Objects;
+
+@Embeddable
+@Value
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+public class Price implements Comparable<Price> {
+
+    @Column(name = "price_value", precision = 12, scale = 2)
+    BigDecimal value;
+
+    public Price(BigDecimal value) {
+        validate(value);
+        this.value = value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public Price add(Price other) {
+        if (Objects.isNull(other)) return this;
+        return new Price(this.value.add(other.getValue()));
+    }
+
+    public Price subtract(Price other) {
+        if (Objects.isNull(other)) return this;
+        return new Price(this.value.subtract(other.getValue()));
+    }
+
+    public Price multiply(BigDecimal quantity) {
+        if (Objects.isNull(quantity) || quantity.compareTo(BigDecimal.ZERO) <= 0) {
+            return new Price(BigDecimal.ZERO);
+        }
+        return new Price(this.value.multiply(quantity));
+    }
+
+    private void validate(BigDecimal value) {
+        if (Objects.isNull(value)) {
+            throw new DomainException("O valor do preço não pode ser nulo.");
+        }
+
+        if (value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new DomainException("O valor do preço não pode ser negativo.");
+        }
+    }
+
+    @Override
+    public int compareTo(@NonNull Price other) {
+        return this.value.compareTo(other.getValue());
+    }
+}

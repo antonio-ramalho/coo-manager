@@ -1,0 +1,63 @@
+<div
+  class="card-interactive flex justify-between p-3 transition-all duration-200 cursor-pointer min-w-xs"
+>
+  <div class="flex justify-between gap-2 size-full">
+    <div class="flex items-start gap-3 justify-between">
+      <div class="flex flex-col">
+        <span class="text-base font-semibold text-(--text-main) truncate max-w-full block">{{
+          name
+        }}</span>
+        <span class="text-xs text-(--text-aux)">{{ documentNumber | cpfCnpj }}</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-between">
+      <button
+        class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none text-2xl mb-3"
+        (click)="toggleMenu($event)"
+        cdkOverlayOrigin
+        #trigger="cdkOverlayOrigin"
+      >
+        <svg lucideEllipsis class="w-7 h-7"></svg>
+      </button>
+
+      @if (isMenuOpen) {
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="isMenuOpen"
+          (overlayOutsideClick)="isMenuOpen = false"
+          [cdkConnectedOverlayOffsetY]="8"
+        >
+          <div
+            class="bg-white shadow-lg rounded border border-gray-200 flex flex-col z-10 min-w-[120px] overflow-hidden"
+          >
+            <button
+              class="px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors"
+              (click)="onEdit($event)"
+            >
+              Editar
+            </button>
+
+            <button
+              class="px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100"
+              (click)="onDeactivate($event)"
+            >
+              Desativar
+            </button>
+          </div>
+        </ng-template>
+      }
+
+      <button
+        appButton
+        variant="surface"
+        size="icon"
+        class="w-6 h-6 p-1 rounded"
+        (click)="onShowDetails($event)"
+      >
+        <svg lucideArrowRight class="w-3 h-3"></svg>
+      </button>
+    </div>
+  </div>
+</div>

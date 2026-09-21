@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.valueObjects;
 
-import com.manager.coopafi.exceptions.DomainException;
+import com.manager.coopafi.infrastructure.exceptions.DomainException;
+import com.manager.coopafi.infrastructure.valueObjects.BirthDate;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;

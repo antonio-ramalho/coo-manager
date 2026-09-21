@@ -1,6 +1,7 @@
 package com.manager.coopafi.domain.valueObjects;
 
-import com.manager.coopafi.exceptions.DomainException;
+import com.manager.coopafi.infrastructure.exceptions.DomainException;
+import com.manager.coopafi.infrastructure.valueObjects.Cnpj;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

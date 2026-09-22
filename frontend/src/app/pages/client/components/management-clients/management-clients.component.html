@@ -5,12 +5,35 @@
   </header>
 
   <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
-    <aside class="shrink-0">
-      <app-clients-list-component></app-clients-list-component>
+    <aside class="shrink-0 flex flex-col h-full min-w-[330px]">
+      @if (page$ | async; as pageData) {
+        <app-generic-list class="flex-1 flex flex-col min-h-0"
+          [items]="pageData.content"
+          [totalItems]="pageData.totalElements"
+          [currentPage]="currentPage"
+          altText="Nenhum client não encontrado."
+          (searchChanged)="applyFilters($event)"
+          (pageChanged)="swappedPage($event)"
+          (viewDetails)="viewDetails($event)"
+          (deactivate)="deactivateClient($event)"
+          (edit)="editClient($event)">
+        </app-generic-list>
+      } @else {
+        <div class="flex justify-center p-8">
+          <p class="text-gray-500">Buscando clientes...</p>
+        </div>
+      }
     </aside>
 
-    <main class="flex-1 min-w-0 h-full flex flex-col overflow-hidden relative">
-      <app-client-details class="absolute inset-0"></app-client-details>
+    <main class="flex-1 min-w-0 flex flex-col overflow-hidden relative h-full">
+      @if (clientDetails$ | async; as details) {
+        <app-client-details class="absolute inset-0" [person]="details"></app-client-details>
+      }
+      @else {
+        <div class="card h-full w-full flex flex-col gap-6 p-6 overflow-hidden justify-center items-center">
+          <div class="empty-state">Selecione um cliente na lista para ver os detalhes.</div>
+        </div>
+      }
     </main>
   </div>
 </div>

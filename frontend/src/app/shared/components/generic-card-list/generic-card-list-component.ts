@@ -1,23 +1,22 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CpfCnpjPipe } from '../../pipes/cpf-cnpj-pipe';
 import { ButtonComponent } from '../button/button';
 import { LucideArrowRight, LucideEllipsis } from '@lucide/angular';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
-  selector: 'app-item-client-component',
-  imports: [CpfCnpjPipe, ButtonComponent, LucideArrowRight, LucideEllipsis, OverlayModule],
+  selector: 'app-generic-card-list-component',
+  imports: [ButtonComponent, LucideArrowRight, LucideEllipsis, OverlayModule],
   standalone: true,
-  templateUrl: './item-client-component.html',
+  templateUrl: './generic-card-list-component.html',
 })
-export class ItemClientComponent {
-  @Input() id!: string | number;
-  @Input() name!: string;
-  @Input() documentNumber!: string;
+export class GenericCardListComponent {
+  @Input() id!: number;
+  @Input() title!: string;
+  @Input() subtitle!: string;
 
-  @Output() edit = new EventEmitter<string | number>();
-  @Output() deactivate = new EventEmitter<string | number>();
-  @Output() showDetails = new EventEmitter<string | number>();
+  @Output() edit = new EventEmitter<number>();
+  @Output() deactivate = new EventEmitter<number>();
+  @Output() showDetails = new EventEmitter<number>();
 
   isMenuOpen: boolean = false;
 

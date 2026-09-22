@@ -1,4 +1,4 @@
-@import 'tailwindcss' reference;
+@use "tailwind-ref";
 
 .menu-link {
   @apply flex items-center mx-4 rounded-(--radius-btn) cursor-pointer transition-colors duration-200 outline-none overflow-hidden;

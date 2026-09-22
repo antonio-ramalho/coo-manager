@@ -2,6 +2,7 @@ package com.manager.coopafi.personModule.dto.client;
 
 import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
 import com.manager.coopafi.personModule.entities.JuridicPerson;
+import com.manager.coopafi.personModule.enums.Status;
 import com.manager.coopafi.personModule.interfaces.IClientDto;
 import java.time.LocalDate;
 
@@ -11,8 +12,7 @@ public record JuridicClientDto(
         AddressDto address,
         String email,
         String phone,
-        String status,
-        String personType,
+        Status status,
         String cnpj,
         LocalDate foundationDate,
         String tradeName
@@ -24,8 +24,7 @@ public record JuridicClientDto(
                 new AddressDto(entity.getAddress()),
                 entity.getEmail().getAddressEmail(),
                 entity.getPhone().getPhoneNumber(),
-                entity.getStatus().getValue(),
-                entity.getPersonType().getDescription(),
+                entity.getStatus(),
                 entity.getCnpj().getCnpjNumber(),
                 entity.getFoundationDate(),
                 entity.getTradeName()

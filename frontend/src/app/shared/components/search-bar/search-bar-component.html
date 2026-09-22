@@ -1,0 +1,11 @@
+<div class="flex gap-2 mb-4">
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Buscar por nome, CPF ou CNPJ..."
+    class="border p-2 rounded flex-1 border-[var(--border-neutral)] focus:border-[var(--border-hover)] focus:outline-none rounded-[var(--radius-btn)]"
+  />
+  <button appButton variant="surface" size="icon" class="w-10 h-10" (click)="operModalFilters()">
+    <svg lucideFunnel class="w-5 h-5"></svg>
+  </button>
+</div>

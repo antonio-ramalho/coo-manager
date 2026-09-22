@@ -17,7 +17,7 @@ export class ToastComponent implements OnInit {
       this.toasts.push(toast);
       setTimeout(() => {
         this.toasts.shift();
-      }, 3000);
+      }, 1000);
     });
   }
 

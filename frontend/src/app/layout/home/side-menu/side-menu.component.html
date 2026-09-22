@@ -6,8 +6,11 @@
   <button
     (click)="toggleMenu()"
     class="absolute -right-3 top-8 w-6 h-6 bg-white border border-(--border-neutral) rounded-full flex items-center justify-center text-(--text-aux) hover:text-(--text-main) shadow-(--shadow-btn) z-50 focus:outline-none transition-transform">
-    <svg lucideChevronLeft *ngIf="isExpanded" class="w-4 h-4"></svg>
-    <svg lucideChevronRight *ngIf="!isExpanded" class="w-4 h-4"></svg>
+    @if (isExpanded) {
+      <svg lucideChevronLeft class="w-4 h-4"></svg>
+    } @else if (!isExpanded) {
+      <svg lucideChevronRight class="w-4 h-4"></svg>
+    }
   </button>
 
   <div class="h-17.75 flex items-center pl-6 overflow-hidden shrink-0 whitespace-nowrap ">

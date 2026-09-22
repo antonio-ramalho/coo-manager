@@ -2,8 +2,9 @@ package com.manager.coopafi.personModule.dto.client;
 
 import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
 import com.manager.coopafi.personModule.entities.NaturalPerson;
+import com.manager.coopafi.personModule.enums.Gender;
+import com.manager.coopafi.personModule.enums.Status;
 import com.manager.coopafi.personModule.interfaces.IClientDto;
-
 import java.time.LocalDate;
 
 public record NaturalClientDto(
@@ -12,11 +13,10 @@ public record NaturalClientDto(
         AddressDto address,
         String email,
         String phone,
-        String status,
-        String personType,
+        Status status,
         String cpf,
         LocalDate birthDate,
-        String gender
+        Gender gender
 ) implements IClientDto {
     public NaturalClientDto(NaturalPerson entity) {
         this(
@@ -25,11 +25,10 @@ public record NaturalClientDto(
                 new AddressDto(entity.getAddress()),
                 entity.getEmail().getAddressEmail(),
                 entity.getPhone().getPhoneNumber(),
-                entity.getStatus().getValue(),
-                entity.getPersonType().getDescription(),
+                entity.getStatus(),
                 entity.getCpf().getCpfNumber(),
                 entity.getBirthDate().getDate(),
-                entity.getGender().getDescription()
+                entity.getGender()
         );
     }
 }

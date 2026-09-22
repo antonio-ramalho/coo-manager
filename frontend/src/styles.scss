@@ -9,6 +9,9 @@
   --primary-hover: #15803d;
   --primary-light: #dcfce7;
 
+  --red-alert: #E53935;
+  --primary-red-alert: #FFEBEE;
+
   --text-main: #111827;
   --text-aux: #6b7280;
 
@@ -108,4 +111,26 @@ body {
 .card-interactive:hover {
   background-color: var(--bg-surface-hover);
   border-color: var(--border-hover);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-hover);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--border-hover);
+  }
 }

@@ -1,0 +1,34 @@
+<div class="flex flex-col h-full">
+  <app-search-bar-component (modifiedSearch)="searchChanged.emit($event)"></app-search-bar-component>
+
+    <div class="flex-1 overflow-y-auto min-h-0 py-2 pr-3 custom-scrollbar">
+      <div class="grid gap-4">
+        @if (totalItems === 0) {
+          <div
+            class="flex items-center justify-center p-6 text-(--text-aux) text-sm text-center border-2 border-dashed border-(--border-neutral) rounded-(--radius-card)"
+          >
+            <span> {{altText}} </span>
+          </div>
+        }
+        @for (item of items; track item.id) {
+          <app-generic-card-list-component
+            [id]="item.id"
+            [title]="item.title | nameFormatPipe:20"
+            [subtitle]="item.subtitle"
+            (edit)="edit.emit($event)"
+            (deactivate)="deactivate.emit($event)"
+            (showDetails)="viewDetails.emit($event)"
+          >
+          </app-generic-card-list-component>
+        }
+      </div>
+    </div>
+
+    <app-pagination-component
+      [currentPage]="currentPage"
+      [totalItens]="totalItems"
+      [itensPerPage]="10"
+      (swappedPage)="pageChanged.emit($event)"
+    >
+    </app-pagination-component>
+</div>

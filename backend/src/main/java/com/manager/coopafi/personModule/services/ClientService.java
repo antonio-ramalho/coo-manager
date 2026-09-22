@@ -29,7 +29,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public Page<ClientMinDto> findAllByPage(Pageable pageable, String searchTerm) {
         String search = searchTerm.replaceAll("[.\\-/]", "");
-        Page<Person> personPage =  repository.findAllByStatusAndSearchTerm(Status.ACTIVE, search, pageable);
+        Page<Person> personPage =  repository.findAllByStatusAndSearchTerm(search, pageable);
 
         return personPage.map(ClientMinDto::new);
     }
@@ -99,7 +99,7 @@ public class ClientService {
         }
 
         if (dto instanceof NaturalClientDto naturalDto && person instanceof NaturalPerson np) {
-            np.updateGender(Gender.valueOf(naturalDto.gender()));
+            np.updateGender(naturalDto.gender());
             np.updateBirthDate(new BirthDate(naturalDto.birthDate()));
         }
         else if (dto instanceof JuridicClientDto juridicDto && person instanceof JuridicPerson jp) {
@@ -119,7 +119,7 @@ public class ClientService {
         Phone phone = new Phone(naturalDto.phone());
         Cpf cpf = new Cpf(naturalDto.cpf());
         BirthDate birthDate = new BirthDate(naturalDto.birthDate());
-        Gender gender = Gender.valueOf(naturalDto.gender());
+        Gender gender = naturalDto.gender();
 
         return new NaturalPerson(address, email, phone, naturalDto.legalName(),  cpf, birthDate, gender);
     }

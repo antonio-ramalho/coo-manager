@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { ButtonComponent } from '../button/button';
+import { LucideFunnel } from '@lucide/angular';
 
 @Component({
   selector: 'app-search-bar-component',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ButtonComponent, LucideFunnel],
   standalone: true,
   templateUrl: './search-bar-component.html',
 })

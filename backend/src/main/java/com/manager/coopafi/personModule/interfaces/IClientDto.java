@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
 import com.manager.coopafi.personModule.dto.client.JuridicClientDto;
 import com.manager.coopafi.personModule.dto.client.NaturalClientDto;
+import com.manager.coopafi.personModule.enums.Status;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -18,9 +19,8 @@ import com.manager.coopafi.personModule.dto.client.NaturalClientDto;
 public interface IClientDto {
     Long id();
     String legalName();
-    String personType();
     String email();
     String phone();
     AddressDto address();
-    String status();
+    Status status();
 }

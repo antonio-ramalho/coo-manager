@@ -6,9 +6,9 @@ import { LucideSearch, LucideBell, LucideUser } from '@lucide/angular';
   selector: 'app-page-header',
   standalone: true,
   imports: [CommonModule, LucideSearch, LucideBell, LucideUser],
-  templateUrl: './page-header.component.html',
+  templateUrl: './header-layout.component.html',
 })
-export class PageHeaderComponent {
+export class HeaderLayoutComponent {
   usuarioLogado = {
     nome: 'Antonio Ramalho',
     cargo: 'Administrador',

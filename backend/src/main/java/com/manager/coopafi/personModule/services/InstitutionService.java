@@ -42,10 +42,11 @@ public class InstitutionService {
     @Transactional
     public InstitutionDto insert(InstitutionInsertDto dto) {
         Cnpj cnpj = new Cnpj(dto.cnpjNumber());
-        Cep cep = new Cep(dto.cepNumber());
+        Cep cep = new Cep(dto.address().zipCode());
         Phone phone = new Phone(dto.phoneNumber());
         Email email = new Email(dto.addressEmail());
-        Address address = new Address(cep, dto.street(), dto.neighborhood(), dto.city(), dto.addressNumber());
+        Address address = new Address(cep, dto.address().street(), dto.address().neighborhood(), dto.address().city(),
+                dto.address().number(), dto.address().state());
 
         JuridicPerson juridicPerson = new JuridicPerson(address, email, phone, dto.birthDate(), cnpj, dto.legalName(), dto.tradeName());
 
@@ -100,21 +101,20 @@ public class InstitutionService {
             juridicPerson.updateEmail(new Email(dto.addressEmail()));
         }
 
-        boolean isAddressUpdate = dto.cepNumber() != null ||
-                dto.street() != null || dto.neighborhood() != null ||
-                dto.city() != null || dto.addressNumber() != null;
+        boolean isAddressUpdate = dto.address().zipCode() != null ||
+                dto.address().street() != null || dto.address().neighborhood() != null ||
+                dto.address().city() != null || dto.address().number() != null;
 
         if (isAddressUpdate) {
             Address address = juridicPerson.getAddress();
-            Cep newCep = dto.cepNumber() != null ? new Cep(dto.cepNumber()) : address.getCep();
-            String newStreet = dto.street() != null ? dto.street() : address.getStreet();
-            String newCity = dto.city() != null ? dto.city() : address.getCity();
-            String newNeighborhood = dto.neighborhood() != null ? dto.neighborhood() : address.getNeighborhood();
-            String newAddressNumber = dto.addressNumber() != null ? dto.addressNumber() : address.getAddressNumber();
+            Cep newCep = dto.address().zipCode() != null ? new Cep(dto.address().zipCode()) : address.getCep();
+            String newStreet = dto.address().street() != null ? dto.address().street() : address.getStreet();
+            String newCity = dto.address().city() != null ? dto.address().city() : address.getCity();
+            String newNeighborhood = dto.address().neighborhood() != null ? dto.address().neighborhood() : address.getNeighborhood();
+            String newAddressNumber = dto.address().number() != null ? dto.address().number() : address.getAddressNumber();
 
-            Address newAddress = new Address(newCep, newStreet, newCity, newNeighborhood, newAddressNumber);
+            Address newAddress = new Address(newCep, newStreet, newCity, newNeighborhood, newAddressNumber, dto.address().state());
             juridicPerson.updateAddress(newAddress);
         }
     }
 }
-

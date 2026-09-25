@@ -57,7 +57,8 @@ public class ConsumerUnitService {
         }
 
         Address juridicAddress = new Address(
-                new Cep(dto.cepNumber()), dto.street(), dto.neighborhood(), dto.city(), dto.addressNumber()
+                new Cep(dto.address().zipCode()), dto.address().street(), dto.address().neighborhood(),
+                dto.address().city(), dto.address().number(), dto.address().state()
         );
 
         List <Agent> agents = dto.agents().stream()
@@ -76,8 +77,9 @@ public class ConsumerUnitService {
         juridicPerson = juridicPersonRepository.save(juridicPerson);
 
         Address deliveryAddress = new Address(
-                new Cep(dto.deliveryCep()), dto.deliveryStreet(), dto.deliveryNeighborhood(),
-                dto.deliveryCity(), dto.deliveryNumber()
+                new Cep(dto.deliveryAddress().zipCode()), dto.deliveryAddress().street(),
+                dto.deliveryAddress().neighborhood(), dto.deliveryAddress().city(), dto.deliveryAddress().number(),
+                dto.deliveryAddress().state()
         );
 
         ConsumerUnit unit = new ConsumerUnit(agents,
@@ -108,14 +110,15 @@ public class ConsumerUnitService {
 
     private void updateData(ConsumerUnit entity, ConsumerUnitUpdateDto dto) {
 
-        if (dto.deliveryCep() != null) {
+        if (dto.deliveryAddress().zipCode() != null) {
             Address current = entity.getDeliveryAddress();
             Address updated = new Address(
-                    new Cep(dto.deliveryCep()),
-                    dto.deliveryStreet() != null ? dto.deliveryStreet() : current.getStreet(),
-                    dto.deliveryNeighborhood() != null ? dto.deliveryNeighborhood() : current.getNeighborhood(),
-                    dto.deliveryCity() != null ? dto.deliveryCity() : current.getCity(),
-                    dto.deliveryNumber() != null ? dto.deliveryNumber() : current.getAddressNumber()
+                    new Cep(dto.deliveryAddress().zipCode()),
+                    dto.deliveryAddress().street() != null ? dto.deliveryAddress().street()  : current.getStreet(),
+                    dto.deliveryAddress().neighborhood() != null ? dto.deliveryAddress().neighborhood() : current.getNeighborhood(),
+                    dto.deliveryAddress().city() != null ? dto.deliveryAddress().city() : current.getCity(),
+                    dto.deliveryAddress().number() != null ? dto.deliveryAddress().number() : current.getAddressNumber(),
+                    dto.deliveryAddress().state() != null ? dto.deliveryAddress().state() : current.getState()
             );
             entity.updateDeliveryAddress(updated);
         }

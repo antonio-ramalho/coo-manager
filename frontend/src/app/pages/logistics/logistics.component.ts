@@ -1,10 +1,10 @@
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { HeaderLayoutComponent } from '../../shared/layouts/header-layout/header-layout.component';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-logistics',
   standalone: true,
-  imports: [PageHeaderComponent],
+  imports: [HeaderLayoutComponent],
   templateUrl: './logistics.component.html',
   styleUrl: './logistics.component.css',
 })

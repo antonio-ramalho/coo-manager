@@ -56,4 +56,10 @@ public class ClientResources {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> activate(@PathVariable Long id) {
+        service.activate(id);
+        return ResponseEntity.noContent().build();
+    }
 }

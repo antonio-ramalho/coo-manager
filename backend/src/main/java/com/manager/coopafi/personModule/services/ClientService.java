@@ -1,5 +1,6 @@
 package com.manager.coopafi.personModule.services;
 
+import com.manager.coopafi.infrastructure.exceptions.DatabaseException;
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
 import com.manager.coopafi.infrastructure.exceptions.ResourceNotFoundException;
 import com.manager.coopafi.infrastructure.valueObjects.*;
@@ -11,8 +12,9 @@ import com.manager.coopafi.personModule.entities.JuridicPerson;
 import com.manager.coopafi.personModule.entities.NaturalPerson;
 import com.manager.coopafi.personModule.entities.Person;
 import com.manager.coopafi.personModule.enums.Gender;
-import com.manager.coopafi.personModule.enums.Status;
 import com.manager.coopafi.personModule.interfaces.IClientDto;
+import com.manager.coopafi.personModule.repositories.JuridicPersonRepository;
+import com.manager.coopafi.personModule.repositories.NaturalPersonRepository;
 import com.manager.coopafi.personModule.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,12 @@ public class ClientService {
 
     @Autowired
     private PersonRepository repository;
+
+    @Autowired
+    private JuridicPersonRepository juridicPersonRepository;
+
+    @Autowired
+    private NaturalPersonRepository naturalPersonRepository;
 
     @Transactional(readOnly = true)
     public Page<ClientMinDto> findAllByPage(Pageable pageable, String searchTerm) {
@@ -52,11 +60,17 @@ public class ClientService {
     public IClientDto insert(IClientDto clientDto) {
 
         if (clientDto instanceof NaturalClientDto naturalDto) {
+            if (naturalPersonRepository.existsByCpf(new Cpf(naturalDto.cpf()))) {
+                throw new DatabaseException("Esse cpf já está cadastrado.");
+            }
             NaturalPerson np = instanceNaturalPerson(naturalDto);
             np = repository.save(np);
             return new NaturalClientDto(np);
         }
         else if (clientDto instanceof JuridicClientDto juridicDto) {
+            if (juridicPersonRepository.existsByCnpj(new Cnpj(juridicDto.cnpj()))) {
+                throw new DatabaseException("Esse cnpj já está cadastrado.");
+            }
             JuridicPerson  jp = instanceJuridicPerson(juridicDto);
             jp = repository.save(jp);
             return new JuridicClientDto(jp);
@@ -86,6 +100,15 @@ public class ClientService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado!"));
 
         person.deactivate();
+        repository.save(person);
+    }
+
+    @Transactional
+    public void activate(Long id) {
+        Person person = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado!"));
+
+        person.activate();
         repository.save(person);
     }
 
@@ -137,6 +160,6 @@ public class ClientService {
     private Address createAddressFromDto(AddressDto dto) {
         if (dto == null) return null;
         return new Address(new Cep(dto.zipCode()), dto.street(),
-                dto.neighborhood(), dto.city(), dto.number());
+                dto.neighborhood(), dto.city(), dto.number(), dto.state());
     }
 }

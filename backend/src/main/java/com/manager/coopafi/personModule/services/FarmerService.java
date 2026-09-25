@@ -9,6 +9,7 @@ import com.manager.coopafi.personModule.dto.farmer.FarmerDto;
 import com.manager.coopafi.personModule.dto.farmer.FarmerInsertDto;
 import com.manager.coopafi.personModule.dto.farmer.FarmerMinDto;
 import com.manager.coopafi.personModule.dto.farmer.FarmerUpdateDto;
+import com.manager.coopafi.personModule.enums.BrazilianState;
 import com.manager.coopafi.personModule.enums.DocumentStatus;
 import com.manager.coopafi.personModule.enums.Gender;
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
@@ -54,8 +55,8 @@ public class FarmerService {
     @Transactional
     public FarmerDto insert(FarmerInsertDto dto) {
 
-        Address address = new Address(new Cep(dto.cepNumber()), dto.street(), dto.neighborhood(),
-                dto.city(), dto.addressNumber());
+        Address address = new Address(new Cep(dto.address().zipCode()), dto.address().street(),
+                dto.address().neighborhood(), dto.address().city(), dto.address().number(), dto.address().state());
 
         Gender gender = Gender.validateString(dto.gender());
 
@@ -106,19 +107,20 @@ public class FarmerService {
             person.updateEmail(new Email(dto.addressEmail()));
         }
 
-        boolean idAddressUpdate = dto.cepNumber() != null ||
-                dto.street() != null || dto.neighborhood() != null ||
-                dto.city() != null || dto.addressNumber() != null;
+        boolean idAddressUpdate = dto.address().zipCode() != null ||
+                dto.address().street() != null || dto.address().neighborhood() != null ||
+                dto.address().city() != null || dto.address().number() != null;
 
         if (idAddressUpdate) {
             Address address = person.getAddress();
-            Cep newCep = dto.cepNumber() != null ? new Cep(dto.cepNumber()) : address.getCep();
-            String newStreet = dto.street() != null ? dto.street() : address.getStreet();
-            String newCity = dto.city() != null ? dto.city() : address.getCity();
-            String newNeighborhood = dto.neighborhood() != null ? dto.neighborhood() : address.getNeighborhood();
-            String newAddressNumber = dto.addressNumber() != null ? dto.addressNumber() : address.getAddressNumber();
+            Cep newCep = dto.address().zipCode() != null ? new Cep(dto.address().zipCode()) : address.getCep();
+            String newStreet = dto.address().street() != null ? dto.address().street() : address.getStreet();
+            String newCity = dto.address().city() != null ? dto.address().city() : address.getCity();
+            String newNeighborhood = dto.address().neighborhood() != null ? dto.address().neighborhood() : address.getNeighborhood();
+            String newAddressNumber = dto.address().number() != null ? dto.address().number() : address.getAddressNumber();
+            BrazilianState state = BrazilianState.fromDescription(dto.address().state().getDescription());
 
-            Address newAddress = new Address(newCep, newStreet, newCity, newNeighborhood, newAddressNumber);
+            Address newAddress = new Address(newCep, newStreet, newCity, newNeighborhood, newAddressNumber, state);
             person.updateAddress(newAddress);
         }
     }

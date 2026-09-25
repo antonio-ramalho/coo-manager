@@ -1,13 +1,11 @@
 package com.manager.coopafi.personModule.dto.farmer;
 
+import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
+
 public record FarmerUpdateDto(
         String phoneNumber,
         String addressEmail,
-        String cepNumber,
-        String street,
-        String neighborhood,
-        String city,
-        String addressNumber,
+        AddressDto address,
         Long cafId,
         Long certificateId,
         String gender

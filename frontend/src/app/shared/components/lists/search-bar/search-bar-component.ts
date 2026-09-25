@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-import { ButtonComponent } from '../button/button';
+import { ButtonComponent } from '../../ui/button/button-component';
 import { LucideFunnel } from '@lucide/angular';
 
 @Component({

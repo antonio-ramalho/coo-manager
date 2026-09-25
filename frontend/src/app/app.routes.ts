@@ -1,17 +1,17 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './layout/home/home.component';
+import { BasePageComponent } from './shared/layouts/base-page/base-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogisticsComponent } from './pages/logistics/logistics.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { FinancialComponent } from './pages/financial/financial.component';
 import { ClientsComponent } from './pages/client/client.component';
-import { CustomerDemographicsComponent } from './pages/client/components/customer-demographics/customer-demographics.component';
 import { ManagementClientsComponent } from './pages/client/components/management-clients/management-clients.component';
+import { UniversalFormComponent } from './pages/universal-form/universal-form-component';
 
 export const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    component: BasePageComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -23,9 +23,12 @@ export const routes: Routes = [
         component: ClientsComponent,
         children: [
           { path: 'gestao', component: ManagementClientsComponent },
-          { path: 'demograficos', component: CustomerDemographicsComponent },
           { path: '', redirectTo: 'gestao', pathMatch: 'full' },
         ],
+      },
+      {
+        path: 'cadastro/:tipo',
+        component: UniversalFormComponent,
       },
     ],
   },

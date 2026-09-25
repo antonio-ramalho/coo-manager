@@ -3,11 +3,15 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { errorInterceptor } from './core/interceptors/errorInterceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([errorInterceptor])),
+    provideEnvironmentNgxMask(),
+    provideFlatpickrDefaults(),
   ],
 };

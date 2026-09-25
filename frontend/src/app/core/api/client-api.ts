@@ -3,12 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IClient, IUpdateClient, IClientMinDto } from '../interfaces/IClient';
 import { IPage } from '../interfaces/IPage';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientApiService {
-  private readonly API_URL = 'http://localhost:8080/clients';
+  private readonly API_URL = `${environment.apiUrl}/clients`;
 
   constructor(private http: HttpClient) {}
 
@@ -40,5 +41,9 @@ export class ClientApiService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+
+  activate(id: number): Observable<void> {
+    return this.http.patch<void>(`${this.API_URL}/${id}`, {});
   }
 }

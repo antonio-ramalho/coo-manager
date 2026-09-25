@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonComponent } from '../button/button';
+import { ButtonComponent } from '../../ui/button/button-component';
 import { LucideArrowRight, LucideEllipsis } from '@lucide/angular';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -13,10 +13,12 @@ export class GenericCardListComponent {
   @Input() id!: number;
   @Input() title!: string;
   @Input() subtitle!: string;
+  @Input() status!: boolean;
 
   @Output() edit = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();
   @Output() showDetails = new EventEmitter<number>();
+  @Output() activate = new EventEmitter<number>();
 
   isMenuOpen: boolean = false;
 
@@ -29,6 +31,12 @@ export class GenericCardListComponent {
     event.stopPropagation();
     this.isMenuOpen = false;
     this.edit.emit(this.id);
+  }
+
+  onActivate(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = false;
+    this.activate.emit(this.id);
   }
 
   onDeactivate(event: Event) {

@@ -1,7 +1,13 @@
+@use "tailwind-ref";
+
 :host {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
   height: 100%;
+}
+
+.card-details-container {
+  @apply h-full w-full flex flex-col gap-6 p-6 overflow-hidden justify-center items-center;
 }

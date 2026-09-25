@@ -1,10 +1,10 @@
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { HeaderLayoutComponent } from '../../shared/layouts/header-layout/header-layout.component';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [PageHeaderComponent],
+  imports: [HeaderLayoutComponent],
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.css',
 })

@@ -20,7 +20,12 @@
     "@angular/router": "^21.2.0",
     "@lucide/angular": "^1.17.0",
     "@ngneat/overview": "^8.1.0",
+    "accept": "^3.1.3",
+    "angularx-flatpickr": "^8.1.0",
+    "flatpickr": "^4.6.13",
+    "ngx-mask": "^22.2.1",
     "rxjs": "~7.8.0",
+    "to": "^0.2.9",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

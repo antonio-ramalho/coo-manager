@@ -1,5 +1,7 @@
 package com.manager.coopafi.personModule.dto.farmer;
 
+import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
+
 import java.time.LocalDate;
 
 public record FarmerInsertDto(
@@ -8,11 +10,7 @@ public record FarmerInsertDto(
         LocalDate birthDate,
         String phoneNumber,
         String addressEmail,
-        String cepNumber,
-        String street,
-        String neighborhood,
-        String city,
-        String addressNumber,
+        AddressDto address,
         Long cafId,
         Long certificateId,
         String gender

@@ -1,5 +1,6 @@
 package com.manager.coopafi.personModule.dto.institution;
 
+import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
 import java.time.LocalDate;
 
 public record InstitutionInsertDto(
@@ -9,11 +10,7 @@ public record InstitutionInsertDto(
         LocalDate birthDate,
         String phoneNumber,
         String addressEmail,
-        String cepNumber,
-        String street,
-        String neighborhood,
-        String city,
-        String addressNumber,
+        AddressDto address,
         String institutionSphere
 ) {}
 

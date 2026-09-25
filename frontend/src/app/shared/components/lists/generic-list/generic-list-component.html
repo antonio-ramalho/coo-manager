@@ -15,9 +15,11 @@
             [id]="item.id"
             [title]="item.title | nameFormatPipe:20"
             [subtitle]="item.subtitle"
+            [status]="item.isActive"
             (edit)="edit.emit($event)"
             (deactivate)="deactivate.emit($event)"
             (showDetails)="viewDetails.emit($event)"
+            (activate)="activate.emit($event)"
           >
           </app-generic-card-list-component>
         }

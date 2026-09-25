@@ -8,14 +8,14 @@ export class ToastService {
   public toast$ = this.toastSubject.asObservable();
 
   showError(message: string): void {
-    this.toastSubject.next({ message, type: 'error' });
+    this.toastSubject.next({ id: Date.now(), message, type: 'error' });
   }
 
   showWarning(message: string): void {
-    this.toastSubject.next({ message, type: 'warning' });
+    this.toastSubject.next({ id: Date.now() + Math.random(), message, type: 'warning' });
   }
 
   showSuccess(message: string): void {
-    this.toastSubject.next({ message, type: 'success' });
+    this.toastSubject.next({ id: Date.now(), message, type: 'success' });
   }
 }

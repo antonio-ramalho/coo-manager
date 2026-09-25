@@ -1,5 +1,6 @@
 package com.manager.coopafi.personModule.dto.consumerunit;
 
+import com.manager.coopafi.infrastructure.valueObjectsDto.AddressDto;
 import com.manager.coopafi.personModule.dto.agent.AgentInsertDto;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,19 +14,8 @@ public record ConsumerUnitInsertDto (
         String phoneNumber,
         LocalDate birthDate,
         boolean isSubsidiaryCNPJ,
-
-        String cepNumber,
-        String street,
-        String neighborhood,
-        String city,
-        String addressNumber,
-
-        String deliveryCep,
-        String deliveryStreet,
-        String deliveryNeighborhood,
-        String deliveryCity,
-        String deliveryNumber,
-
+        AddressDto address,
+        AddressDto deliveryAddress,
         List<AgentInsertDto> agents
 ) {}
 

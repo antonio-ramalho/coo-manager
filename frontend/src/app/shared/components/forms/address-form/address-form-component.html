@@ -1,0 +1,78 @@
+<div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="zipCode">CEP</label>
+    <input
+      id="zipCode"
+      type="text"
+      class="input-base txt-body"
+      formControlName="zipCode"
+      [class.input-error]="group.get('zipCode')?.invalid && group.get('zipCode')?.touched"
+      mask="00.000-000"
+      placeholder="00000-000">
+    <app-input-error [control]="group.get('zipCode')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-8">
+    <label class="txt-label" for="city">Cidade</label>
+    <input
+      id="city"
+      type="text"
+      formControlName="city"
+      [class.input-error]="group.get('city')?.invalid && group.get('city')?.touched"
+      class="input-base txt-body"
+      placeholder="Digite o nome da cidade">
+    <app-input-error [control]="group.get('city')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="number">Bairro</label>
+    <input
+      id="number"
+      type="text"
+      formControlName="neighborhood"
+      [class.input-error]="group.get('neighborhood')?.invalid && group.get('neighborhood')?.touched"
+      class="input-base txt-body"
+      placeholder="Digite o Bairro...">
+    <app-input-error [control]="group.get('neighborhood')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-8">
+    <label class="txt-label" for="street">Logradouro</label>
+    <input
+      id="street"
+      type="text"
+      formControlName="street"
+      [class.input-error]="group.get('street')?.invalid && group.get('street')?.touched"
+      class="input-base txt-body"
+      placeholder="Rua de marechal barbosa">
+    <app-input-error [control]="group.get('street')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-8">
+    <label class="txt-label" for="city">Estado</label>
+    <select
+      id="state"
+      formControlName="state"
+      class="appearance-none input-base txt-body"
+      [class.input-error]="group.get('state')?.invalid && group.get('state')?.touched"
+    >
+      <option value="" disabled selected>Selecione um estado...</option>
+      @for (state of states; track state[0]) {
+        <option [value]="state[0]">
+          {{ state[1] }}
+        </option>
+      }
+    </select>
+    <app-input-error [control]="group.get('state')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="number">Número</label>
+    <input
+      id="number"
+      type="text"
+      formControlName="number"
+      class="input-base txt-body "
+      placeholder="Digite o número da casa...">
+  </div>
+</div>

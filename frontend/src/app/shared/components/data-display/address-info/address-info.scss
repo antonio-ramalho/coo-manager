@@ -1,0 +1,29 @@
+@use "tailwind-ref";
+
+.address-container {
+  @apply border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-4 min-h-full;
+}
+
+.h3 {
+  @apply text-sm font-semibold text-(--text-main);
+}
+
+.data-container {
+  @apply flex gap-3 items-start;
+}
+
+.icon-container {
+  @apply w-4 h-4 text-(--text-aux) mt-0.5 shrink-0;
+}
+
+.spans-container {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+.span-data {
+  @apply text-sm font-medium text-(--text-main) break-words;
+}
+
+.title-data {
+  @apply text-xs text-(--text-aux);
+}

@@ -1,0 +1,13 @@
+@use "tailwind-ref";
+
+:host {
+  height: 100%;
+}
+
+.universal-form-container {
+  @apply flex flex-col w-full h-full p-6;
+}
+
+.header-container {
+  @apply flex items-center gap-4 mb-8;
+}

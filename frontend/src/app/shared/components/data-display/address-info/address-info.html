@@ -1,0 +1,45 @@
+<div class="address-container">
+  <h3 class="h3">Endereço</h3>
+  <div class="data-container">
+    <svg lucideEarth class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Cidade</span>
+      <span class="span-data">{{ city }}</span>
+    </div>
+  </div>
+  <div class="data-container">
+    <svg lucideMapPin class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Bairro</span>
+      <span class="span-data">{{ neighborhood }}</span>
+    </div>
+  </div>
+  <div class="data-container">
+    <svg lucideRoad class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Rua</span>
+      <span class="span-data">{{ street }}</span>
+    </div>
+  </div>
+  <div class="data-container">
+    <svg lucideMapPinHouse class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Número</span>
+      <span class="span-data">{{ houseNumber }}</span>
+    </div>
+  </div>
+  <div class="data-container">
+    <svg lucidePackage class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Cep</span>
+      <span class="span-data">{{ zipCode | cep}}</span>
+    </div>
+  </div>
+  <div class="data-container">
+    <svg lucideSatellite class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Estado</span>
+      <span class="span-data">{{ state | stateDescription }}</span>
+    </div>
+  </div>
+</div>

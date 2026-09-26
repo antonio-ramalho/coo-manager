@@ -1,0 +1,24 @@
+<div class="border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-3 min-h-full">
+  <h3 class="text-sm font-semibold text-(--text-main) mb-1">Anexos</h3>
+
+  @if (attachments.length === 0) {
+    <div class="flex items-center justify-between min-w-full">
+      <span>Nenhum anexo encontrado.</span>
+    </div>
+  }
+
+  @for (item of attachments; track item.id) {
+    <div class="flex items-center justify-between border border-(--border-neutral) rounded-lg p-2 hover:border-(--primary-base) transition-colors cursor-pointer group">
+      <div class="flex items-center gap-2">
+        <svg lucideFileText class="w-4 h-4 text-(--text-aux) group-hover:text-(--primary-base)"></svg>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium text-(--text-main)">{{ item.documentName }}</span>
+          <span class="text-[10px] text-(--text-aux)">{{ item.size }}</span>
+        </div>
+      </div>
+      <button class="text-(--text-aux) group-hover:text-(--primary-base) focus:outline-none pr-1">
+        <svg lucideDownload class="w-4 h-4"></svg>
+      </button>
+    </div>
+  }
+</div>

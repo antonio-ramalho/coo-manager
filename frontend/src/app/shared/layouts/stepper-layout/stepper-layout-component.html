@@ -1,0 +1,73 @@
+<div class="flex gap-8 items-start w-full max-w-7xl mx-auto mt-6">
+  <aside class="w-1/4 min-w-[280px] flex flex-col gap-8 sticky top-6">
+    <div>
+      <h2 class="txt-h2 mb-1">Progresso do Cadastro</h2>
+      <p class="txt-aux text-sm">Passo {{ currentStep }} de {{ steps.length }}</p>
+      <div class="w-full bg-[var(--border-neutral)] h-2 rounded-full mt-3 overflow-hidden">
+        <div
+          class="bg-[var(--primary-base)] h-full transition-all duration-300"
+          [style.width.%]="(currentStep / steps.length) * 100">
+        </div>
+      </div>
+    </div>
+
+    <nav class="flex flex-col gap-3">
+      @for (stepName of steps; track $index) {
+        <button type="button"
+                class="w-full text-left p-3 rounded-[var(--radius-card)] flex items-center gap-4 transition-all duration-200 border"
+                [ngClass]="currentStep === ($index + 1) ?
+                  'bg-[var(--primary-light)] border-[var(--primary-base)] shadow-sm' :
+                  'border-transparent hover:bg-[var(--bg-surface-hover)]'">
+
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 transition-colors"
+               [ngClass]="currentStep === ($index + 1) ?
+                 'bg-[var(--primary-base)] text-white' :
+                 'bg-[var(--border-neutral)] text-[var(--text-aux)]'">
+            {{ $index + 1 }}
+          </div>
+
+          <span class="font-medium text-sm transition-colors"
+                [ngClass]="currentStep === ($index + 1) ? 'text-[var(--primary-base)]' : 'text-[var(--text-aux)]'">
+            {{ stepName }}
+          </span>
+        </button>
+      }
+    </nav>
+  </aside>
+
+  <main class="flex-1 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] flex flex-col shadow-sm overflow-hidden min-h-[550px]">
+
+    <div class="flex-1 p-8">
+      <ng-content></ng-content>
+    </div>
+
+    <footer class="bg-[var(--bg-surface-hover)] p-6 border-t border-[var(--border-neutral)] flex justify-between items-center mt-auto">
+
+      <button type="button" appButton variant="surface" (click)="cancel.emit()">
+        Cancelar
+      </button>
+
+      <div class="flex gap-4">
+        @if (currentStep > 1) {
+          <button type="button" appButton variant="outline" (click)="back.emit()">
+            ← Anterior
+          </button>
+        }
+
+        @if (currentStep < steps.length) {
+          <button type="button" appButton variant="primary" (click)="next.emit()" [disabled]="nextDisabled">
+            Próximo Passo →
+          </button>
+        } @else {
+          <button type="submit" appButton variant="primary" [disabled]="submitDisabled || isSubmitting">
+            @if (isSubmitting) {
+              A enviar...
+            } @else {
+              Finalizar Cadastro
+            }
+          </button>
+        }
+      </div>
+    </footer>
+  </main>
+</div>

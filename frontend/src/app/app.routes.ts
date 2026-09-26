@@ -23,12 +23,10 @@ export const routes: Routes = [
         component: ClientsComponent,
         children: [
           { path: 'gestao', component: ManagementClientsComponent },
+          { path: 'cadastro', component: UniversalFormComponent, data: { type: 'cliente' } },
+          { path: 'editar/:id', component: UniversalFormComponent, data: { type: 'cliente' } },
           { path: '', redirectTo: 'gestao', pathMatch: 'full' },
         ],
-      },
-      {
-        path: 'cadastro/:tipo',
-        component: UniversalFormComponent,
       },
     ],
   },

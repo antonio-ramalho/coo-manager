@@ -1,24 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PaginationComponent } from '../generic-pagination/pagination-component';
 import { SearchBarComponent } from '../search-bar/search-bar-component';
-import { NameFormatPipePipe } from '../../../pipes/name-format-pipe-pipe';
+import { NameFormatPipe } from '../../../pipes/name-format-pipe';
 import {ISimpleListCard} from '../../../../core/interfaces/ISimpleListCard';
 import { GenericCardListComponent } from '../generic-card-list/generic-card-list-component';
 
 @Component({
   selector: 'app-generic-list',
   standalone: true,
-  imports: [
-    GenericCardListComponent,
-    PaginationComponent,
-    SearchBarComponent,
-    NameFormatPipePipe,
-  ],
+  imports: [GenericCardListComponent, PaginationComponent, SearchBarComponent, NameFormatPipe],
   templateUrl: './generic-list-component.html',
   styleUrl: './generic-list-component.scss',
 })
 export class GenericListComponent {
-
   @Input() items: ISimpleListCard[] = [];
   @Input() currentPage: number = 1;
   @Input() totalItems: number = 0;

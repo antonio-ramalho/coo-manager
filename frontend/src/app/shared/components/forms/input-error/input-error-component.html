@@ -1,0 +1,32 @@
+<div class="min-h-[20px] mt-1">
+  @if (control && control.invalid && control.touched) {
+    <div class="text-[var(--red-alert)] text-xs mt-1 flex flex-col">
+
+      @if (control.hasError('required')) {
+        <span>Campo obrigatório.</span>
+      }
+      @else if (control.hasError('mask')) {
+        <span>Formato incompleto ou inválido.</span>
+      }
+      @else if (control.hasError('minlength')) {
+        <span>Mínimo de {{ control.getError('minlength').requiredLength }} caracteres.</span>
+      }
+      @else if (control.hasError('maxlength')) {
+        <span>Máximo de {{ control.getError('maxlength').requiredLength }} caracteres.</span>
+      }
+      @else if (control.hasError('email')) {
+        <span>Formato de e-mail inválido.</span>
+      }
+      @else if (control.hasError('invalidCpf')) {
+        <span>O CPF digitado não é válido.</span>
+      }
+      @else if (control.hasError('invalidCnpj')) {
+        <span>O CNPJ digitado não é válido.</span>
+      }
+      @else if (control.hasError('minor')) {
+        <span>É necessário ter pelo menos 18 anos.</span>
+      }
+
+    </div>
+  }
+</div>

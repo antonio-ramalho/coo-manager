@@ -1,0 +1,58 @@
+<div [formGroup]="group" class="grid gap-6 grid-cols-1 md:grid-cols-2">
+  <div class="flex flex-col gap-1 md:col-span-2">
+    <label class="txt-label" for="legalName">Nome completo</label>
+    <input
+      id="legalName"
+      type="text"
+      [class.input-error]="group.get('legalName')?.invalid && group.get('legalName')?.touched"
+      formControlName="legalName"
+      class="input-base txt-body"
+      placeholder="Nome completo..."
+    >
+    <app-input-error [control]="group.get('legalName')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-2">
+    <label class="txt-label" for="email">E-mail</label>
+    <input
+      id="email"
+      type="email"
+      [class.input-error]="group.get('email')?.invalid && group.get('email')?.touched"
+      formControlName="email"
+      class="input-base txt-body"
+      placeholder="exemplo@email.com"
+    >
+    <app-input-error [control]="group.get('email')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-1">
+    <label class="txt-label" for="phone">Nº celular</label>
+    <input
+      id="phone"
+      type="text"
+      [class.input-error]="group.get('phone')?.invalid && group.get('phone')?.touched"
+      mask="(00) 00000-0000"
+      formControlName="phone"
+      class="input-base txt-body"
+      placeholder="42987442675"
+    >
+    <app-input-error [control]="group.get('phone')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-3 md:col-span-1">
+    <label class="txt-label">Tipo de Cliente</label>
+    <div class="flex gap-6">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" formControlName="personType" value="NATURAL"
+               class="w-4 h-4 accent-[var(--primary-light)]">
+        <span class="txt-body">Pessoa Física</span>
+      </label>
+
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" formControlName="personType" value="JURIDIC"
+               class="w-4 h-4 accent-[var(--primary-light)]">
+        <span class="txt-body">Pessoa Jurídica</span>
+      </label>
+    </div>
+  </div>
+</div>

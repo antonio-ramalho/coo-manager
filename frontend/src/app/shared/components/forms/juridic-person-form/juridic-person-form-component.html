@@ -1,0 +1,47 @@
+<div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+  <div class="flex flex-col gap-1 md:col-span-12">
+    <label class="txt-label" for="cnpj">Cnpj</label>
+    <input
+      class="input-base txt-body"
+      id="cnpj"
+      name="cnpj"
+      mask="00.000.000/0000-00"
+      type="text"
+      formControlName="cnpj"
+      [class.input-error]="group.get('cnpj')?.invalid && group.get('cnpj')?.touched"
+      placeholder="12.345.678/0001-88">
+    <app-input-error [control]="group.get('cnpj')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-6">
+    <label class="txt-label" for="foundationDate">Data de fundação</label>
+    <input
+      class="input-base txt-body"
+      id="foundationDate"
+      type="text"
+      name="foundationDate"
+      formControlName="foundationDate"
+      (flatpickrClose)="group.get('birthDate')?.markAsTouched()"
+      mwlFlatpickr
+      [altInput]="true"
+      [class.input-error]="group.get('foundationDate')?.invalid && group.get('foundationDate')?.touched"
+      altFormat="d/m/Y"
+      dateFormat="Y-m-d"
+      placeholder="Selecione uma data...">
+    <app-input-error [control]="group.get('foundationDate')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-6">
+    <label class="txt-label" for="tradeName">Nome comercial</label>
+    <input
+      class="input-base txt-body"
+      id="tradeName"
+      name="tradeName"
+      type="text"
+      formControlName="tradeName"
+      [class.input-error]="group.get('tradeName')?.invalid && group.get('tradeName')?.touched"
+      placeholder="Digite o nome comercial...">
+    <app-input-error [control]="group.get('tradeName')"></app-input-error>
+  </div>
+</div>

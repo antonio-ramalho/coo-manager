@@ -1,0 +1,53 @@
+<div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+  <div class="flex flex-col gap-1 md:col-span-12">
+    <label class="txt-label" for="cpf">Cpf</label>
+    <input
+      class="input-base txt-body"
+      id="cpf"
+      name="cpf"
+      mask="000.000.000-00"
+      type="text"
+      formControlName="cpf"
+      [class.input-error]="group.get('cpf')?.invalid && group.get('cpf')?.touched"
+      placeholder="123.456.789-00">
+    <app-input-error [control]="group.get('cpf')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-6">
+    <label class="txt-label" for="birthDate">Data de nascimento</label>
+    <input
+      class="input-base txt-body"
+      id="birthDate"
+      type="text"
+      name="birthDate"
+      formControlName="birthDate"
+      mwlFlatpickr
+      [altInput]="true"
+      (flatpickrClose)="group.get('birthDate')?.markAsTouched()"
+      [class.input-error]="group.get('birthDate')?.invalid && group.get('birthDate')?.touched"
+      altFormat="d/m/Y"
+      dateFormat="Y-m-d"
+      placeholder="Selecione uma data...">
+    <app-input-error [control]="group.get('birthDate')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-6">
+    <label class="txt-label" for="gender">Gênero</label>
+    <select
+      class="appearance-none input-base txt-body"
+      id="gender"
+      name="gender"
+      formControlName="gender"
+      [class.input-error]="group.get('gender')?.invalid && group.get('gender')?.touched"
+    >
+      <option value="" disabled selected>Selecione um gênero...</option>
+      @for (gender of genderOptions; track gender) {
+        <option [value]="gender">
+          {{ gender | genderLabel }}
+        </option>
+      }
+    </select>
+    <app-input-error [control]="group.get('gender')"></app-input-error>
+  </div>
+</div>

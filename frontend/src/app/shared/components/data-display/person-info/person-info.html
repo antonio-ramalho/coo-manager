@@ -1,0 +1,41 @@
+<div class="col-span-1 min-h-full border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-4">
+  <h3 class="text-sm font-semibold text-(--text-main)">Informações básicas</h3>
+
+  <div class="flex gap-3 items-start">
+    <svg lucideCake class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+    <div class="flex flex-col">
+      <span class="text-xs text-(--text-aux)"> {{ documentLabel }}</span>
+      <span class="text-sm font-medium text-(--text-main)">{{ documentNumber | cpfCnpj }}</span>
+    </div>
+  </div>
+  @if (personType == 'NATURAL') {
+    <div class="flex gap-3 items-start">
+      <svg lucideVenus class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+      <div class="flex flex-col">
+        <span class="text-xs text-(--text-aux)">Gênero</span>
+        <span class="text-sm font-medium text-(--text-main)">{{ gender | genderLabel}}</span>
+      </div>
+    </div>
+  }
+  <div class="flex gap-3 items-start">
+    <svg lucideCake class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+    <div class="flex flex-col">
+      <span class="text-xs text-(--text-aux)"> {{ dataLabel }}</span>
+      <span class="text-sm font-medium text-(--text-main)">{{ dataValue | date:'dd/MM/yyyy' }}</span>
+    </div>
+  </div>
+  <div class="flex gap-3 items-start">
+    <svg lucidePhone class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+    <div class="flex flex-col">
+      <span class="text-xs text-(--text-aux)">Número de celular</span>
+      <span class="text-sm font-medium text-(--text-main)">{{ phone | phone }}</span>
+    </div>
+  </div>
+  <div class="flex gap-3 items-start">
+    <svg lucideMail class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
+    <div class="flex flex-col">
+      <span class="text-xs text-(--text-aux)">Email</span>
+      <span class="text-sm font-medium text-(--text-main)">{{ email }}</span>
+    </div>
+  </div>
+</div>

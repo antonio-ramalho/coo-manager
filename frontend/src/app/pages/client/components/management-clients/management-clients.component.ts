@@ -7,7 +7,7 @@ import { ClientApiService } from '../../../../core/api/client-api';
 import { ToastService } from '../../../../core/services/toast-service';
 import { AsyncPipe } from '@angular/common';
 import { CpfCnpjPipe } from '../../../../shared/pipes/cpf-cnpj-pipe';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DetailsLayoutComponent } from '../../../../shared/layouts/details-layout/details-layout-component';
 import { PersonDetailsHeaderComponent } from '../../../../shared/components/data-display/person-details-header/person-details-header';
 import { PersonAddressInfoComponent } from '../../../../shared/components/data-display/address-info/address-info';
@@ -40,6 +40,7 @@ export class ManagementClientsComponent implements OnInit {
   private clientService = inject(ClientApiService);
   private toastService = inject(ToastService);
   private cpfCnpjPipe = inject(CpfCnpjPipe);
+  private router = inject(Router);
 
   page$!: Observable<{ content: ISimpleListCard[]; totalElements: number }>;
   currentPage: number = 1;
@@ -87,8 +88,8 @@ export class ManagementClientsComponent implements OnInit {
     this.selectedClientIdSubject.next(id);
   }
 
-  editClient(id: number | string): void {
-    console.log('Abrir modal de edição do cliente:', id);
+  editClient(id: number): void {
+    this.router.navigate(['/home/clientes/editar', id]).then();
   }
 
   deactivateClient(id: number): void {

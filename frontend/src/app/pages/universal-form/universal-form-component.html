@@ -1,0 +1,27 @@
+<div class="universal-form-container">
+  <header class="header-container">
+    <button appButton
+            variant="surface"
+            size="circle"
+            class="w-10 h-10 p-1 rounded"
+            (click)="goBack()">
+      <svg lucideArrowLeft class="w-10 h-10"></svg>
+    </button>
+    <h1 class="txt-h1">
+      Cadastro de {{ formType | titlecase }}
+    </h1>
+  </header>
+
+  <main class="h-full">
+    @switch (formType) {
+
+      @case ('cliente') {
+        <app-client-form-component></app-client-form-component>
+      }
+
+      @default {
+        <p>Formulário não encontrado.</p>
+      }
+    }
+  </main>
+</div>

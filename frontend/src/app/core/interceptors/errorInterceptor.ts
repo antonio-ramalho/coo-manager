@@ -11,7 +11,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if (error.status === 0) {
         toastService.showError('Erro de conexão. Verifique sua internet.');
-      } else if (error.status === 400 || error.status === 404 || error.status === 409) {
+      } else if (error.status === 400 || error.status === 404 || error.status === 409 || error.status === 422) {
         const msg = error.error?.message;
         toastService.showWarning(msg);
       } else if (error.status >= 500) {

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CoopafiApplication<coopafi>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.manager.coopafi.CoopafiApplication",
+            "projectName": "coopafi",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

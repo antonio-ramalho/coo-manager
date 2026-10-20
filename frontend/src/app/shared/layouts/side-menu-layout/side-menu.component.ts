@@ -8,7 +8,7 @@ import {
   LucideDollarSign,
   LucideUsers,
   LucideChevronLeft,
-  LucideChevronRight, LucideHouse,
+  LucideChevronRight, LucideHouse, LucideBarcode,
 } from '@lucide/angular';
 
 @Component({
@@ -25,6 +25,7 @@ import {
     LucideUsers,
     LucideChevronLeft,
     LucideChevronRight,
+    LucideBarcode,
   ],
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.scss',

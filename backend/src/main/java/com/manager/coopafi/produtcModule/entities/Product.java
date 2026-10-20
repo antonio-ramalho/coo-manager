@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 @MappedSuperclass
 @Getter
@@ -23,7 +24,6 @@ public abstract class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
     private String productName;
     @Embedded
@@ -34,6 +34,9 @@ public abstract class Product implements Serializable {
     private ProductCatalogStatus productCatalogStatus;
     @Embedded
     private Ncm ncm;
+    @EqualsAndHashCode.Include
+    @Column(updatable = false, unique = true, nullable = false)
+    private UUID uuid;
 
     public Product(MeasureUnit measureUnit, Ncm ncm, String productName, Price productPrice) {
         this.measureUnit = measureUnit;
@@ -41,6 +44,7 @@ public abstract class Product implements Serializable {
         this.productCatalogStatus = ProductCatalogStatus.ACTIVE;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.uuid = UUID.randomUUID();
     }
 
     public void updatePrice(Price productPrice) {

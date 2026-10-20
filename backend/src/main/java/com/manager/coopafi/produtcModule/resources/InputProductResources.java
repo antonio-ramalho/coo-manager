@@ -6,8 +6,14 @@ import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductUpdateDto;
 import com.manager.coopafi.produtcModule.services.InputProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,8 +24,12 @@ public class InputProductResources {
     private InputProductService service;
 
     @GetMapping
-    public ResponseEntity<List<InputProductMinDto>> findAllByStatus() {
-        List <InputProductMinDto> list = service.findAllByStatus();
+    public ResponseEntity<Page<InputProductMinDto>> findAllByStatus(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "") String searchTerm) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InputProductMinDto> list = service.findAllByPage(pageable, searchTerm);
         return ResponseEntity.ok().body(list);
     }
 
@@ -32,7 +42,11 @@ public class InputProductResources {
     @PostMapping
     public ResponseEntity<InputProductDto> insert(@RequestBody InputProductInsertDto dto) {
         InputProductDto newProduct = service.insert(dto);
-        return ResponseEntity.ok().body(newProduct);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(newProduct.id()).toUri();
+
+        return ResponseEntity.created(uri).body(newProduct);
     }
 
     @PatchMapping(value = "/{id}")

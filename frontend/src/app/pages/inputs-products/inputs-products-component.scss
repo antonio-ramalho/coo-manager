@@ -1,0 +1,9 @@
+@use "tailwind-ref";
+
+.component-header {
+  @apply shrink-0 z-10 w-full bg-(--bg-app);
+}
+
+.deactivate-link {
+  @apply flex items-center h-full border-b-[3px] border-transparent text-(--text-aux) hover:text-(--text-main) font-semibold cursor-pointer transition-colors;
+}

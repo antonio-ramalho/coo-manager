@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IClient, IUpdateClient, IClientMinDto } from '../interfaces/IClient';
@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class ClientApiService {
   private readonly API_URL = `${environment.apiUrl}/clients`;
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   findAllPaged(
     page: number,

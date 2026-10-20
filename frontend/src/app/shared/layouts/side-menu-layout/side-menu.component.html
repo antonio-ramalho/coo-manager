@@ -1,15 +1,11 @@
-<aside
-  class="relative h-screen bg-(--bg-surface) border-r border-(--border-neutral) shadow-sm transition-all duration-300 flex flex-col z-20"
-  [class.w-[260px]]="isExpanded"
-  [class.w-[80px]]="!isExpanded">
-
+<aside class="aside-container" [class.w-[260px]]="isExpanded" [class.w-[80px]]="!isExpanded">
   <button
     (click)="toggleMenu()"
-    class="absolute -right-3 top-8 w-6 h-6 bg-white border border-(--border-neutral) rounded-full flex items-center justify-center text-(--text-aux) hover:text-(--text-main) shadow-(--shadow-btn) z-50 focus:outline-none transition-transform">
+    class="toggle-button">
     @if (isExpanded) {
-      <svg lucideChevronLeft class="w-4 h-4"></svg>
+      <svg lucideChevronLeft class="svg-icon"></svg>
     } @else if (!isExpanded) {
-      <svg lucideChevronRight class="w-4 h-4"></svg>
+      <svg lucideChevronRight class="svg-icon"></svg>
     }
   </button>
 
@@ -45,11 +41,11 @@
 
         <li>
           <a routerLink="/home/dashboard" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Dashboard' : ''">
-            <div class="w-12 h-12 flex items-center justify-center shrink-0">
-              <svg lucideLayoutDashboard class="w-5 h-5"></svg>
+            <div class="link-icon-container">
+              <svg lucideLayoutDashboard class="icon"></svg>
             </div>
 
-            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+            <span class="link-span"
                   [class.opacity-0]="!isExpanded"
                   [class.opacity-100]="isExpanded">
               Dashboard
@@ -59,10 +55,10 @@
 
         <li>
           <a routerLink="/home/logistica" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Logística' : ''">
-            <div class="w-12 h-12 flex items-center justify-center shrink-0">
-              <svg lucideTruck class="w-5 h-5"></svg>
+            <div class="link-icon-container">
+              <svg lucideTruck class="icon"></svg>
             </div>
-            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+            <span class="link-span"
                   [class.opacity-0]="!isExpanded"
                   [class.opacity-100]="isExpanded">
               Logística
@@ -71,11 +67,51 @@
         </li>
 
         <li>
-          <a routerLink="/home/vendas" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Vendas' : ''">
-            <div class="w-12 h-12 flex items-center justify-center shrink-0">
-              <svg lucideShoppingCart class="w-5 h-5"></svg>
+          <a routerLink="/home/financeiro" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Financeiro' : ''">
+            <div class="link-icon-container">
+              <svg lucideDollarSign class="icon"></svg>
             </div>
-            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+            <span class="link-span"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Financeiro
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="h-6 flex items-center pl-5 mb-2 overflow-hidden whitespace-nowrap">
+      <span
+        class="txt-label transition-opacity duration-300"
+        [class.opacity-0]="!isExpanded"
+        [class.opacity-100]="isExpanded">
+        Vendas
+      </span>
+    </div>
+
+    <nav>
+      <ul class="flex flex-col gap-2">
+
+        <li>
+          <a routerLink="/home/clientes" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'clientes' : ''">
+            <div class="link-icon-container">
+              <svg lucideUsers class="icon"></svg>
+            </div>
+            <span class="link-span"
+                  [class.opacity-0]="!isExpanded"
+                  [class.opacity-100]="isExpanded">
+              Clientes
+            </span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/home/vendas" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Vendas' : ''">
+            <div class="link-icon-container">
+              <svg lucideShoppingCart class="icon"></svg>
+            </div>
+            <span class="link-span"
                   [class.opacity-0]="!isExpanded"
                   [class.opacity-100]="isExpanded">
               Vendas
@@ -84,31 +120,17 @@
         </li>
 
         <li>
-          <a routerLink="/home/financeiro" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Financeiro' : ''">
-            <div class="w-12 h-12 flex items-center justify-center shrink-0">
-              <svg lucideDollarSign class="w-5 h-5"></svg>
+          <a routerLink="/home/insumos" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'Insumos' : ''">
+            <div class="link-icon-container">
+              <svg lucideBarcode class="icon"></svg>
             </div>
-            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
+            <span class="link-span"
                   [class.opacity-0]="!isExpanded"
                   [class.opacity-100]="isExpanded">
-              Financeiro
+              Insumos
             </span>
           </a>
         </li>
-
-        <li>
-          <a routerLink="/home/clientes" routerLinkActive="active" class="menu-link" [title]="!isExpanded ? 'clientes' : ''">
-            <div class="w-12 h-12 flex items-center justify-center shrink-0">
-              <svg lucideUsers class="w-5 h-5"></svg>
-            </div>
-            <span class="whitespace-nowrap transition-opacity duration-300 pr-4"
-                  [class.opacity-0]="!isExpanded"
-                  [class.opacity-100]="isExpanded">
-              Clientes
-            </span>
-          </a>
-        </li>
-
       </ul>
     </nav>
   </div>

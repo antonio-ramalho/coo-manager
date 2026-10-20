@@ -7,6 +7,9 @@ import { FinancialComponent } from './pages/financial/financial.component';
 import { ClientsComponent } from './pages/client/client.component';
 import { ManagementClientsComponent } from './pages/client/components/management-clients/management-clients.component';
 import { UniversalFormComponent } from './pages/universal-form/universal-form-component';
+import { InputsProductsComponent } from './pages/inputs-products/inputs-products-component';
+import { InputStockComponent } from './pages/inputs-products/components/input-stock/input-stock';
+import {InputCatalogComponent} from './pages/inputs-products/components/input-catalog/input-catalog-component';
 
 export const routes: Routes = [
   {
@@ -26,6 +29,17 @@ export const routes: Routes = [
           { path: 'cadastro', component: UniversalFormComponent, data: { type: 'cliente' } },
           { path: 'editar/:id', component: UniversalFormComponent, data: { type: 'cliente' } },
           { path: '', redirectTo: 'gestao', pathMatch: 'full' },
+        ],
+      },
+      {
+        path: 'insumos',
+        component: InputsProductsComponent,
+        children: [
+          { path: 'insumos-estoque', component: InputStockComponent },
+          { path: 'cadastro', component: UniversalFormComponent, data: { type: 'insumo' } },
+          { path: 'editar/:id', component: UniversalFormComponent, data: { type: 'insumo' } },
+          { path: 'catalogo', component: InputCatalogComponent },
+          { path: '', redirectTo: 'insumos-estoque', pathMatch: 'full' },
         ],
       },
     ],

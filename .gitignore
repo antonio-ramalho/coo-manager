@@ -20,6 +20,7 @@ backend/*.class
 backend/.mvn/
 backend/mvnw
 backend/mvnw.cmd
+backend/src/main/resources/application-dev.properties
 
 # --- Frontend (Angular / Node) ---
 # Compiled output
@@ -43,3 +44,10 @@ frontend/.sass-cache/
 # --- System Files (Global) ---
 .DS_Store
 Thumbs.db
+
+# Arquivos
+.cursorrules
+.cursorconfig
+.agent
+.env
+.env.*

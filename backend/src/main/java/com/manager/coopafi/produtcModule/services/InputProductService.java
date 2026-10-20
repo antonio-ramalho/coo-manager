@@ -12,6 +12,8 @@ import com.manager.coopafi.produtcModule.repositories.InputProductRepository;
 import com.manager.coopafi.infrastructure.valueObjects.Ncm;
 import com.manager.coopafi.infrastructure.valueObjects.Price;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -24,9 +26,10 @@ public class InputProductService {
     private InputProductRepository inputProductRepository;
 
     @Transactional(readOnly = true)
-    public List<InputProductMinDto> findAllByStatus() {
-        List<InputProduct> list = inputProductRepository.findByProductCatalogStatus(ProductCatalogStatus.ACTIVE);
-        return list.stream().map(InputProductMinDto::new).toList();
+    public Page<InputProductMinDto> findAllByPage(Pageable pageable, String searchTerm) {
+        String search = searchTerm.replaceAll("[.\\-/]", "");
+        Page<InputProduct> inputPage = inputProductRepository.findBySearchTerm(search, pageable);
+        return inputPage.map(InputProductMinDto::new);
     }
 
     @Transactional(readOnly = true)

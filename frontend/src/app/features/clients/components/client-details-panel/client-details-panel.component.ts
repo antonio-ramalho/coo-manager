@@ -19,6 +19,9 @@ import { ClientDetails } from '../../models/client.model';
     AttachmentsCardComponent,
   ],
   templateUrl: './client-details-panel.component.html',
+  host: {
+    '[style.height]': '"100%"'
+  }
 })
 export class ClientDetailsPanelComponent {
   @Input({ required: true }) details!: ClientDetails;

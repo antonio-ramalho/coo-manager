@@ -1,5 +1,5 @@
 <header class="flex justify-between items-center w-full h-18 px-4 md:px-8 bg-white border-b border-(--border-neutral) shrink-0">
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-4 h-full">
     <!-- Botão Hambúrguer Mobile -->
     <button
       type="button"
@@ -9,6 +9,10 @@
     >
       <svg lucideMenu class="w-6 h-6"></svg>
     </button>
+
+    @if (isDesktop && subNavTabs(); as tabs) {
+      <app-sub-nav [tabs]="tabs" class="h-full"></app-sub-nav>
+    }
 
     <div class="h-full flex items-center">
       <ng-content></ng-content>

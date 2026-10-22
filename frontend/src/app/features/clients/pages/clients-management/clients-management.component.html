@@ -1,46 +1,39 @@
 <!-- Bloqueio no mobile via diretiva @if: não executa subscrições nem chamadas HTTP -->
 @if (!isDesktop()) {
-  <app-desktop-only-notice featureName="Gestão de Clientes">
-    <a appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</a>
-  </app-desktop-only-notice>
+<app-desktop-only-notice featureName="Gestão de Clientes">
+  <a appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</a>
+</app-desktop-only-notice>
 } @else {
-  <div class="content-interface management-client-container">
-    <header class="header-container">
-      <h1 class="txt-h1">Clientes</h1>
-      <button type="button" appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</button>
-    </header>
+<div class="content-interface management-client-container">
+  <header class="header-container">
+    <h1 class="txt-h1">Clientes</h1>
+    <button type="button" appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</button>
+  </header>
 
-    <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
-      <aside class="aside-container">
-        @if (page$ | async; as pageData) {
-          <app-generic-list class="flex-1 flex flex-col min-h-0"
-            [items]="pageData.content"
-            [totalItems]="pageData.totalElements"
-            [currentPage]="currentPage"
-            altText="Nenhum cliente encontrado."
-            (searchChanged)="applyFilters($event)"
-            (pageChanged)="swappedPage($event)"
-            (viewDetails)="viewDetails($event)"
-            (deactivate)="deactivateClient($event)"
-            (edit)="editClient($event)"
-            (activate)="activateClient($event)">
-          </app-generic-list>
-        } @else {
-          <div class="flex justify-center p-8">
-            <p class="text-gray-500">Buscando clientes...</p>
-          </div>
-        }
-      </aside>
+  <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
+    <aside class="aside-container custom-scrollbar">
+      @if (page$ | async; as pageData) {
+      <app-generic-list class="flex-1 flex flex-col min-h-0" [items]="pageData.content"
+        [totalItems]="pageData.totalElements" [currentPage]="currentPage" altText="Nenhum cliente encontrado."
+        (searchChanged)="applyFilters($event)" (pageChanged)="swappedPage($event)" (viewDetails)="viewDetails($event)"
+        (deactivate)="deactivateClient($event)" (edit)="editClient($event)" (activate)="activateClient($event)">
+      </app-generic-list>
+      } @else {
+      <div class="flex justify-center p-8">
+        <p class="text-gray-500">Buscando clientes...</p>
+      </div>
+      }
+    </aside>
 
-      <main class="main-container">
-        @if (clientDetails$ | async; as details) {
-          <app-client-details-panel [details]="details" (edit)="editClient($event)"></app-client-details-panel>
-        } @else {
-          <div class="card card-details-container">
-            <div class="empty-state text-(--text-aux) text-sm">Selecione um cliente na lista para ver os detalhes.</div>
-          </div>
-        }
-      </main>
-    </div>
+    <main class="main-container custom-scrollbar">
+      @if (clientDetails$ | async; as details) {
+      <app-client-details-panel [details]="details" (edit)="editClient($event)"></app-client-details-panel>
+      } @else {
+      <div class="card card-details-container">
+        <div class="empty-state text-(--text-aux) text-sm">Selecione um cliente na lista para ver os detalhes.</div>
+      </div>
+      }
+    </main>
   </div>
+</div>
 }

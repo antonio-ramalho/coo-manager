@@ -14,6 +14,7 @@ export interface SubNavTab {
   selector: 'app-sub-nav',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sub-nav.component.html',
+  styleUrl: './sub-nav.component.scss',
 })
 export class SubNavComponent {
   @Input({ required: true }) tabs: SubNavTab[] = [];

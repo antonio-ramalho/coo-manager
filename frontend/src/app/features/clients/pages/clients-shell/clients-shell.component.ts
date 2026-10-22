@@ -1,46 +1,50 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SubNavComponent, SubNavTab } from '../../../../shared/components/layout/sub-nav/sub-nav.component';
+import { SubNavTab } from '../../../../shared/components/layout/sub-nav/sub-nav.component';
+import { SubNavService } from '../../../../core/services/sub-nav.service';
 
 /**
  * Smart Component (Shell da feature de clientes).
- * Exibe o SubNav contextual caso a rota ativa não requisite ocultação (ex: cadastro/edição).
+ * Registra o SubNav contextual na Topbar e oculta caso a rota ativa requisite (ex: cadastro/edição).
  */
 @Component({
   selector: 'app-clients-shell',
-  imports: [RouterOutlet, SubNavComponent],
+  imports: [RouterOutlet],
   templateUrl: './clients-shell.component.html',
 })
 export class ClientsShellComponent {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  private readonly subNavService = inject(SubNavService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly tabs: SubNavTab[] = [
-    { label: 'Gestão de Clientes', route: 'gestao' },
+    { label: 'Gestão de clientes', route: '/home/clientes/gestao' },
   ];
 
-  showSubNav = true;
-
   constructor() {
-    this.checkSubNavVisibility();
+    this.updateSubNav();
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(),
       )
       .subscribe(() => {
-        this.checkSubNavVisibility();
+        this.updateSubNav();
       });
+
+    this.destroyRef.onDestroy(() => {
+      this.subNavService.clearTabs();
+    });
   }
 
-  private checkSubNavVisibility(): void {
+  private updateSubNav(): void {
     let currentRoute: ActivatedRoute | null = this.router.routerState.root;
     while (currentRoute?.firstChild) {
       currentRoute = currentRoute.firstChild;
     }
     const hide = currentRoute?.snapshot?.data?.['hideSubNav'] === true;
-    this.showSubNav = !hide;
+    this.subNavService.setTabs(hide ? null : this.tabs);
   }
 }

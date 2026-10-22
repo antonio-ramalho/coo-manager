@@ -1,6 +1,30 @@
 <div
-  class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4 rounded-b-lg"
+  class="flex items-center justify-between border-t border-gray-200 bg-white px-3 py-3 sm:px-6 mt-4 rounded-b-lg text-sm w-full"
 >
+  <!-- Versão Mobile Compacta -->
+  <div class="flex flex-1 items-center justify-between sm:hidden">
+    <button
+      type="button"
+      (click)="return()"
+      [disabled]="!canReturn"
+      class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Anterior
+    </button>
+    <p class="text-xs text-gray-700">
+      {{ currentPage }} / {{ totalPages }}
+    </p>
+    <button
+      type="button"
+      (click)="advance()"
+      [disabled]="!canAdvance"
+      class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Próxima
+    </button>
+  </div>
+
+  <!-- Versão Tablet / Desktop Completa -->
   <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between gap-10">
     <div>
       <p class="text-sm text-gray-700">
@@ -13,6 +37,7 @@
     <div>
       <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
         <button
+          type="button"
           (click)="return()"
           [disabled]="!canReturn"
           class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -28,6 +53,7 @@
         </button>
 
         <button
+          type="button"
           (click)="advance()"
           [disabled]="!canAdvance"
           class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"

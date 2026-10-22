@@ -1,0 +1,38 @@
+<app-details-layout-component class="h-full">
+  <app-person-details-header
+    details-header
+    [id]="details.id"
+    [name]="details.legalName"
+    [documentNumber]="details.documentNumber"
+    [status]="details.status"
+    (editClient)="edit.emit($event)">
+  </app-person-details-header>
+
+  <div details-body class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <app-person-basic-info-card
+        [gender]="details.gender"
+        [phone]="details.phone"
+        [email]="details.email"
+        [dataValue]="details.dateValue"
+        [dataLabel]="details.dateLabel"
+        [documentNumber]="details.documentNumber"
+        [documentLabel]="details.documentLabel"
+        [personType]="details.personType">
+      </app-person-basic-info-card>
+
+      <app-person-address-info
+        [zipCode]="details.address.zipCode"
+        [street]="details.address.street"
+        [neighborhood]="details.address.neighborhood"
+        [city]="details.address.city"
+        [houseNumber]="details.address.number"
+        [state]="details.address.state">
+      </app-person-address-info>
+
+      <app-attachments-card
+        [attachments]="details.attachments">
+      </app-attachments-card>
+    </div>
+  </div>
+</app-details-layout-component>

@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { errorInterceptor } from './core/interceptors/errorInterceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 

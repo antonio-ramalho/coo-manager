@@ -1,13 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BrazilianStatesMap } from '../utils/BrazilianStatesMap';
+import { BrazilianState, BrazilianStateCode } from '../enums/brazilian-state';
 
-@Pipe({
-  name: 'stateDescription',
-  standalone: true,
-})
+/** Converte a sigla da UF (ex.: 'PR') no nome por extenso (ex.: 'Paraná'). */
+@Pipe({ name: 'stateDescription' })
 export class StateDescriptionPipe implements PipeTransform {
   transform(value: string | null | undefined): string {
     if (!value) return '-';
-    return BrazilianStatesMap[value] || value;
+    return BrazilianState[value as BrazilianStateCode] ?? value;
   }
 }

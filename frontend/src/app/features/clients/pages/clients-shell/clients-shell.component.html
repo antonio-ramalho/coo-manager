@@ -1,0 +1,8 @@
+<div class="flex flex-col h-full w-full">
+  @if (showSubNav) {
+    <app-sub-nav [tabs]="tabs"></app-sub-nav>
+  }
+  <div class="flex-1 flex flex-col min-h-0 w-full">
+    <router-outlet></router-outlet>
+  </div>
+</div>

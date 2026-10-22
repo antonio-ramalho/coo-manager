@@ -1,0 +1,40 @@
+<div class="flex flex-col w-full h-full p-4 md:p-6">
+  <app-page-title
+    [title]="isEditing ? 'Edição de cliente' : 'Cadastro de cliente'"
+    [showBackButton]="true"
+    (back)="cancel()"
+  >
+  </app-page-title>
+
+  <form [formGroup]="masterForm" (ngSubmit)="save()" class="flex gap-8 items-start w-full">
+    <app-stepper-layout
+      [steps]="stepLabels"
+      [currentStep]="currentPage"
+      [nextDisabled]="isCurrentStepInvalid"
+      [submitDisabled]="masterForm.invalid"
+      [isSubmitting]="isSubmitting"
+      (next)="nextPage()"
+      (back)="backPage()"
+      (cancel)="cancel()"
+    >
+      @switch (currentPage) {
+        @case (1) {
+          <h3 class="txt-h2 mb-6">Informações Básicas</h3>
+          <app-person-form [group]="basicInfoGroup"></app-person-form>
+        }
+        @case (2) {
+          <h3 class="txt-h2 mb-6">Dados Específicos</h3>
+          @if (personType === PersonType.NATURAL) {
+            <app-natural-person-form-component [group]="specificDataGroup"></app-natural-person-form-component>
+          } @else {
+            <app-juridic-person-form [group]="specificDataGroup"></app-juridic-person-form>
+          }
+        }
+        @case (3) {
+          <h3 class="txt-h2 mb-6">Endereço</h3>
+          <app-address-form [group]="addressGroup"></app-address-form>
+        }
+      }
+    </app-stepper-layout>
+  </form>
+</div>

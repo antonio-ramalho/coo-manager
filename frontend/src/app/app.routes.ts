@@ -1,46 +1,49 @@
 import { Routes } from '@angular/router';
-import { BasePageComponent } from './shared/layouts/base-page/base-page.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { LogisticsComponent } from './pages/logistics/logistics.component';
-import { SalesComponent } from './pages/sales/sales.component';
-import { FinancialComponent } from './pages/financial/financial.component';
-import { ClientsComponent } from './pages/client/client.component';
-import { ManagementClientsComponent } from './pages/client/components/management-clients/management-clients.component';
-import { UniversalFormComponent } from './pages/universal-form/universal-form-component';
-import { InputsProductsComponent } from './pages/inputs-products/inputs-products-component';
-import { InputStockComponent } from './pages/inputs-products/components/input-stock/input-stock';
-import {InputCatalogComponent} from './pages/inputs-products/components/input-catalog/input-catalog-component';
+import { AdminLayoutComponent } from './core/layout/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
   {
     path: 'home',
-    component: BasePageComponent,
+    component: AdminLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'logistica', component: LogisticsComponent },
-      { path: 'vendas', component: SalesComponent },
-      { path: 'financeiro', component: FinancialComponent },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/pages/dashboard-page/dashboard-page.component').then(
+            (m) => m.DashboardPageComponent,
+          ),
+      },
+      {
+        path: 'logistica',
+        loadComponent: () =>
+          import('./features/logistics/pages/logistics-page/logistics-page.component').then(
+            (m) => m.LogisticsPageComponent,
+          ),
+      },
+      {
+        path: 'vendas',
+        loadComponent: () =>
+          import('./features/sales/pages/sales-page/sales-page.component').then(
+            (m) => m.SalesPageComponent,
+          ),
+      },
+      {
+        path: 'financeiro',
+        loadComponent: () =>
+          import('./features/financial/pages/financial-page/financial-page.component').then(
+            (m) => m.FinancialPageComponent,
+          ),
+      },
       {
         path: 'clientes',
-        component: ClientsComponent,
-        children: [
-          { path: 'gestao', component: ManagementClientsComponent },
-          { path: 'cadastro', component: UniversalFormComponent, data: { type: 'cliente' } },
-          { path: 'editar/:id', component: UniversalFormComponent, data: { type: 'cliente' } },
-          { path: '', redirectTo: 'gestao', pathMatch: 'full' },
-        ],
+        loadChildren: () =>
+          import('./features/clients/clients.routes').then((m) => m.CLIENTS_ROUTES),
       },
       {
         path: 'insumos',
-        component: InputsProductsComponent,
-        children: [
-          { path: 'insumos-estoque', component: InputStockComponent },
-          { path: 'cadastro', component: UniversalFormComponent, data: { type: 'insumo' } },
-          { path: 'editar/:id', component: UniversalFormComponent, data: { type: 'insumo' } },
-          { path: 'catalogo', component: InputCatalogComponent },
-          { path: '', redirectTo: 'insumos-estoque', pathMatch: 'full' },
-        ],
+        loadChildren: () =>
+          import('./features/inputs/inputs.routes').then((m) => m.INPUTS_ROUTES),
       },
     ],
   },

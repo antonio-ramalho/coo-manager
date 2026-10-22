@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { LucideDownload, LucideFileText } from '@lucide/angular';
-import { IAttachments } from '../../../../core/interfaces/IAttachments';
+import { Attachment } from '../../../models/attachment.model';
 
 @Component({
   selector: 'app-attachments-card',
@@ -12,5 +12,5 @@ import { IAttachments } from '../../../../core/interfaces/IAttachments';
 })
 export class AttachmentsCardComponent {
 
-  @Input() attachments: IAttachments[] = [];
+  @Input() attachments: Attachment[] = [];
 }

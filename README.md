@@ -80,7 +80,7 @@ graph TD
     end
 
     subgraph DataLayer ["Camada de Persistência"]
-        DB_DEV[("MySQL Local)]
+        DB_DEV[("MySQL Local")]
         DB_PROD[("PostgreSQL (Supabase Nuvem)<br/>Perfil: prod")]
     end
 

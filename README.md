@@ -1,6 +1,6 @@
 # Motivação para esse repositório
 
-Meu objetivo era aprender conceitos de programação orientada a objetos, treinar e aprender as práticas do Object Calisthenics, estudar mais sobre arquitetura de software e desenvolvimento de API'S. Então decidi usar os problemas que eu encontrei no meu trabalho como um projeto prático aonde eu poderia aprender e estudar todos esses conceitos. Esse é um projeto pessoal e não é comercial, então esse repositório é público justamente para eu registrar meu progresso.
+Meu objetivo era aprender conceitos de programação orientada a objetos, treinar e aprender as práticas do Object Calisthenics, estudar mais sobre arquitetura de software e desenvolvimento de API'S. Então decidi usar os problemas que eu encontrei no meu trabalho como um projeto prático aonde eu poderia aprender e estudar todos esses conceitos. Esse é um projeto pessoal e não é comercial, então esse repositório é público justamente para eu registrar meu progresso, todos os dados são fictícios. 
 
 # Sistema de gerenciamento de pequenas cooperativas
 

@@ -80,7 +80,7 @@ graph TD
     end
 
     subgraph DataLayer ["Camada de Persistência"]
-        DB_DEV[("MySQL Local<br/>jdbc:mysql://localhost:3306/coopafi_db<br/>Perfil: dev")]
+        DB_DEV[("MySQL Local)]
         DB_PROD[("PostgreSQL (Supabase Nuvem)<br/>Perfil: prod")]
     end
 
@@ -93,57 +93,6 @@ graph TD
     Controllers -.-> EX
     ServicesLayer -.-> VO
 ```
-
-## Estrutura do projeto
-
-coopafi/
-├── AGENTS.md                                # Regras e diretrizes operacionais do projeto
-├── README.md                                # Documentação principal
-├── backend/                                 # API desenvolvida em Spring Boot
-│   ├── Dockerfile                           # Build de contêiner multi-stage (Java 25)
-│   ├── mvnw / mvnw.cmd                      # Maven Wrapper (Linux / Windows)
-│   ├── pom.xml                              # Dependências e plugins Maven
-│   └── src/
-│       ├── main/
-│       │   ├── java/com/manager/coopafi/
-│       │   │   ├── CoopafiApplication.java  # Classe de inicialização Spring Boot
-│       │   │   ├── baseModule/              # Entidades base de recebimento/itens
-│       │   │   ├── contractModule/          # Gestão de contratos (DTOs, Entities, Repositories, Resources, Services)
-│       │   │   ├── infrastructure/          # Configuração CORS, tratamento de exceções e Value Objects
-│       │   │   ├── logisticModule/          # Domínio e repositórios de termos de despacho logístico
-│       │   │   ├── personModule/            # Produtores, Clientes, Instituições, Unidades Consumidoras, Agentes
-│       │   │   ├── produtcModule/           # Insumos e produtos agrícolas (Resources, Services, Entities)
-│       │   │   └── purchaseModule/          # Compras e lotes de insumos (Resources, Services, Entities, DTOs)
-│       │   └── resources/
-│       │       ├── application.properties       # Define o perfil ativo padrão (spring.profiles.active=dev)
-│       │       ├── application-dev.properties   # Configuração do MySQL local e CORS para localhost:4200
-│       │       └── application-prod.properties  # Configuração Supabase (PostgreSQL) e CORS para Vercel
-│       └── test/
-│           └── java/com/manager/coopafi/    # Testes automatizados do backend
-├── frontend/                                # Single Page Application em Angular 21
-│   ├── angular.json                         # Configurações do workspace Angular
-│   ├── package.json                         # Dependências e scripts npm
-│   ├── tsconfig.json                        # Configuração do compilador TypeScript
-│   ├── vercel.json                          # Regras de rewrite de rotas para deploy na Vercel
-│   └── src/
-│       ├── main.ts                          # Bootstrap da aplicação Angular
-│       ├── index.html                       # HTML principal
-│       ├── styles.scss                      # Folhas de estilo globais
-│       ├── environments/                    # Variáveis de ambiente (dev e prod)
-│       └── app/
-│           ├── app.routes.ts                # Definição e carregamento lazy das rotas
-│           ├── core/                        # Componentes globais, layout, interceptors e serviços base
-│           ├── shared/                      # Componentes compartilhados, pipes, validadores e utilitários
-│           └── features/                    # Módulos funcionais da aplicação
-│               ├── clients/                 # Gestão de clientes
-│               ├── dashboard/               # Painel administrativo
-│               ├── farmers/                 # Módulo de agricultores
-│               ├── financial/               # Módulo financeiro
-│               ├── inputs/                  # Gestão de insumos
-│               ├── logistics/               # Módulo de logística
-│               └── sales/                   # Módulo de vendas
-├── documentacao/                            # Diagramas e documentações auxiliares
-└── artefatos/                               # Arquivos e insumos complementares
 
 ## Engenharia de Software
 

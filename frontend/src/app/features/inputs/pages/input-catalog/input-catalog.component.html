@@ -1,8 +1,43 @@
-<div class="content-interface">
-  <header class="flex justify-between items-center shrink-0">
-    <h1 class="txt-h1">Catálogo de insumos</h1>
+<!-- Bloqueio no mobile via diretiva @if: previne requisições desnecessárias em telas menores -->
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Catálogo de Insumos">
+  <a appButton variant="primary" routerLink="/home/insumos/cadastro">Novo insumo</a>
+</app-desktop-only-notice>
+} @else {
+<div class="content-interface catalog-container">
+  <header class="header-container">
+    <h1 class="txt-h1">Catálogo</h1>
+    <button type="button" appButton variant="primary" routerLink="/home/insumos/cadastro">Novo insumo</button>
   </header>
-  <div class="card p-6 mt-6">
-    <p class="txt-aux">Catálogo de insumos em desenvolvimento.</p>
+
+  <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
+    <aside class="aside-container custom-scrollbar">
+      @if (page$ | async; as pageData) {
+      <app-generic-list class="flex-1 flex flex-col min-h-0" [items]="pageData.content"
+        [totalItems]="pageData.totalElements" [currentPage]="currentPage"
+        searchPlaceholder="Buscar por nome, código ou ncm..." altText="Nenhum insumo encontrado."
+        (searchChanged)="applyFilters($event)" (pageChanged)="swappedPage($event)" (viewDetails)="viewDetails($event)"
+        (deactivate)="deactivateProduct($event)" (activate)="activateProduct($event)" (edit)="editProduct($event)">
+      </app-generic-list>
+      } @else {
+      <div class="flex justify-center p-8">
+        <p class="txt-aux">Buscando insumos no catálogo...</p>
+      </div>
+      }
+    </aside>
+
+    <main class="main-container custom-scrollbar">
+      @if (productDetails$ | async; as details) {
+      <app-input-product-details-panel [product]="details" (edit)="editProduct($event)">
+      </app-input-product-details-panel>
+      } @else {
+      <div class="card card-details-container">
+        <div class="empty-state text-(--text-aux) text-sm">
+          Selecione um insumo na lista para ver os detalhes.
+        </div>
+      </div>
+      }
+    </main>
   </div>
 </div>
+}

@@ -17,6 +17,7 @@ export class GenericListComponent {
   @Input() currentPage: number = 1;
   @Input() totalItems: number = 0;
   @Input() altText: string | undefined;
+  @Input() searchPlaceholder: string = 'Buscar...';
 
   @Output() viewDetails = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();

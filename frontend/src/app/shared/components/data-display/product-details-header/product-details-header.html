@@ -1,0 +1,37 @@
+<div class="header-root">
+  <div class="info-group">
+    <div class="avatar-container">
+      <svg lucidePackage class="w-8 h-8 text-(--text-aux)"></svg>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="flex items-center gap-3">
+        <h2 class="txt-h2">{{ name }}</h2>
+        @if (status === ProductCatalogStatus.ACTIVE || status === 'ACTIVE') {
+        <span class="status-badge-active">
+          Ativo
+        </span>
+        }
+        @else if (status === ProductCatalogStatus.DEVELOPMENT || status === 'DEVELOPMENT') {
+        <span class="status-badge-development">
+          Desenvolvendo
+        </span>
+        }
+        @else {
+        <span class="status-badge-inactive">
+          Inativo
+        </span>
+        }
+      </div>
+      @if (code) {
+      <span class="txt-aux mt-1">Cód: {{ code }}</span>
+      }
+    </div>
+  </div>
+
+  <div class="actions-group">
+    <button appButton variant="surface" size="icon" (click)="onEditProduct($event)">
+      <svg lucideSquarePen class="w-5 h-5"></svg>
+    </button>
+  </div>
+</div>

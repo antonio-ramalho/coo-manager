@@ -39,4 +39,8 @@ export class InputProductApiService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  activate(id: number): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/activate`, {});
+  }
 }

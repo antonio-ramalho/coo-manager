@@ -1,0 +1,13 @@
+<app-details-layout-component class="h-full">
+  <app-product-details-header details-header [id]="product.id" [name]="product.productName" [code]="product.productCode"
+    [status]="product.productCatalogStatus" (editProduct)="edit.emit($event)">
+  </app-product-details-header>
+
+  <div details-body class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <app-product-basic-info-card [id]="product.id" [price]="product.price.value" [measureUnit]="product.measureUnit"
+        [ncm]="product.ncm" [productCode]="product.productCode">
+      </app-product-basic-info-card>
+    </div>
+  </div>
+</app-details-layout-component>

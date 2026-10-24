@@ -9,8 +9,9 @@ export const INPUTS_ROUTES: Routes = [
     path: '',
     component: InputsShellComponent,
     children: [
-      { path: '', redirectTo: 'insumos-estoque', pathMatch: 'full' },
-      { path: 'insumos-estoque', component: InputStockComponent },
+      { path: '', redirectTo: 'estoque', pathMatch: 'full' },
+      { path: 'estoque', component: InputStockComponent },
+      { path: 'insumos-estoque', redirectTo: 'estoque', pathMatch: 'full' },
       { path: 'catalogo', component: InputCatalogComponent },
       { path: 'cadastro', component: InputFormComponent, data: { hideSubNav: true } },
       { path: 'editar/:id', component: InputFormComponent, data: { hideSubNav: true } },

@@ -1,0 +1,36 @@
+@use "tailwind-ref";
+
+.product-info-container {
+  @apply p-4 flex flex-col gap-4 min-h-full;
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-card);
+  background-color: var(--bg-surface);
+}
+
+.h3 {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.data-container {
+  @apply flex gap-3 items-start;
+}
+
+.icon-container {
+  @apply w-4 h-4 mt-0.5 shrink-0;
+  color: var(--text-aux);
+}
+
+.spans-container {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+.span-data {
+  @apply text-sm font-medium break-words;
+  color: var(--text-main);
+}
+
+.title-data {
+  @apply text-xs;
+  color: var(--text-aux);
+}

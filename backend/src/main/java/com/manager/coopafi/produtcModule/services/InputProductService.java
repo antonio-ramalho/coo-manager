@@ -6,7 +6,6 @@ import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductInsertDto
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductUpdateDto;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
-import com.manager.coopafi.produtcModule.enums.ProductCatalogStatus;
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
 import com.manager.coopafi.produtcModule.repositories.InputProductRepository;
 import com.manager.coopafi.infrastructure.valueObjects.Ncm;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class InputProductService {
@@ -33,8 +31,8 @@ public class InputProductService {
     }
 
     @Transactional(readOnly = true)
-    public InputProductDto findByStatusAndId(Long id) {
-        InputProduct obj = inputProductRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id)
+    public InputProductDto findById(Long id) {
+        InputProduct obj = inputProductRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Produto não encontrado."));
         return new InputProductDto(obj);
     }
@@ -51,7 +49,7 @@ public class InputProductService {
 
     @Transactional
     public InputProductDto update(Long id, InputProductUpdateDto dto) {
-        InputProduct product  = inputProductRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id)
+        InputProduct product = inputProductRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Produto não encontrado."));
 
         updateData(product, dto);
@@ -62,9 +60,17 @@ public class InputProductService {
 
     @Transactional
     public void delete(Long id) {
-        InputProduct product = inputProductRepository.findByProductCatalogStatusAndId(ProductCatalogStatus.ACTIVE, id)
+        InputProduct product = inputProductRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Produto não encontrado."));
         product.deactivate();
+        inputProductRepository.save(product);
+    }
+
+    @Transactional
+    public void activate(Long id) {
+        InputProduct product = inputProductRepository.findById(id)
+                .orElseThrow(() -> new DomainException("Produto não encontrado."));
+        product.activate();
         inputProductRepository.save(product);
     }
 

@@ -20,7 +20,7 @@ export class InputsShellComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly tabs: SubNavTab[] = [
-    { label: 'Estoque', route: '/home/insumos/insumos-estoque' },
+    { label: 'Estoque', route: '/home/insumos/estoque' },
     { label: 'Catálogo', route: '/home/insumos/catalogo' },
   ];
 

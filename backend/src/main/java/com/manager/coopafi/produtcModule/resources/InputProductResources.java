@@ -12,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/input-products")
@@ -35,7 +33,7 @@ public class InputProductResources {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<InputProductDto> findByStatusAndId(@PathVariable Long id) {
-        InputProductDto obj = service.findByStatusAndId(id);
+        InputProductDto obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
@@ -57,6 +55,12 @@ public class InputProductResources {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/{id}/activate")
+    public ResponseEntity<Void> activate(@PathVariable Long id) {
+        service.activate(id);
         return ResponseEntity.noContent().build();
     }
 }

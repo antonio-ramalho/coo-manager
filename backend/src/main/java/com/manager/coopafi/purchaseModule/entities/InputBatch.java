@@ -5,6 +5,7 @@ import com.manager.coopafi.infrastructure.valueObjects.Quantity;
 import com.manager.coopafi.produtcModule.entities.InputProduct;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
+import com.manager.coopafi.infrastructure.exceptions.InsufficientStockException;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serial;
@@ -69,10 +70,9 @@ public class InputBatch implements Serializable {
     public void updateExpirationDate(@NonNull ExpirationDate newDate) {
         this.expirationDate = newDate;
     }
-
     public void checkStock(Quantity amount) {
         if (amount.compareTo(this.currentQuantity) > 0) {
-            throw  new DomainException("Existem apenas: " + currentQuantity + " em estoque!");
+            throw new InsufficientStockException("Existem apenas: " + currentQuantity + " em estoque!");
         }
     }
 
@@ -85,13 +85,17 @@ public class InputBatch implements Serializable {
     }
 
     public void updateStatusByStock() {
-        if (currentQuantity.equals(new Quantity(BigDecimal.ZERO))) {
+        if (currentQuantity.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             this.productStatus = ProductInventoryStatus.OUT_OF_STOCK;
+        } else if (currentQuantity.getAmount().compareTo(new BigDecimal("10")) <= 0) {
+            this.productStatus = ProductInventoryStatus.LOW_STOCK;
+        } else {
+            this.productStatus = ProductInventoryStatus.IN_STOCK;
         }
     }
 
     public void decreaseQuantity(@NonNull Quantity amount) {
-        if (this.productStatus != ProductInventoryStatus.IN_STOCK ||
+        if ((this.productStatus != ProductInventoryStatus.IN_STOCK && this.productStatus != ProductInventoryStatus.LOW_STOCK) ||
                 this.expirationDate.isExpired()) {
             throw new DomainException("Lote vencido ou sem estoque.");
         }

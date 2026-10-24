@@ -4,23 +4,37 @@ import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchUpdateDto;
-import com.manager.coopafi.purchaseModule.services.InputBatchService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manager.coopafi.purchaseModule.services.interfaces.InputBatchService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchTableDto;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping(value = "/input-batch")
 public class InputBatchResources {
 
-    @Autowired
-    private InputBatchService service;
+    private final InputBatchService service;
+
+    public InputBatchResources(InputBatchService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<InputBatchMinDto>> findAllByStatus() {
-        List <InputBatchMinDto> list = service.findAllByStatus();
+        List<InputBatchMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/paged")
+    public ResponseEntity<Page<InputBatchTableDto>> findAllPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "") String searchTerm) {
+        Page<InputBatchTableDto> result = service.searchBatches(page, size, searchTerm);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{id}")

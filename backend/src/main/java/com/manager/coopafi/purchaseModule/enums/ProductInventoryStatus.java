@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ProductInventoryStatus {
     IN_STOCK("Em Estoque"),
+    LOW_STOCK("Estoque Baixo"),
     OUT_OF_STOCK("Esgotado"),
     EXPIRED("Vencido"),
     INACTIVE("Desativado");

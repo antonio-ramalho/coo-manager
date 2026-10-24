@@ -39,6 +39,7 @@ Principais domínios e contextos:
 - Testes: Você PODE e DEVE rodar testes unitários e de integração automaticamente ao criar novas regras de negócio.
 - Dependências: Você NÃO PODE instalar novos pacotes via `npm install` ou modificar o `pom.xml` sem pedir autorização explícita ao usuário.
 - Refatoração: Sempre revise as quebras de dependência antes de modificar ou apagar a assinatura de métodos ou construtores existentes.
+- Você deve consultar as cores do arquivo `styles.scss` para manter a consistência visual do projeto.
 
 # PROTOCOLO DE SPRINTS E EXECUÇÃO (OBRIGATÓRIO)
 - Você está estritamente proibido de executar refatorações em massa ou implementar planos completos de forma autônoma e contínua. Todo o trabalho deve seguir um fluxo de "Sprints Controladas".

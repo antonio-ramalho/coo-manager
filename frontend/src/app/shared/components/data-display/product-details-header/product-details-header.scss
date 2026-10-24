@@ -1,0 +1,40 @@
+@use "tailwind-ref";
+
+.header-root {
+  @apply flex justify-between items-start pb-5 shrink-0;
+  border-bottom: var(--border-width) solid var(--border-neutral);
+}
+
+.info-group {
+  @apply flex gap-4 items-center;
+}
+
+.avatar-container {
+  @apply w-16 h-16 rounded-full flex items-center justify-center shrink-0;
+  background-color: var(--border-hover);
+}
+
+.actions-group {
+  @apply flex items-center gap-2;
+}
+
+.status-badge-active {
+  @apply text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md;
+  color: var(--text-main);
+  background-color: var(--primary-light);
+  border: var(--border-width) solid var(--primary-base);
+}
+
+.status-badge-development {
+  @apply text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md;
+  color: var(--text-main);
+  background-color: var(--yellow-alert);
+  border: var(--border-width) solid var(--yellow-alert-hover);
+}
+
+.status-badge-inactive {
+  @apply text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md;
+  color: var(--text-main);
+  background-color: var(--primary-red-alert);
+  border: var(--border-width) solid var(--red-alert);
+}

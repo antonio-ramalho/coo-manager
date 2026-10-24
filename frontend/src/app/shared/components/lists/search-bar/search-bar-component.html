@@ -2,7 +2,7 @@
   <input
     type="text"
     [formControl]="searchControl"
-    placeholder="Buscar por nome, CPF ou CNPJ..."
+    [placeholder]="placeholder"
     class="border p-2 rounded flex-1 border-[var(--border-neutral)] focus:border-[var(--border-hover)] focus:outline-none rounded-[var(--radius-btn)]"
   />
   <!-- TODO: conectar ao modal de filtros avançados quando for implementado. -->

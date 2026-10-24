@@ -9,8 +9,8 @@ public record InputProductDto(
         String productCode,
         String measureUnit,
         String ncm,
-        Price price
-) {
+        Price price,
+        String productCatalogStatus) {
     public InputProductDto(InputProduct entity) {
         this(
                 entity.getId(),
@@ -18,7 +18,7 @@ public record InputProductDto(
                 entity.getProductCode(),
                 entity.getMeasureUnit().name(),
                 entity.getNcm().getCode(),
-                entity.getProductPrice()
-        );
+                entity.getProductPrice(),
+                entity.getProductCatalogStatus().name());
     }
 }

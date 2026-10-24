@@ -1,46 +1,41 @@
-# Motivação para esse repositório
+# CooManager – Sistema de Gestão para Pequenas Cooperativas
 
-Meu objetivo era aprender conceitos de programação orientada a objetos, treinar e aprender as práticas do Object Calisthenics, estudar mais sobre arquitetura de software e desenvolvimento de API'S. Então decidi usar os problemas que eu encontrei no meu trabalho como um projeto prático aonde eu poderia aprender e estudar todos esses conceitos. Esse é um projeto pessoal e não é comercial, então esse repositório é público justamente para eu registrar meu progresso, todos os dados são fictícios. 
+Sistema que ajuda cooperativas de agricultura familiar a gerenciar editais públicos, agricultores e entregas, validando automaticamente as regras de cada edital.
 
-# Sistema de gerenciamento de pequenas cooperativas
+**Demo:** [Frontend (Vercel)](https://coo-manager-two.vercel.app) | [API (Render)](https://coo-manager.onrender.com)
 
-Pequenas cooperativas de agricultura familiar sofrem com problemas sérios, um bom exemplo disso é o processo de gestão de editais. Para essas cooperativas participarem de editais publicos elas precisam seguir uma série de regras, além de manter um controle rigoroso de entregas, por exemplo, para edital X apenas agricultores que produzem produtos orgânicos podem entregar, e cada agricultor pode entregar até Y quilos de determinado produto e até Z em valores financeiros de entregas para aquele edital. Todas essas complexidades são dificeis de gerenciar manualmente, e é exatamente aí que entra o sistema de gerenciamento de pequenas cooperativas.
+> Projeto pessoal e não comercial, criado para estudar programação orientada a objetos, arquitetura de software e desenvolvimento de APIs a partir de problemas reais do meu trabalho. Todos os dados são fictícios.
+>
+> Nota: a API roda no plano gratuito do Render, que desliga a aplicação quando ela fica sem uso. A primeira requisição pode demorar alguns minutos; depois disso, o sistema responde normalmente.
+
+*English summary: a full stack system (Spring Boot + Angular) that helps small family-farming cooperatives manage public procurement notices, farmers and deliveries, automatically validating each notice's business rules. Personal learning project, fictional data.*
+
+## Telas
+
+[INSIRA AQUI 2 OU 3 PRINTS OU UM GIF: lista de editais, tela de entregas, Swagger]
+
+## O problema
+
+Pequenas cooperativas de agricultura familiar enfrentam desafios sérios de gestão, e um bom exemplo é o controle de editais públicos. Para participar de um edital, a cooperativa precisa seguir uma série de regras e manter um controle rigoroso das entregas. Por exemplo: no edital X, apenas agricultores que produzem produtos orgânicos podem entregar, e cada agricultor pode entregar até Y quilos de determinado produto e até Z reais em valor financeiro naquele edital.
+
+Controlar tudo isso manualmente é difícil e propenso a erros. É aí que entra o CooManager.
 
 ## Funcionalidades
 
-- Gestão de editais: Gerenciamento de editais públicos.
-- Gestão de clientes: Gerenciamento de clientes.
-- Gestão de agricultores: Gerenciamento de agricultores.
-- Gestão de produtos: Gerenciamento de produtos.
-- Gestão de compras: Gerenciamento de compras.
-- Gestão de lotes: Gerenciamento de lotes.
+**Regras de negócio validadas pelo sistema**
+- Só permite entregas de agricultores que atendem às exigências do edital (por exemplo, produção orgânica, com certificado).
+- Controla o limite de quantidade (quilos) e de valor (R$) que cada agricultor pode entregar em cada edital.
+- [ADICIONE OUTRAS REGRAS QUE O SISTEMA JÁ VALIDA HOJE]
 
-## Backend
+**Cadastros e gestão**
+- **Editais:** cadastro e acompanhamento dos editais públicos e de suas regras.
+- **Agricultores e clientes:** cadastro com validação de dados (CPF, CNPJ, CEP e endereço).
+- **Produtos:** cadastro de produtos agrícolas e de insumos.
+- **Compras e lotes:** registro de compras de insumos e controle dos lotes.
+- **Logística:** geração de termos de expedição das entregas.
 
-- Linguagem: Java 25
-- Framework: Spring Boot 4.0.5
-- Banco de dados: MySQL
-- ORM: Spring Data JPA e Hibernate
-- Arquitetura: Camadas bem definidas (Resources, Services, Repositories, Domain)
-- Testes: JUnit 5
+## Arquitetura
 
-## Frontend
-
-- Framework: Angular 21 
-- Arquitetura: Baseada em stand Alone Components
-- Linguagens: TypeScript
-- Estilização: TailwindCSS, SCSS
-
-## Infraestrutura & Plataformas Externas 
-
-- Banco de dados local: MySQL
-- Banco de dados em produção: PostgreSQL hospedado no Supabase
-- Hospedagem da API (Prod): Render(https://coo-manager.onrender.com) 
-- Devido a limitações do plano gratuito, a API pode demorar alguns minutos para responder à primeira requisição, pois o serviço "desliga" a aplicação quando não está em uso.
-- Hospedagem do Frontend (Prod): Vercel(https://coo-manager-two.vercel.app) 
-- O frontend está configurado para usar o backend em produção.
-
-## Diagrama Arquitetural
 ```mermaid
 graph TD
     subgraph ClientLayer ["Cliente / Navegador"]
@@ -94,22 +89,77 @@ graph TD
     ServicesLayer -.-> VO
 ```
 
-## Engenharia de Software
+O back-end segue uma **arquitetura em camadas** (Resources, Services, Repositories e Domain), com domínio rico e organização por contexto de negócio. A API é totalmente desacoplada do front-end, que consome os dados por HTTP/REST. No código, os editais são representados pela entidade Contract.
 
-- DDD (Domain-Driven Design): Construção de um Domínio Rico utilizando Value Objects e Entities para garantir que as regras de negócio estejam centralizadas e protegidas.
+## Tecnologias
 
-- Fail-Fast: Validação rigorosa de estados logo na entrada dos dados, evitando o processamento de informações inválidas.
+| Camada | Tecnologias |
+|---|---|
+| Back-end | Java 25, Spring Boot 4.0.5, Spring Data JPA e Hibernate |
+| Front-end | Angular 21 (standalone components, componentes dumb e smart), TypeScript, TailwindCSS, SCSS |
+| Banco de dados | MySQL (desenvolvimento) e PostgreSQL no Supabase (produção) |
+| Testes | JUnit 5 |
+| Documentação da API | Swagger / OpenAPI e coleção do Postman |
+| Hospedagem | Render (API) e Vercel (front-end) |
 
-- Qualidade de Código: Aplicação de princípios SOLID e técnicas de Object Calisthenics para manter o código limpo, coeso e de fácil manutenção.
+## Engenharia de software
 
-- Testes Unitários: Implementação de testes automatizados utilizando JUnit 5 e Mockito para validar a precisão dos cálculos e garantir a integridade das regras de negócio em cada componente do sistema.
+- **Domínio rico (DDD):** uso de Value Objects e Entities para centralizar e proteger as regras de negócio.
+- **Fail-fast:** validação rigorosa dos dados logo na entrada, evitando processar informações inválidas.
+- **Qualidade de código:** aplicação de princípios SOLID e de Object Calisthenics para manter o código limpo, coeso e de fácil manutenção.
+- **Testes unitários:** testes automatizados com JUnit 5 para validar a precisão dos cálculos e a integridade das regras de negócio.
 
-# Como rodar localmente
+## Como rodar localmente
 
-- É preciso ter o Java JDK 25 bem como o maven instalado e configurado.
-- É preciso ter o Node.js e npm instalado e configurado.
-- É preciso ter o mysql instalado e configurado.
-- Copie o arquivo application-dev.properties.example e renomeie para application-dev.properties na pasta resources no backend.
-- Renomeie as variaveis de acordo com seu Banco local.
-- A API: http://localhost:8080
-- O Swagger / OpenAPI: http://localhost:8080/swagger-ui/index.html
+**Pré-requisitos:** Java JDK 25, Maven, Node.js com npm e MySQL instalados e configurados.
+
+1. Clone o repositório e entre na pasta do projeto.
+2. No MySQL, crie um banco de dados vazio: `CREATE DATABASE [NOME-DO-BANCO];`
+3. No back-end, copie `src/main/resources/application-dev.properties.example` para `application-dev.properties` e preencha com os dados do seu banco local (URL, usuário e senha).
+4. Suba a API com o perfil de desenvolvimento:
+   ```bash
+   cd [PASTA-DO-BACKEND]
+   mvn spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+   A API fica em http://localhost:8080 e o Swagger em http://localhost:8080/swagger-ui/index.html
+5. Em outro terminal, suba o front-end:
+   ```bash
+   cd [PASTA-DO-FRONTEND]
+   npm install
+   npm start
+   ```
+   O front fica em http://localhost:4200
+
+## Testes
+
+```bash
+cd [PASTA-DO-BACKEND]
+mvn test
+```
+
+Os testes unitários cobrem [DESCREVA: por exemplo, os cálculos de valor e quantidade, as validações de Value Objects e as regras de negócio dos editais].
+
+## Documentação da API
+
+- **Swagger (local):** http://localhost:8080/swagger-ui/index.html
+- **Coleção do Postman:** [`docs/[NOME-DO-ARQUIVO].json`](docs/[NOME-DO-ARQUIVO].json). Para usar, importe o arquivo no Postman e ajuste a variável de URL base para a API local ou de produção.
+
+## Infraestrutura e deploy
+
+- **API (produção):** [Render](https://coo-manager.onrender.com), com a senha do banco e demais segredos configurados como variáveis de ambiente.
+- **Banco de produção:** PostgreSQL hospedado no Supabase.
+- **Front-end (produção):** [Vercel](https://coo-manager-two.vercel.app), configurado para usar a API em produção.
+- No desenvolvimento, o perfil `dev` usa MySQL local; o perfil `prod` usa o banco em nuvem.
+
+## O que aprendi e próximos passos
+
+[ESCREVA EM 4 A 6 LINHAS, COM SUAS PALAVRAS: o que mais aprendeu construindo este projeto (por exemplo, modelagem de domínio, testes, organização em camadas, deploy) e o que melhoraria ou ainda quer implementar (por exemplo, autenticação, mais testes, novos relatórios).]
+
+## Por que este projeto
+
+Meu objetivo era aprender conceitos de programação orientada a objetos, treinar as práticas de Object Calisthenics, estudar arquitetura de software e desenvolvimento de APIs. Decidi usar problemas que encontrei no meu trabalho como um projeto prático onde eu pudesse estudar todos esses conceitos. Este é um projeto pessoal e não comercial; o repositório é público justamente para registrar meu progresso, e todos os dados são fictícios.
+
+## Autor
+
+**Antonio Ramalho** – estudante de Engenharia de Software (PUCPR)
+[LinkedIn](https://www.linkedin.com/in/antonio-software) | antonio.ramalho0625@gmail.com

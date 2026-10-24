@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -14,6 +14,7 @@ const SEARCH_DEBOUNCE_MS = 500;
   templateUrl: './search-bar-component.html',
 })
 export class SearchBarComponent implements OnInit {
+  @Input() placeholder: string = 'Buscar...';
   @Output() modifiedSearch = new EventEmitter<string>();
 
   private readonly destroyRef = inject(DestroyRef);

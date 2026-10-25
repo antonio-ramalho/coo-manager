@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public record InputBatchDto(
         Long id,
+        String batchCode,
         Long inputProductId,
         String productName,
         Double originalQuantity,
@@ -16,13 +17,14 @@ public record InputBatchDto(
     public InputBatchDto(InputBatch entity) {
         this(
                 entity.getId(),
-                entity.getInputProduct().getId(),
-                entity.getInputProduct().getProductName(),
-                entity.getOriginalQuantity().getAmount().doubleValue(),
-                entity.getCurrentQuantity().getAmount().doubleValue(),
+                entity.getBatchCode() != null ? entity.getBatchCode() : "",
+                entity.getInputProduct() != null ? entity.getInputProduct().getId() : null,
+                entity.getInputProduct() != null ? entity.getInputProduct().getProductName() : "",
+                entity.getOriginalQuantity() != null ? entity.getOriginalQuantity().getAmount().doubleValue() : 0.0,
+                entity.getCurrentQuantity() != null ? entity.getCurrentQuantity().getAmount().doubleValue() : 0.0,
                 entity.getEntryDate(),
-                entity.getExpirationDate().getValue(),
-                entity.getProductStatus().name()
+                entity.getExpirationDate() != null ? entity.getExpirationDate().getValue() : null,
+                entity.getProductStatus() != null ? entity.getProductStatus().name() : ""
         );
     }
 }

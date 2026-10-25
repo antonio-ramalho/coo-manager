@@ -1,6 +1,17 @@
-
 import { MeasureUnit } from '../../../shared/enums/measure-unit';
 import { ProductCatalogStatus } from '../../../shared/enums/product-catalog-status';
+import { BatchStatus } from '../../../shared/enums/batch-status';
+
+export interface InputProductBatchSummary {
+  id: number;
+  batchCode: string;
+  currentQuantity: number;
+  originalQuantity: number;
+  entryDate: string;
+  expirationDate: string;
+  status: BatchStatus | string;
+  statusDescription: string;
+}
 
 export interface InputProduct {
   id: number;
@@ -12,6 +23,7 @@ export interface InputProduct {
     value: number;
   };
   productCatalogStatus: ProductCatalogStatus | string;
+  batches?: InputProductBatchSummary[];
 }
 
 export interface InputProductSummary {

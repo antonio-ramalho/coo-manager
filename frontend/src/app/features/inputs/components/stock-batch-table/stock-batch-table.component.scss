@@ -1,0 +1,81 @@
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.25rem 1.5rem 0.25rem 1.5rem;
+  background-color: var(--bg-surface);
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.table-actions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+
+  .search-bar-container {
+    flex: 1;
+    min-width: 240px;
+    max-width: 380px;
+  }
+
+  .actions-buttons-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .new-batch-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+.table-body-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.pagination-container {
+  display: block;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+:host ::ng-deep {
+  .status-badge-in-stock {
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  .status-badge-low-stock {
+    color: var(--orange);
+    font-weight: 500;
+  }
+
+  .status-badge-out-of-stock {
+    color: var(--red-alert);
+    font-weight: 500;
+  }
+
+  .status-badge-neutral {
+    color: var(--text-aux);
+    font-weight: 400;
+  }
+}

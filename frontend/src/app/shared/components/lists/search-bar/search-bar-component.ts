@@ -16,6 +16,7 @@ const SEARCH_DEBOUNCE_MS = 500;
 export class SearchBarComponent implements OnInit {
   @Input() placeholder: string = 'Buscar...';
   @Output() modifiedSearch = new EventEmitter<string>();
+  @Output() filterClick = new EventEmitter<void>();
 
   private readonly destroyRef = inject(DestroyRef);
 

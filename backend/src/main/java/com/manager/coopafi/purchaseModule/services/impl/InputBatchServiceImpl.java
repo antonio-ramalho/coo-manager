@@ -3,8 +3,8 @@ package com.manager.coopafi.purchaseModule.services.impl;
 import com.manager.coopafi.infrastructure.exceptions.ResourceNotFoundException;
 import com.manager.coopafi.infrastructure.valueObjects.ExpirationDate;
 import com.manager.coopafi.infrastructure.valueObjects.Quantity;
-import com.manager.coopafi.produtcModule.entities.InputProduct;
-import com.manager.coopafi.produtcModule.repositories.InputProductRepository;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.repositories.InputProductRepository;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchMinDto;
@@ -76,7 +76,8 @@ public class InputBatchServiceImpl implements InputBatchService {
                         "Produto não cadastrado ou inativo"));
 
         Quantity quantity = new Quantity(new BigDecimal(dto.quantityValue()));
-        InputBatch batch = new InputBatch(quantity, product, quantity, new ExpirationDate(dto.expirationDate()));
+        InputBatch batch = new InputBatch(dto.batchCode(), quantity, product, quantity,
+                new ExpirationDate(dto.expirationDate()));
 
         batchRepository.save(batch);
         return new InputBatchDto(batch);
@@ -101,6 +102,16 @@ public class InputBatchServiceImpl implements InputBatchService {
                 .orElseThrow(() -> new ResourceNotFoundException("Lote não encontrado"));
 
         batch.deactivateByUser();
+        batchRepository.save(batch);
+    }
+
+    @Override
+    @Transactional
+    public void activate(Long id) {
+        InputBatch batch = batchRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lote não encontrado"));
+
+        batch.activateByUser();
         batchRepository.save(batch);
     }
 }

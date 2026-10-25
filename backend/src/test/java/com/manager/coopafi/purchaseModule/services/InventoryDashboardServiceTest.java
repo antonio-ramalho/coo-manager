@@ -4,7 +4,7 @@ import com.manager.coopafi.infrastructure.valueObjects.ExpirationDate;
 import com.manager.coopafi.infrastructure.valueObjects.Ncm;
 import com.manager.coopafi.infrastructure.valueObjects.Price;
 import com.manager.coopafi.infrastructure.valueObjects.Quantity;
-import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;

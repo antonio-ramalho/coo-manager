@@ -1,10 +1,10 @@
-package com.manager.coopafi.produtcModule.entities;
+package com.manager.coopafi.purchaseModule.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manager.coopafi.infrastructure.valueObjects.Ncm;
 import com.manager.coopafi.infrastructure.valueObjects.Price;
+import com.manager.coopafi.produtcModule.entities.Product;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
-import com.manager.coopafi.purchaseModule.entities.InputBatch;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

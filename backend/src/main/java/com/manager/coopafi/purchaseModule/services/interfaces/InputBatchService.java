@@ -21,4 +21,6 @@ public interface InputBatchService {
     InputBatchDto update(Long id, InputBatchUpdateDto dto);
 
     void delete(Long id);
+
+    void activate(Long id);
 }

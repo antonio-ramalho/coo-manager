@@ -1,0 +1,71 @@
+<div class="widgets-container">
+  <div class="card widget-card">
+    <div class="widget-header">
+      <h3 class="widget-title">Lotes vencendo</h3>
+      <div class="filter-pills">
+        @for (opt of expiringFilterOptions; track opt.value) {
+        <button type="button" class="pill-btn" [class.active]="selectedExpiringDays === opt.value"
+          (click)="onSelectExpiringDays(opt.value)">
+          {{ opt.label }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="widget-content custom-scrollbar">
+      @if (loadingExpiring) {
+      <div class="loading-state">
+        <span>Atualizando lotes...</span>
+      </div>
+      } @else if (!expiringBatches || expiringBatches.length === 0) {
+      <div class="empty-state">
+        <span>Nenhum lote próximo ao vencimento.</span>
+      </div>
+      } @else {
+      <ul class="widget-list">
+        @for (batch of expiringBatches; track batch.batchId) {
+        <li class="widget-list-item">
+          <span class="item-name truncate" [title]="batch.productName">{{ batch.productName }}</span>
+          <span class="item-value">{{ batch.expirationDate | date:'dd/MM/yyyy' }}</span>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+  </div>
+
+  <div class="card widget-card">
+    <div class="widget-header">
+      <h3 class="widget-title">Ranking dos mais vendidos</h3>
+      <div class="filter-pills">
+        @for (opt of topSellingFilterOptions; track opt.value) {
+        <button type="button" class="pill-btn" [class.active]="selectedTopSellingDays === opt.value"
+          (click)="onSelectTopSellingDays(opt.value)">
+          {{ opt.label }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="widget-content custom-scrollbar">
+      @if (loadingTopSelling) {
+      <div class="loading-state">
+        <span>Atualizando ranking...</span>
+      </div>
+      } @else if (!topSellingProducts || topSellingProducts.length === 0) {
+      <div class="empty-state">
+        <span>Nenhuma venda registrada no período.</span>
+      </div>
+      } @else {
+      <ul class="widget-list">
+        @for (prod of topSellingProducts; track prod.productId) {
+        <li class="widget-list-item">
+          <span class="item-name truncate" [title]="prod.productName">{{ prod.productName }}</span>
+          <span class="item-value">{{ prod.totalQuantitySold }}</span>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+  </div>
+</div>

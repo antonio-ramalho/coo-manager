@@ -4,10 +4,19 @@
   </app-product-details-header>
 
   <div details-body class="flex flex-col gap-4">
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <app-product-basic-info-card [id]="product.id" [price]="product.price.value" [measureUnit]="product.measureUnit"
         [ncm]="product.ncm" [productCode]="product.productCode">
       </app-product-basic-info-card>
+
+      <app-product-stock-summary-card [batches]="product.batches ?? []" [unitPrice]="product.price.value"
+        [measureUnit]="product.measureUnit">
+      </app-product-stock-summary-card>
+    </div>
+
+    <div class="w-full">
+      <app-product-batches-card [batches]="product.batches ?? []" [measureUnit]="product.measureUnit">
+      </app-product-batches-card>
     </div>
   </div>
 </app-details-layout-component>

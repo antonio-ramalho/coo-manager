@@ -11,7 +11,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class InventoryApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/input-batch/dashboard`;
+  private readonly baseUrl = `${environment.apiUrl}/input-batches/dashboard`;
 
   getDashboardSummary(): Observable<InventoryDashboard> {
     return this.http.get<InventoryDashboard>(this.baseUrl);

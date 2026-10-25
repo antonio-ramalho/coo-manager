@@ -1,3 +1,4 @@
+import { BatchStatus } from '../../../shared/enums/batch-status';
 
 export interface InputBatchTableItem {
   id: number;
@@ -6,22 +7,24 @@ export interface InputBatchTableItem {
   productCode: string;
   expirationDate: string;
   currentQuantity: number;
-  status: string;
+  status: BatchStatus | string;
   statusDescription: string;
 }
 
 export interface InputBatch {
   id: number;
+  batchCode?: string;
   inputProductId: number;
   productName: string;
   originalQuantity: number;
   currentQuantity: number;
   entryDate: string;
   expirationDate: string;
-  status: string;
+  status: BatchStatus | string;
 }
 
 export interface InputBatchInsert {
+  batchCode?: string;
   inputProductId: number;
   quantityValue: number;
   expirationDate: string;

@@ -1,0 +1,75 @@
+<div class="card table-wrapper">
+  <div class="table-actions-header">
+    <app-search-bar-component class="search-bar-container" placeholder="Pesquisar lote..."
+      (modifiedSearch)="searchChange.emit($event)" (filterClick)="filterClick.emit()"></app-search-bar-component>
+
+    <div class="actions-buttons-group">
+      <a appButton variant="primary" routerLink="/home/insumos/cadastro" class="new-batch-button">
+        Novo Lote
+      </a>
+    </div>
+  </div>
+
+  <div class="table-body-container custom-scrollbar">
+    <app-generic-table [columns]="columns" [data]="batches" [loading]="loading"
+      emptyMessage="Nenhum lote cadastrado ou localizado."></app-generic-table>
+  </div>
+
+  <app-pagination-component class="pagination-container" [currentPage]="currentPage" [totalItens]="totalElements"
+    [itensPerPage]="10" (swappedPage)="pageChange.emit($event)"></app-pagination-component>
+</div>
+
+<ng-template #actionsTemplate let-row>
+  <div class="relative flex items-center justify-center">
+    <button
+      class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none p-1 rounded transition-colors inline-flex items-center justify-center cursor-pointer"
+      (click)="toggleMenu(row.id, $event)"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+      title="Ações do lote"
+      type="button"
+    >
+      <svg lucideEllipsis class="w-5 h-5"></svg>
+    </button>
+
+    @if (openMenuRowId === row.id) {
+      <ng-template
+        cdkConnectedOverlay
+        [cdkConnectedOverlayOrigin]="trigger"
+        [cdkConnectedOverlayOpen]="openMenuRowId === row.id"
+        (overlayOutsideClick)="openMenuRowId = null"
+        [cdkConnectedOverlayPositions]="overlayPositions"
+      >
+        <div
+          class="bg-white shadow-lg rounded border border-gray-200 flex flex-col z-50 min-w-[130px] overflow-hidden py-1 text-left"
+        >
+          <button
+            class="px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors text-(--text-main) cursor-pointer"
+            (click)="onEdit(row.id, $event)"
+            type="button"
+          >
+            Editar
+          </button>
+
+          @if (row.status !== 'INACTIVE') {
+            <button
+              class="px-4 py-2 text-sm text-left text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors border-t border-gray-100 cursor-pointer"
+              (click)="onDeactivate(row.id, $event)"
+              type="button"
+            >
+              Desativar
+            </button>
+          } @else {
+            <button
+              class="px-4 py-2 text-sm text-left text-[var(--primary-base)] hover:bg-[var(--primary-light)] transition-colors border-t border-gray-100 cursor-pointer"
+              (click)="onActivate(row.id, $event)"
+              type="button"
+            >
+              Ativar
+            </button>
+          }
+        </div>
+      </ng-template>
+    }
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 package com.manager.coopafi.purchaseModule.dto.inputProduct;
 
-import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
 
 public record InputProductMinDto(
         Long id,

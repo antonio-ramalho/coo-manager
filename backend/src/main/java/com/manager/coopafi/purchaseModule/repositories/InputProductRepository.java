@@ -1,6 +1,6 @@
-package com.manager.coopafi.produtcModule.repositories;
+package com.manager.coopafi.purchaseModule.repositories;
 
-import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

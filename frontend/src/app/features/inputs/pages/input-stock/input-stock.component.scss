@@ -1,0 +1,47 @@
+@use "tailwind-ref";
+
+:host {
+  @apply flex-1 flex flex-col min-h-0;
+}
+
+.inventory-container {
+  @apply flex-1 flex flex-col min-h-0 overflow-hidden box-border;
+  gap: var(--space-layout);
+}
+
+.header-container {
+  @apply flex justify-between items-center shrink-0;
+}
+
+.inventory-layout {
+  @apply flex-1 flex min-h-0 overflow-hidden;
+  gap: var(--space-layout);
+
+  .main-column {
+    @apply flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden;
+    gap: var(--space-layout);
+  }
+
+  .sidebar-column {
+    @apply shrink-0 flex flex-col h-full min-h-0 overflow-y-auto;
+    width: 250px;
+    gap: var(--space-layout);
+  }
+}
+
+@media (max-width: 1200px) {
+  .inventory-container {
+    overflow-y: auto;
+  }
+
+  .inventory-layout {
+    flex-direction: column;
+    overflow: visible;
+
+    .sidebar-column {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+  }
+}

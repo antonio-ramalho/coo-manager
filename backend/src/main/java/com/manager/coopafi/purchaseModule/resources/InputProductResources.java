@@ -1,11 +1,10 @@
-package com.manager.coopafi.produtcModule.resources;
+package com.manager.coopafi.purchaseModule.resources;
 
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductUpdateDto;
-import com.manager.coopafi.produtcModule.services.InputProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manager.coopafi.purchaseModule.services.interfaces.InputProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +17,11 @@ import java.net.URI;
 @RequestMapping(value = "/input-products")
 public class InputProductResources {
 
-    @Autowired
-    private InputProductService service;
+    private final InputProductService service;
+
+    public InputProductResources(InputProductService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<Page<InputProductMinDto>> findAllByStatus(

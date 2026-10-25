@@ -5,7 +5,6 @@ import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchUpdateDto;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputBatchService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,7 +12,7 @@ import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchTableDto;
 import org.springframework.data.domain.Page;
 
 @RestController
-@RequestMapping(value = "/input-batch")
+@RequestMapping(value = "/input-batches")
 public class InputBatchResources {
 
     private final InputBatchService service;
@@ -57,6 +56,12 @@ public class InputBatchResources {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/{id}/activate")
+    public ResponseEntity<Void> activateById(@PathVariable Long id) {
+        service.activate(id);
         return ResponseEntity.noContent().build();
     }
 }

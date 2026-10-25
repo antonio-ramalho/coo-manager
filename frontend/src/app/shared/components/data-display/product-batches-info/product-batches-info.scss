@@ -1,0 +1,100 @@
+@use "tailwind-ref";
+
+.product-batches-container {
+  @apply p-4 flex flex-col gap-3 min-h-full;
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-card);
+  background-color: var(--bg-surface);
+}
+
+.h3 {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.data-container {
+  @apply flex gap-3 items-start;
+}
+
+.icon-container {
+  @apply w-4 h-4 mt-0.5 shrink-0;
+  color: var(--text-aux);
+}
+
+.spans-container {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+.span-data {
+  @apply text-sm font-medium break-words;
+  color: var(--text-main);
+}
+
+.title-data {
+  @apply text-xs;
+  color: var(--text-aux);
+}
+
+.empty-state {
+  @apply flex flex-col items-center justify-center py-6 text-center gap-2;
+}
+
+.empty-icon {
+  @apply w-8 h-8;
+  color: var(--text-aux);
+}
+
+.empty-text {
+  @apply text-xs;
+  color: var(--text-aux);
+}
+
+.batches-list-wrapper {
+  @apply flex flex-col flex-1 min-h-0 mt-1;
+}
+
+.batches-scroll-area {
+  @apply overflow-y-auto max-h-[220px] pr-1;
+}
+
+.batches-table {
+  @apply w-full text-xs;
+  border-collapse: collapse;
+
+  th {
+    @apply pb-1.5 font-medium;
+    color: var(--text-aux);
+    border-bottom: var(--border-width) solid var(--border-neutral);
+  }
+
+  td {
+    @apply py-1.5 text-xs;
+    color: var(--text-main);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+}
+
+.mini-badge {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold;
+}
+
+.badge-success {
+  background-color: var(--primary-light);
+  color: var(--primary-base);
+}
+
+.badge-warning {
+  background-color: var(--yellow-alert);
+  color: var(--orange);
+}
+
+.badge-danger {
+  background-color: var(--primary-red-alert);
+  color: var(--red-alert);
+}
+
+.badge-neutral {
+  background-color: var(--bg-surface);
+  color: var(--text-aux);
+  border: var(--border-width) solid var(--border-neutral);
+}

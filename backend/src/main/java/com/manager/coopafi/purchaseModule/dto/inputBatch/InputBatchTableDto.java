@@ -15,8 +15,9 @@ public record InputBatchTableDto(
     public InputBatchTableDto(InputBatch entity) {
         this(
                 entity.getId(),
-                entity.getUuid() != null ? "LOT-" + entity.getUuid().toString().substring(0, 8).toUpperCase()
-                        : "LOT-" + entity.getId(),
+                entity.getBatchCode() != null && !entity.getBatchCode().isBlank()
+                        ? entity.getBatchCode()
+                        : (entity.getUuid() != null ? "LOT-" + entity.getUuid().toString().substring(0, 8).toUpperCase() : "LOT-" + entity.getId()),
                 entity.getInputProduct() != null ? entity.getInputProduct().getProductName() : "",
                 entity.getInputProduct() != null ? entity.getInputProduct().getProductCode() : "",
                 entity.getExpirationDate() != null ? entity.getExpirationDate().getValue() : null,

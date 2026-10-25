@@ -8,7 +8,7 @@ import com.manager.coopafi.infrastructure.valueObjects.Price;
 import com.manager.coopafi.infrastructure.valueObjects.Quantity;
 import com.manager.coopafi.personModule.entities.Person;
 import com.manager.coopafi.personModule.repositories.PersonRepository;
-import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;

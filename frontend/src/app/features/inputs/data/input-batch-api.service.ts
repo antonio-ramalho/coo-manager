@@ -13,7 +13,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class InputBatchApiService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/input-batch`;
+  private readonly apiUrl = `${environment.apiUrl}/input-batches`;
 
   findPaged(
     page: number = 0,
@@ -45,5 +45,9 @@ export class InputBatchApiService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  activate(id: number): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/activate`, {});
   }
 }

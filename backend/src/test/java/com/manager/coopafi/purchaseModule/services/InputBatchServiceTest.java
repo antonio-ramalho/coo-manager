@@ -7,9 +7,9 @@ import com.manager.coopafi.infrastructure.valueObjects.ExpirationDate;
 import com.manager.coopafi.infrastructure.valueObjects.Ncm;
 import com.manager.coopafi.infrastructure.valueObjects.Price;
 import com.manager.coopafi.infrastructure.valueObjects.Quantity;
-import com.manager.coopafi.produtcModule.entities.InputProduct;
+import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
-import com.manager.coopafi.produtcModule.repositories.InputProductRepository;
+import com.manager.coopafi.purchaseModule.repositories.InputProductRepository;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchTableDto;
@@ -65,6 +65,7 @@ class InputBatchServiceTest {
         validationStrategies.clear();
         validationStrategies.add(new BatchExpirationDateValidator());
         validationStrategies.add(new BatchQuantityValidator());
+        validationStrategies.add(new com.manager.coopafi.purchaseModule.services.batchValidators.BatchProductCatalogStatusValidator(productRepository));
         ReflectionTestUtils.setField(batchService, "validationStrategies", validationStrategies);
 
         testProduct = new InputProduct(
@@ -76,7 +77,7 @@ class InputBatchServiceTest {
         ReflectionTestUtils.setField(testProduct, "id", 1L);
 
         Quantity initialQty = new Quantity(new BigDecimal("100.00"));
-        testBatch = new InputBatch(initialQty, testProduct, initialQty,
+        testBatch = new InputBatch("LOT-2024-001", initialQty, testProduct, initialQty,
                 new ExpirationDate(LocalDate.now().plusMonths(6)));
         ReflectionTestUtils.setField(testBatch, "id", 10L);
     }
@@ -85,6 +86,7 @@ class InputBatchServiceTest {
     @DisplayName("Deve inserir lote com sucesso quando produto for ativo e dados válidos")
     void shouldInsertBatchSuccessfully() {
         InputBatchInsertDto dto = new InputBatchInsertDto(
+                "LOT-2024-001",
                 1L,
                 50.0,
                 LocalDate.now().plusMonths(3));
@@ -100,9 +102,29 @@ class InputBatchServiceTest {
         InputBatchDto result = batchService.insert(dto);
 
         assertThat(result).isNotNull();
+        assertThat(result.batchCode()).isEqualTo("LOT-2024-001");
         assertThat(result.productName()).isEqualTo("Adubo Orgânico");
         assertThat(result.currentQuantity()).isEqualTo(50.0);
         verify(batchRepository, times(1)).save(any(InputBatch.class));
+    }
+
+    @Test
+    @DisplayName("Deve lançar DomainException ao tentar cadastrar lote para produto inativo no catálogo")
+    void shouldThrowExceptionWhenProductStatusIsNotActive() {
+        testProduct.deactivate(); // sets productCatalogStatus to INACTIVE
+        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct));
+
+        InputBatchInsertDto dto = new InputBatchInsertDto(
+                "LOT-2024-002",
+                1L,
+                20.0,
+                LocalDate.now().plusMonths(3));
+
+        assertThatThrownBy(() -> batchService.insert(dto))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Não é permitido cadastrar lote para um produto que não esteja com status ATIVO no catálogo.");
+
+        verify(batchRepository, never()).save(any());
     }
 
     @Test
@@ -144,6 +166,31 @@ class InputBatchServiceTest {
 
         assertThat(testBatch.getProductStatus()).isEqualTo(ProductInventoryStatus.INACTIVE);
         verify(batchRepository).save(testBatch);
+    }
+
+    @Test
+    @DisplayName("Deve ativar lote logicamente ao chamar activate")
+    void shouldActivateBatchLogically() {
+        testBatch.deactivateByUser();
+        assertThat(testBatch.getProductStatus()).isEqualTo(ProductInventoryStatus.INACTIVE);
+
+        when(batchRepository.findById(10L)).thenReturn(Optional.of(testBatch));
+
+        batchService.activate(10L);
+
+        assertThat(testBatch.getProductStatus()).isEqualTo(ProductInventoryStatus.IN_STOCK);
+        verify(batchRepository).save(testBatch);
+    }
+
+    @Test
+    @DisplayName("Deve lançar DomainException ao tentar ativar lote com validade vencida")
+    void shouldThrowExceptionWhenActivatingExpiredBatch() {
+        ReflectionTestUtils.setField(testBatch.getExpirationDate(), "value", LocalDate.now().minusDays(1));
+        when(batchRepository.findById(10L)).thenReturn(Optional.of(testBatch));
+
+        assertThatThrownBy(() -> batchService.activate(10L))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Não é possível ativar um lote com data de validade vencida.");
     }
 
     @Test
@@ -195,7 +242,7 @@ class InputBatchServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar página de lotes formatados para tabela")
+    @DisplayName("Deve retornar página de lotes formatados para tabela com batchCode prioritário")
     void shouldReturnPagedBatchesForTable() {
         Page<InputBatch> page = new PageImpl<>(List.of(testBatch), PageRequest.of(0, 10), 1);
         when(batchRepository.searchBatches(eq("Adubo"), any())).thenReturn(page);
@@ -203,6 +250,7 @@ class InputBatchServiceTest {
         Page<InputBatchTableDto> result = batchService.searchBatches(0, 10, "Adubo");
 
         assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().batchCode()).isEqualTo("LOT-2024-001");
         assertThat(result.getContent().getFirst().productName()).isEqualTo("Adubo Orgânico");
         assertThat(result.getContent().getFirst().statusDescription()).isEqualTo("Em Estoque");
     }

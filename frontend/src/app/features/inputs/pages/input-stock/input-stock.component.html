@@ -1,5 +1,40 @@
-<div class="content-interface">
-  <header class="flex justify-between items-center shrink-0">
-    <h1 class="txt-h1">Estoque de insumos</h1>
+<!-- Bloqueio no mobile via diretiva @if: não executa subscrições pesadas em telas menores -->
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Estoque e Inventário">
+  <a appButton variant="primary" routerLink="/home/insumos/cadastro">Novo lote</a>
+</app-desktop-only-notice>
+} @else {
+<div class="content-interface inventory-container">
+  <header class="header-container">
+    <h1 class="txt-h1">Inventário</h1>
   </header>
+
+  <div class="inventory-layout custom-scrollbar">
+    <section class="main-column">
+      @if (summary$ | async; as summary) {
+      <app-stock-kpi-cards class="shrink-0" [totalStockValue]="summary.totalStockValue"
+        [occupancy]="summary.occupancy"></app-stock-kpi-cards>
+      } @else {
+      <div class="card p-6 flex justify-center text-(--text-aux) text-sm shrink-0">
+        <span>Carregando dados do inventário...</span>
+      </div>
+      }
+
+      @if (pagedBatches$ | async; as batchPage) {
+      <app-stock-batch-table class="flex-1 min-h-0 flex flex-col" [batches]="batchPage.content" [loading]="loadingBatches"
+        [currentPage]="batchPage.pageable.pageNumber + 1" [totalElements]="batchPage.totalElements"
+        (searchChange)="onSearchChange($event)" (pageChange)="onPageChange($event)"
+        (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)" (activate)="onActivateBatch($event)"></app-stock-batch-table>
+      }
+    </section>
+
+    <aside class="sidebar-column custom-scrollbar">
+      <app-stock-sidebar-widgets [expiringBatches]="(expiringBatches$ | async) ?? []"
+        [topSellingProducts]="(topSellingProducts$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
+        [selectedTopSellingDays]="(topSellingDays$ | async) ?? 7" [loadingExpiring]="loadingExpiring"
+        [loadingTopSelling]="loadingTopSelling" (expiringDaysChange)="onExpiringDaysChange($event)"
+        (topSellingDaysChange)="onTopSellingDaysChange($event)"></app-stock-sidebar-widgets>
+    </aside>
+  </div>
 </div>
+}

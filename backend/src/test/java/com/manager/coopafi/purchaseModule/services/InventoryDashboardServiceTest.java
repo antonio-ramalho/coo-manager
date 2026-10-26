@@ -82,7 +82,7 @@ class InventoryDashboardServiceTest {
         assertThat(summary.occupancy().outOfStockCount()).isEqualTo(4L);
 
         assertThat(summary.expiringBatches()).hasSize(1);
-        assertThat(summary.topSellingProducts()).isNotEmpty();
+        assertThat(summary.topSellingProducts()).isEmpty();
     }
 
     @Test
@@ -138,14 +138,12 @@ class InventoryDashboardServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar ranking mockado consistente quando não houver vendas no período")
-    void shouldReturnMockTopSellingProductsWhenNoSales() {
+    @DisplayName("Deve retornar lista vazia quando não houver vendas no período")
+    void shouldReturnEmptyListWhenNoSales() {
         when(purchaseRepository.findTopSellingProducts(any(), any())).thenReturn(Collections.emptyList());
 
         List<TopSellingProductDto> result = dashboardService.getTopSellingProducts(7);
 
-        assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(5);
-        assertThat(result.getFirst().productName()).isEqualTo("Adubo Orgânico Fosfatado");
+        assertThat(result).isEmpty();
     }
 }

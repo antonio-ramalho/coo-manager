@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { BatchFormComponent } from '../../../../shared/components/forms/batch-form/batch-form.component';
@@ -39,6 +40,16 @@ export class InputBatchFormComponent implements OnInit {
   readonly batchGroup: FormGroup = buildBatchForm(this.fb, true);
   readonly products = signal<InputProductSummary[]>([]);
 
+  readonly searchProductsFn = (term: string): Observable<InputProductSummary[]> => {
+    return this.productService.findAllByPage(0, 10, term).pipe(
+      map((page) =>
+        page.content.filter(
+          (p) => p.productCatalogStatus === 'ACTIVE' || !p.productCatalogStatus,
+        ),
+      ),
+    );
+  };
+
   readonly stepLabels = ['Dados do Lote'];
   currentPage = 1;
   isSubmitting = false;
@@ -58,7 +69,11 @@ export class InputBatchFormComponent implements OnInit {
     this.location.back();
   }
 
-  save(): void {
+  save(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+
     if (this.batchGroup.invalid) {
       this.batchGroup.markAllAsTouched();
       this.toastService.showError('Preencha todos os campos obrigatórios corretamente.');
@@ -75,6 +90,7 @@ export class InputBatchFormComponent implements OnInit {
         })
         .subscribe({
           next: () => {
+            this.isSubmitting = false;
             this.toastService.showSuccess('Lote atualizado com sucesso!');
             this.location.back();
           },
@@ -91,11 +107,12 @@ export class InputBatchFormComponent implements OnInit {
       .insert({
         batchCode: values.batchCode,
         inputProductId: values.inputProductId,
-        quantityValue: Number(values.quantityValue),
+        quantityValue: Number(String(values.quantityValue).replace(',', '.')),
         expirationDate: values.expirationDate,
       })
       .subscribe({
         next: () => {
+          this.isSubmitting = false;
           this.toastService.showSuccess('Lote cadastrado com sucesso!');
           this.location.back();
         },
@@ -108,7 +125,7 @@ export class InputBatchFormComponent implements OnInit {
   }
 
   private loadActiveProducts(): void {
-    this.productService.findAllByPage(0, 100).subscribe({
+    this.productService.findAllByPage(0, 10).subscribe({
       next: (page) => {
         const active = page.content.filter(
           (p) => p.productCatalogStatus === 'ACTIVE' || !p.productCatalogStatus,

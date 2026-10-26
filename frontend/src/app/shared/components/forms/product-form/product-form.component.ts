@@ -70,7 +70,8 @@ export class ProductFormComponent implements OnInit {
           this.isSearchingNcm.set(false);
           if (items && items.length > 0) {
             const first = items[0];
-            this.group.get('ncm')?.setValue(first.codigo);
+            const cleanCode = (first.codigo || '').replace(/\D/g, '');
+            this.group.get('ncm')?.setValue(cleanCode);
             this.group.get('ncm')?.markAsDirty();
             this.selectedNcmDescription.set(this.formatDescription(first.descricao));
 
@@ -116,7 +117,8 @@ export class ProductFormComponent implements OnInit {
   }
 
   selectNcm(item: NcmItem): void {
-    this.group.get('ncm')?.setValue(item.codigo);
+    const cleanCode = (item.codigo || '').replace(/\D/g, '');
+    this.group.get('ncm')?.setValue(cleanCode);
     this.group.get('ncm')?.markAsDirty();
     this.group.get('ncm')?.markAsTouched();
     this.selectedNcmDescription.set(this.formatDescription(item.descricao));

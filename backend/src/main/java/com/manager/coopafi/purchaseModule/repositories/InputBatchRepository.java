@@ -46,6 +46,7 @@ public interface InputBatchRepository extends JpaRepository<InputBatch, Long> {
     @Query("""
                 SELECT b FROM InputBatch b
                 WHERE (:searchTerm IS NULL OR :searchTerm = '' OR
+                       LOWER(b.batchCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
                        LOWER(b.inputProduct.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
                        LOWER(b.inputProduct.productCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
                 ORDER BY b.id DESC

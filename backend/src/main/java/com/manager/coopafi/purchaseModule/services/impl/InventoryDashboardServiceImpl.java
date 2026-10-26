@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -96,21 +95,6 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
                     .toList();
         }
 
-        // Mock para demonstração inicial quando não houver compras registradas no
-        // período
-        return getMockTopSellingProducts(periodDays);
-    }
-
-    private List<TopSellingProductDto> getMockTopSellingProducts(int periodDays) {
-        List<TopSellingProductDto> mocks = new ArrayList<>();
-        double factor = periodDays == 365 ? 12.0 : (periodDays == 30 ? 3.0 : 1.0);
-
-        mocks.add(new TopSellingProductDto(1L, "Adubo Orgânico Fosfatado", 45.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(2L, "Calcário Agrícola Calcitico", 30.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(3L, "Biofertilizante Foliar NPK", 18.0 * factor, "LITER"));
-        mocks.add(new TopSellingProductDto(4L, "Semente de Milho Crioulo", 12.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(5L, "Substrato para Mudas", 8.0 * factor, "UNIT"));
-
-        return mocks;
+        return List.of();
     }
 }

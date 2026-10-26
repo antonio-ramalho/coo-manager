@@ -6,13 +6,17 @@ Sistema que ajuda cooperativas de agricultura familiar a gerenciar editais públ
 
 > Projeto pessoal e não comercial, criado para estudar programação orientada a objetos, arquitetura de software e desenvolvimento de APIs a partir de problemas reais do meu trabalho. Todos os dados são fictícios.
 >
-> Nota: a API roda no plano gratuito do Render, que desliga a aplicação quando ela fica sem uso. A primeira requisição pode demorar alguns minutos; depois disso, o sistema responde normalmente.
+> Nota: a API roda no plano gratuito do Render, que desliga a aplicação quando ela fica sem uso. A primeira requisição pode demorar alguns minutos; depois disso, o sistema responde normalmente. A aplicação não possui autenticação; os dados são fictícios e qualquer pessoa pode alterá-los.
 
 *English summary: a full stack system (Spring Boot + Angular) that helps small family-farming cooperatives manage public procurement notices, farmers and deliveries, automatically validating each notice's business rules. Personal learning project, fictional data.*
 
 ## Telas
 
-[INSIRA AQUI 2 OU 3 PRINTS OU UM GIF: lista de editais, tela de entregas, Swagger]
+![Imagem SwaggerApi](imagens/print1.png)
+
+![Imagem do catálogo](imagens/print2.png)
+
+![Imagem do Inventário](imagens/print3.png)
 
 ## O problema
 
@@ -22,10 +26,13 @@ Controlar tudo isso manualmente é difícil e propenso a erros. É aí que entra
 
 ## Funcionalidades
 
-**Regras de negócio validadas pelo sistema**
+**Regras de negócio validadas pelo sistema (v1.0)**
 - Só permite entregas de agricultores que atendem às exigências do edital (por exemplo, produção orgânica, com certificado).
 - Controla o limite de quantidade (quilos) e de valor (R$) que cada agricultor pode entregar em cada edital.
-- [ADICIONE OUTRAS REGRAS QUE O SISTEMA JÁ VALIDA HOJE]
+- Validação dos dados inseridos no cadastro do cliente.
+- Impede cadastrar um lote que já existe.
+- Impede vendas de produtos que não foram adquiridos ou com validade vencida.
+- Impede cadastro de lotes sem um insumo cadastrado.
 
 **Cadastros e gestão**
 - **Editais:** cadastro e acompanhamento dos editais públicos e de suas regras.
@@ -107,24 +114,24 @@ O back-end segue uma **arquitetura em camadas** (Resources, Services, Repositori
 - **Domínio rico (DDD):** uso de Value Objects e Entities para centralizar e proteger as regras de negócio.
 - **Fail-fast:** validação rigorosa dos dados logo na entrada, evitando processar informações inválidas.
 - **Qualidade de código:** aplicação de princípios SOLID e de Object Calisthenics para manter o código limpo, coeso e de fácil manutenção.
-- **Testes unitários:** testes automatizados com JUnit 5 para validar a precisão dos cálculos e a integridade das regras de negócio.
+- **Testes unitários:** testes automatizados com JUnit 5 para validar as regras de estoque, insumos e lotes.
 
 ## Como rodar localmente
 
 **Pré-requisitos:** Java JDK 25, Maven, Node.js com npm e MySQL instalados e configurados.
 
 1. Clone o repositório e entre na pasta do projeto.
-2. No MySQL, crie um banco de dados vazio: `CREATE DATABASE [NOME-DO-BANCO];`
+2. No MySQL, crie um banco de dados vazio: `CREATE DATABASE coopafi_db;`
 3. No back-end, copie `src/main/resources/application-dev.properties.example` para `application-dev.properties` e preencha com os dados do seu banco local (URL, usuário e senha).
 4. Suba a API com o perfil de desenvolvimento:
    ```bash
-   cd [PASTA-DO-BACKEND]
+   cd backend
    mvn spring-boot:run -Dspring-boot.run.profiles=dev
    ```
    A API fica em http://localhost:8080 e o Swagger em http://localhost:8080/swagger-ui/index.html
 5. Em outro terminal, suba o front-end:
    ```bash
-   cd [PASTA-DO-FRONTEND]
+   cd frontend
    npm install
    npm start
    ```
@@ -133,27 +140,33 @@ O back-end segue uma **arquitetura em camadas** (Resources, Services, Repositori
 ## Testes
 
 ```bash
-cd [PASTA-DO-BACKEND]
+cd backend
 mvn test
 ```
 
-Os testes unitários cobrem [DESCREVA: por exemplo, os cálculos de valor e quantidade, as validações de Value Objects e as regras de negócio dos editais].
+Os testes unitários cobrem as regras de negócio no que tange gestão de estoque, cadastro de insumos e de lotes. No momento as demais regras de negócio não foram validadas via testes unitários, foram testadas manualmente apenas via Postman, pretendo cobri-las com testes automatizados futuramente.
 
 ## Documentação da API
 
 - **Swagger (local):** http://localhost:8080/swagger-ui/index.html
-- **Coleção do Postman:** [`docs/[NOME-DO-ARQUIVO].json`](docs/[NOME-DO-ARQUIVO].json). Para usar, importe o arquivo no Postman e ajuste a variável de URL base para a API local ou de produção.
+- **Coleção do Postman:** [`documentacao/postman_colecao.json`](documentacao/postman_colecao.json). Para usar, importe o arquivo no Postman e ajuste a variável de URL base para a API local ou de produção.
 
 ## Infraestrutura e deploy
 
 - **API (produção):** [Render](https://coo-manager.onrender.com), com a senha do banco e demais segredos configurados como variáveis de ambiente.
 - **Banco de produção:** PostgreSQL hospedado no Supabase.
 - **Front-end (produção):** [Vercel](https://coo-manager-two.vercel.app), configurado para usar a API em produção.
-- No desenvolvimento, o perfil `dev` usa MySQL local; o perfil `prod` usa o banco em nuvem.
+- **No desenvolvimento**: o perfil `dev` usa MySQL local; o perfil `prod` usa o banco em nuvem.
 
 ## O que aprendi e próximos passos
 
-[ESCREVA EM 4 A 6 LINHAS, COM SUAS PALAVRAS: o que mais aprendeu construindo este projeto (por exemplo, modelagem de domínio, testes, organização em camadas, deploy) e o que melhoraria ou ainda quer implementar (por exemplo, autenticação, mais testes, novos relatórios).]
+Este projeto me ensinou muito em três frentes: modelagem, desenvolvimento full stack e engenharia de software. Aprendi o tempo todo: houve vários momentos em que implementei algo, descobri uma forma melhor de fazer e refatorei.
+
+**Modelagem na prática.** Comecei desenhando o diagrama de classes no Astah. Quando fui implementar, percebi que o desenho não se sustentava e recomecei do zero. Foi assim que entendi, de verdade, relacionamentos entre classes, orientação a objetos e como o diagrama se conecta ao código.
+
+**De zero a uma aplicação publicada.** Antes deste projeto, eu não tinha noção de APIs REST, front-end, banco de dados e deploy. Hoje entendo o básico de cada uma dessas áreas e construí e publiquei uma aplicação funcional, com testes automatizados em parte das regras e documentação da API.
+
+**Próximos passos.** Pretendo me aprofundar em testes e em segurança e autenticação, temas que já estudei, mas ainda não dominei o suficiente.
 
 ## Por que este projeto
 

@@ -1,16 +1,9 @@
-<header class="flex items-center gap-4 mb-6 md:mb-8 shrink-0">
+<header class="flex items-center gap-4 mb-3 md:mb-4 shrink-0">
   @if (showBackButton) {
-    <button
-      type="button"
-      appButton
-      variant="surface"
-      size="circle"
-      class="w-10 h-10 p-1 rounded-full cursor-pointer"
-      (click)="back.emit()"
-      aria-label="Voltar"
-    >
-      <svg lucideArrowLeft class="w-5 h-5"></svg>
-    </button>
+  <button type="button" appButton variant="surface" size="circle" class="w-10 h-10 p-1 rounded-full cursor-pointer"
+    (click)="back.emit()" aria-label="Voltar">
+    <svg lucideArrowLeft class="w-5 h-5"></svg>
+  </button>
   }
   <h1 class="txt-h1">{{ title }}</h1>
 </header>

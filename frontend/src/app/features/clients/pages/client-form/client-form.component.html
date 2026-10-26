@@ -1,39 +1,29 @@
-<div class="flex flex-col w-full h-full min-h-0 overflow-y-auto p-4 md:p-6 custom-scrollbar">
-  <app-page-title
-    [title]="isEditing ? 'Edição de cliente' : 'Cadastro de cliente'"
-    [showBackButton]="true"
-    (back)="cancel()"
-  >
+<div class="flex flex-col w-full h-full min-h-0 overflow-y-auto p-3 sm:p-4 md:py-3 md:px-6 custom-scrollbar">
+  <app-page-title [title]="isEditing ? 'Edição de cliente' : 'Cadastro de cliente'" [showBackButton]="true"
+    (back)="cancel()">
   </app-page-title>
 
-  <form [formGroup]="masterForm" (ngSubmit)="save()" class="flex flex-col w-full pb-12">
-    <app-stepper-layout
-      [steps]="stepLabels"
-      [currentStep]="currentPage"
-      [nextDisabled]="isCurrentStepInvalid"
-      [submitDisabled]="masterForm.invalid"
-      [isSubmitting]="isSubmitting"
-      (next)="nextPage()"
-      (back)="backPage()"
-      (cancel)="cancel()"
-    >
+  <form [formGroup]="masterForm" (ngSubmit)="save()" class="flex flex-col w-full min-h-0">
+    <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
+      [submitDisabled]="masterForm.invalid" [isSubmitting]="isSubmitting" (next)="nextPage()" (back)="backPage()"
+      (cancel)="cancel()">
       @switch (currentPage) {
-        @case (1) {
-          <h3 class="txt-h2 mb-6">Informações Básicas</h3>
-          <app-person-form [group]="basicInfoGroup"></app-person-form>
-        }
-        @case (2) {
-          <h3 class="txt-h2 mb-6">Dados Específicos</h3>
-          @if (personType === PersonType.NATURAL) {
-            <app-natural-person-form-component [group]="specificDataGroup"></app-natural-person-form-component>
-          } @else {
-            <app-juridic-person-form [group]="specificDataGroup"></app-juridic-person-form>
-          }
-        }
-        @case (3) {
-          <h3 class="txt-h2 mb-6">Endereço</h3>
-          <app-address-form [group]="addressGroup"></app-address-form>
-        }
+      @case (1) {
+      <h3 class="txt-h2 mb-3">Informações Básicas</h3>
+      <app-person-form [group]="basicInfoGroup"></app-person-form>
+      }
+      @case (2) {
+      <h3 class="txt-h2 mb-3">Dados Específicos</h3>
+      @if (personType === PersonType.NATURAL) {
+      <app-natural-person-form-component [group]="specificDataGroup"></app-natural-person-form-component>
+      } @else {
+      <app-juridic-person-form [group]="specificDataGroup"></app-juridic-person-form>
+      }
+      }
+      @case (3) {
+      <h3 class="txt-h2 mb-3">Endereço</h3>
+      <app-address-form [group]="addressGroup"></app-address-form>
+      }
       }
     </app-stepper-layout>
   </form>

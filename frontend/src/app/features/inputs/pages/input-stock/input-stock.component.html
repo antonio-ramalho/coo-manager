@@ -1,7 +1,7 @@
 <!-- Bloqueio no mobile via diretiva @if: não executa subscrições pesadas em telas menores -->
 @if (!isDesktop()) {
 <app-desktop-only-notice featureName="Estoque e Inventário">
-  <a appButton variant="primary" routerLink="/home/insumos/cadastro">Novo lote</a>
+  <a appButton variant="primary" routerLink="/home/insumos/lotes/cadastro">Novo lote</a>
 </app-desktop-only-notice>
 } @else {
 <div class="content-interface inventory-container">

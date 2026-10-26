@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.ncm-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--bg-surface);
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow-card);
+  max-height: 220px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.ncm-suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: var(--border-width) solid var(--border-neutral);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: var(--bg-surface-hover);
+  }
+}

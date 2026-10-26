@@ -1,0 +1,48 @@
+<div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-3.5 md:gap-4">
+
+  @if (showProductSelect) {
+  <div class="flex flex-col gap-1 md:col-span-12">
+    <label class="txt-label" for="inputProductId">Insumo / Produto Vinculado</label>
+    <select class="appearance-none input-base txt-body" id="inputProductId" name="inputProductId"
+      formControlName="inputProductId"
+      [class.input-error]="group.get('inputProductId')?.invalid && group.get('inputProductId')?.touched">
+      <option [ngValue]="null" disabled selected>Selecione o produto do catálogo...</option>
+      @for (product of products; track product.id) {
+      <option [ngValue]="product.id">
+        {{ product.productName }} ({{ product.productCode }})
+      </option>
+      }
+    </select>
+    <app-input-error [control]="group.get('inputProductId')"></app-input-error>
+  </div>
+  }
+
+  <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
+    <label class="txt-label" for="batchCode">Código do Lote</label>
+    <input class="input-base txt-body" id="batchCode" name="batchCode" type="text" formControlName="batchCode"
+      [class.input-error]="group.get('batchCode')?.invalid && group.get('batchCode')?.touched"
+      placeholder="Código do lote">
+    <app-input-error [control]="group.get('batchCode')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
+    <label class="txt-label" for="quantityValue">Quantidade Inicial</label>
+    <input
+      class="input-base txt-body [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+      id="quantityValue" name="quantityValue" type="number" step="0.01" min="0" formControlName="quantityValue"
+      [class.input-error]="group.get('quantityValue')?.invalid && group.get('quantityValue')?.touched"
+      placeholder="50.00">
+    <app-input-error [control]="group.get('quantityValue')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
+    <label class="txt-label" for="expirationDate">Data de Validade</label>
+    <input class="input-base txt-body" id="expirationDate" name="expirationDate" type="text"
+      formControlName="expirationDate" mwlFlatpickr [altInput]="true" [minDate]="'today'"
+      (flatpickrClose)="group.get('expirationDate')?.markAsTouched()"
+      [class.input-error]="group.get('expirationDate')?.invalid && group.get('expirationDate')?.touched"
+      altFormat="d/m/Y" dateFormat="Y-m-d" placeholder="Selecione a validade...">
+    <app-input-error [control]="group.get('expirationDate')"></app-input-error>
+  </div>
+
+</div>

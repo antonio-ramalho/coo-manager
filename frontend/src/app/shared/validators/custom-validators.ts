@@ -69,4 +69,53 @@ export class CustomValidators {
     const birthDate = new Date(`${control.value}T00:00:00`);
     return ageInYears(birthDate) < MINIMUM_AGE ? { minor: true } : null;
   }
+
+  /** Valida código NCM brasileiro (8 dígitos numéricos). */
+  static ncm(control: AbstractControl<string | null>): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const digits = onlyDigits(control.value);
+    if (digits.length !== 8) return { invalidNcm: true };
+
+    return null;
+  }
+
+  /** Valida se a data de validade é posterior à data atual (data futura). */
+  static futureDate(control: AbstractControl<string | null>): ValidationErrors | null {
+    if (!control.value) return null;
+
+    let targetDate: Date;
+    if (control.value.includes('/')) {
+      const parts = control.value.split('/');
+      if (parts.length === 3) {
+        targetDate = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+      } else {
+        return { pastDate: true };
+      }
+    } else {
+      targetDate = new Date(`${control.value}T00:00:00`);
+    }
+
+    if (isNaN(targetDate.getTime())) return { pastDate: true };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return targetDate <= today ? { pastDate: true } : null;
+  }
+
+  /** Valida se o número é estritamente positivo (> 0). */
+  static positiveNumber(control: AbstractControl<number | string | null>): ValidationErrors | null {
+    if (control.value === null || control.value === undefined || control.value === '') return null;
+
+    const numericValue = typeof control.value === 'string'
+      ? parseFloat(control.value.replace(',', '.'))
+      : Number(control.value);
+
+    if (isNaN(numericValue) || numericValue <= 0) {
+      return { notPositive: true };
+    }
+
+    return null;
+  }
 }

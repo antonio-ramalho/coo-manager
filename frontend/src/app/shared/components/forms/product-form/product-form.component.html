@@ -1,0 +1,94 @@
+<div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-3.5 md:gap-4">
+
+  <div class="flex flex-col gap-1 md:col-span-8 relative">
+    <div class="flex items-center justify-between">
+      <label class="txt-label" for="productName">Nome do Insumo / Produto</label>
+      @if (isSearchingNcm()) {
+      <span class="txt-aux text-[var(--primary-base)] text-xs flex items-center gap-1">
+        <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        Buscando NCM...
+      </span>
+      }
+    </div>
+
+    <input class="input-base txt-body" id="productName" name="productName" type="text" formControlName="productName"
+      [class.input-error]="group.get('productName')?.invalid && group.get('productName')?.touched"
+      placeholder="Ex: Abobrinha, Adubo Orgânico...">
+    <app-input-error [control]="group.get('productName')"></app-input-error>
+
+    @if (ncmSuggestions().length > 0) {
+    <div class="ncm-suggestions-dropdown">
+      <div
+        class="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-app)] border-b border-[var(--border-neutral)] text-xs font-semibold text-[var(--text-aux)]">
+        <span>Outras classificações NCM encontradas</span>
+        <button type="button" (click)="closeSuggestions()"
+          class="text-[var(--text-aux)] hover:text-[var(--text-main)] cursor-pointer">
+          ✕ Fechar
+        </button>
+      </div>
+      @for (item of ncmSuggestions(); track item.codigo) {
+      <div class="ncm-suggestion-item" (click)="selectNcm(item)">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-[var(--primary-base)]">{{ item.codigo }}</span>
+        </div>
+        <p class="text-xs text-[var(--text-aux)] line-clamp-1 mt-0.5">{{ item.descricao }}</p>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="productCode">Código Interno</label>
+    <input class="input-base txt-body" id="productCode" name="productCode" type="text" formControlName="productCode"
+      [class.input-error]="group.get('productCode')?.invalid && group.get('productCode')?.touched"
+      placeholder="Código interno">
+    <app-input-error [control]="group.get('productCode')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="measureUnit">Unidade de Medida</label>
+    <select class="appearance-none input-base txt-body" id="measureUnit" name="measureUnit"
+      formControlName="measureUnit"
+      [class.input-error]="group.get('measureUnit')?.invalid && group.get('measureUnit')?.touched">
+      <option value="" disabled selected>Selecione a unidade...</option>
+      @for (unit of measureUnitOptions; track unit) {
+      <option [value]="unit">
+        {{ unit | measureUnitLabel }}
+      </option>
+      }
+    </select>
+    <app-input-error [control]="group.get('measureUnit')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="price">Preço Unitário</label>
+    <div class="relative flex items-center">
+      <span class="absolute left-3 text-sm font-medium text-[var(--text-aux)] pointer-events-none select-none"></span>
+      <input
+        class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none input-base txt-body pl-9 w-full"
+        id="price" name="price" type="number" step="0.01" min="0" formControlName="price"
+        [class.input-error]="group.get('price')?.invalid && group.get('price')?.touched" placeholder="0,00">
+    </div>
+    <app-input-error [control]="group.get('price')"></app-input-error>
+  </div>
+
+  <div class="flex flex-col gap-1 md:col-span-4">
+    <label class="txt-label" for="ncm">NCM</label>
+    <input class="input-base txt-body" id="ncm" name="ncm" type="text" mask="0000.00.00" formControlName="ncm"
+      [class.input-error]="group.get('ncm')?.invalid && group.get('ncm')?.touched" placeholder="0000.00.00">
+    <app-input-error [control]="group.get('ncm')"></app-input-error>
+
+    @if (selectedNcmDescription()) {
+    <div
+      class="text-xs text-[var(--text-aux)] bg-[var(--bg-app)] py-1.5 px-2.5 rounded-[var(--radius-btn)] border border-[var(--border-neutral)] mt-1 line-clamp-2"
+      [title]="selectedNcmDescription() ?? ''">
+      <span class="font-semibold text-[var(--text-main)]">NCM:</span> {{ selectedNcmDescription() }}
+    </div>
+    }
+  </div>
+
+</div>

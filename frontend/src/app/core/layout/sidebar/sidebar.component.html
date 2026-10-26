@@ -1,0 +1,99 @@
+<aside
+  class="aside-container"
+  [class.w-64]="!collapsed || isMobile"
+  [class.w-20]="collapsed && !isMobile"
+>
+  <!-- Botão de colapso desktop -->
+  @if (!isMobile) {
+    <button
+      type="button"
+      (click)="toggleCollapse.emit()"
+      class="toggle-button"
+      [attr.aria-label]="collapsed ? 'Expandir menu' : 'Recolher menu'"
+    >
+      @if (!collapsed) {
+        <svg lucideChevronLeft class="h-4 w-4"></svg>
+      } @else {
+        <svg lucideChevronRight class="h-4 w-4"></svg>
+      }
+    </button>
+  }
+
+  <!-- Header da Logo -->
+  <div class="h-18 flex items-center justify-between pl-6 pr-4 shrink-0 whitespace-nowrap overflow-hidden">
+    <div class="flex items-center">
+      <div class="w-8 h-8 bg-(--primary-hover) rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0">
+        Lg
+      </div>
+      <span
+        class="text-xl font-bold text-(--text-main) ml-4 transition-opacity duration-300"
+        [class.opacity-0]="collapsed && !isMobile"
+        [class.opacity-100]="!collapsed || isMobile"
+      >
+        CooManager
+      </span>
+    </div>
+
+    @if (isMobile) {
+      <button
+        type="button"
+        (click)="closeMobile.emit()"
+        class="p-2 text-(--text-aux) hover:text-(--text-main) rounded-lg"
+        aria-label="Fechar menu"
+      >
+        <svg lucideX class="h-5 w-5"></svg>
+      </button>
+    }
+  </div>
+
+  <div class="w-full h-px bg-(--border-neutral) shrink-0"></div>
+
+  <!-- Lista de Seções e Links -->
+  <div class="flex-1 py-6 flex flex-col gap-2 overflow-y-auto overflow-x-hidden scrollbar-hide">
+    @for (section of sections; track section.title) {
+      <div class="h-6 flex items-center pl-5 mb-2 overflow-hidden whitespace-nowrap">
+        <span
+          class="txt-label transition-opacity duration-300 uppercase tracking-wider text-[11px]"
+          [class.opacity-0]="collapsed && !isMobile"
+          [class.opacity-100]="!collapsed || isMobile"
+        >
+          {{ section.title }}
+        </span>
+      </div>
+
+      <nav>
+        <ul class="flex flex-col gap-2">
+          @for (item of section.items; track item.route) {
+            <li>
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="active"
+                (click)="onNavigate()"
+                class="menu-link"
+                [title]="collapsed && !isMobile ? item.label : ''"
+              >
+                <div class="link-icon-container">
+                  @switch (item.iconName) {
+                    @case ('dashboard') { <svg lucideLayoutDashboard class="w-5 h-5"></svg> }
+                    @case ('logistics') { <svg lucideTruck class="w-5 h-5"></svg> }
+                    @case ('financial') { <svg lucideDollarSign class="w-5 h-5"></svg> }
+                    @case ('clients') { <svg lucideUsers class="w-5 h-5"></svg> }
+                    @case ('sales') { <svg lucideShoppingCart class="w-5 h-5"></svg> }
+                    @case ('inputs') { <svg lucideBarcode class="w-5 h-5"></svg> }
+                  }
+                </div>
+                <span
+                  class="link-span"
+                  [class.opacity-0]="collapsed && !isMobile"
+                  [class.opacity-100]="!collapsed || isMobile"
+                >
+                  {{ item.label }}
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+    }
+  </div>
+</aside>

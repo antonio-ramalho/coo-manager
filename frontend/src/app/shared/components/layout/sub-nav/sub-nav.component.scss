@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sub-nav-link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-bottom: 3px solid transparent;
+  color: var(--text-aux);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--text-main);
+  }
+
+  &.active-tab {
+    border-bottom: 3px solid var(--primary-base) !important;
+    color: var(--primary-base) !important;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,45 @@
+<div class="product-stock-summary-container">
+  <h3 class="h3">Resumo de estoque</h3>
+
+  <div class="data-container">
+    <svg lucideBoxes class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Saldo disponível</span>
+      <span class="span-data font-semibold">
+        {{ totalAvailableQuantity | number:'1.0-2':'pt-BR' }} {{ measureUnit | measureUnitLabel }}
+      </span>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <svg lucideCircleDollarSign class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Valor imobilizado</span>
+      <span class="span-data">
+        {{ totalStockFinancialValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <svg lucideLayers class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Lotes no inventário</span>
+      <span class="span-data">
+        {{ activeBatchesCount }} ativo(s) de {{ totalBatchesCount }} cadastrado(s)
+      </span>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <svg lucideShieldCheck class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Situação do estoque</span>
+      <div class="mt-1">
+        <span class="badge" [ngClass]="statusClass">
+          {{ statusLabel }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

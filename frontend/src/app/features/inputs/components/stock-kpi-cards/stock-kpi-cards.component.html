@@ -1,0 +1,51 @@
+<div class="card kpi-container">
+  <div class="kpi-value-block">
+    <div class="icon-wrapper">
+      <svg lucideCircleDollarSign class="kpi-icon"></svg>
+    </div>
+    <div class="kpi-text-group">
+      <span class="txt-tag">Valor Total do Estoque</span>
+      <span class="kpi-main-value">{{ totalStockValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="kpi-occupancy-block">
+    <div class="occupancy-header">
+      <span class="occupancy-count">{{ totalProducts }}</span>
+      <span class="occupancy-label">Lotes Ativos</span>
+    </div>
+
+    <div class="segmented-bar">
+      @if (totalProducts === 0) {
+      <div class="bar-segment bar-empty" style="width: 100%"></div>
+      } @else {
+      @if (inStockPercent > 0) {
+      <div class="bar-segment bar-in-stock" [style.width.%]="inStockPercent" title="Em estoque"></div>
+      }
+      @if (lowStockPercent > 0) {
+      <div class="bar-segment bar-low-stock" [style.width.%]="lowStockPercent" title="Estoque baixo"></div>
+      }
+      @if (outOfStockPercent > 0) {
+      <div class="bar-segment bar-out-of-stock" [style.width.%]="outOfStockPercent" title="Esgotado"></div>
+      }
+      }
+    </div>
+
+    <div class="occupancy-legend">
+      <div class="legend-item">
+        <span class="dot dot-in-stock"></span>
+        <span class="legend-text">Em estoque: <strong>{{ occupancy?.inStockCount ?? 0 }}</strong></span>
+      </div>
+      <div class="legend-item">
+        <span class="dot dot-low-stock"></span>
+        <span class="legend-text">Estoque baixo: <strong>{{ occupancy?.lowStockCount ?? 0 }}</strong></span>
+      </div>
+      <div class="legend-item">
+        <span class="dot dot-out-of-stock"></span>
+        <span class="legend-text">Esgotado: <strong>{{ occupancy?.outOfStockCount ?? 0 }}</strong></span>
+      </div>
+    </div>
+  </div>
+</div>

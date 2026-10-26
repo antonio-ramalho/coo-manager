@@ -1,51 +1,44 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, Input, OnInit, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, filter, Subject, switchMap, takeUntil } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { debounceTime, filter, switchMap } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 import { InputErrorComponent } from '../input-error/input-error-component';
-import { BrazilianState } from '../../../enums/brazilianState';
+import { BrazilianState } from '../../../enums/brazilian-state';
+import { ZipCodeLookupService } from '../../../../core/services/zip-code-lookup.service';
 
+const ZIP_CODE_DEBOUNCE_MS = 300;
+
+/**
+ * Campos de endereço ligados a um `FormGroup` recebido do pai.
+ * Usa apenas o serviço de infraestrutura de CEP (sem regras de negócio) para autopreencher o endereço.
+ */
 @Component({
   selector: 'app-address-form',
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective, InputErrorComponent],
+  imports: [ReactiveFormsModule, NgxMaskDirective, InputErrorComponent],
   templateUrl: './address-form-component.html',
 })
-export class AddressFormComponent {
+export class AddressFormComponent implements OnInit {
   @Input({ required: true }) group!: FormGroup;
-  private destroy$ = new Subject<void>();
 
-  http = inject(HttpClient);
-  states = Object.entries(BrazilianState);
+  private readonly zipCodeLookup = inject(ZipCodeLookupService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly numberInput = viewChild<ElementRef<HTMLInputElement>>('numberInput');
 
-  ngOnInit() {
+  readonly states = Object.entries(BrazilianState);
+
+  ngOnInit(): void {
     this.group
       .get('zipCode')
       ?.valueChanges.pipe(
-        takeUntil(this.destroy$),
-        debounceTime(300),
-        filter((cep) => cep && cep.replace(/\D/g, '').length === 8),
-        switchMap((cep) => {
-          const cepLimpo = cep.replace(/\D/g, '');
-          return this.http.get<any>(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-        }),
+        debounceTime(ZIP_CODE_DEBOUNCE_MS),
+        filter((zipCode: string | null) => this.zipCodeLookup.isComplete(zipCode)),
+        switchMap((zipCode: string) => this.zipCodeLookup.lookup(zipCode)),
+        takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe((dados) => {
-        if (!dados.erro) {
-          this.group.patchValue({
-            street: dados.logradouro,
-            city: dados.localidade,
-            state: dados.uf,
-            neighborhood: dados.bairro,
-          });
-          document.getElementById('number')?.focus();
-        }
+      .subscribe((address) => {
+        this.group.patchValue(address);
+        this.numberInput()?.nativeElement.focus();
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

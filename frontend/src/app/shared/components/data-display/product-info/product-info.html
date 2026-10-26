@@ -1,0 +1,37 @@
+<div class="product-info-container">
+  <h3 class="h3">Informações do produto</h3>
+
+  <div class="data-container">
+    <svg lucideCircleDollarSign class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Preço unitário base</span>
+      <span class="span-data">{{ price | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <svg lucideScale class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Unidade de medida</span>
+      <span class="span-data">{{ measureUnit | measureUnitLabel }}</span>
+    </div>
+  </div>
+
+  <div class="data-container">
+    <svg lucideBarcode class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Classificação Fiscal (NCM)</span>
+      <span class="span-data">{{ ncm | ncm }}</span>
+    </div>
+  </div>
+
+  @if (productCode) {
+  <div class="data-container">
+    <svg lucideTag class="icon-container"></svg>
+    <div class="spans-container">
+      <span class="title-data">Código interno</span>
+      <span class="span-data">{{ productCode }}</span>
+    </div>
+  </div>
+  }
+</div>

@@ -1,0 +1,25 @@
+<div class="flex h-screen w-full overflow-hidden bg-(--bg-app)">
+  <!-- Backdrop do Menu Mobile -->
+  @if (!isDesktop() && isMobileMenuOpen()) {
+  <div class="fixed inset-0 z-40 bg-black/50 transition-opacity md:hidden" (click)="closeMobileMenu()"
+    aria-hidden="true"></div>
+  }
+
+  <!-- Sidebar: Gaveta flutuante no Mobile, Estática no Desktop -->
+  <app-sidebar class="transition-transform duration-300 md:static md:translate-x-0 h-full" [class.fixed]="!isDesktop()"
+    [class.inset-y-0]="!isDesktop()" [class.left-0]="!isDesktop()" [class.z-50]="!isDesktop()"
+    [class.-translate-x-full]="!isDesktop() && !isMobileMenuOpen()"
+    [class.translate-x-0]="!isDesktop() && isMobileMenuOpen()" [sections]="sections"
+    [collapsed]="isDesktop() && isSidebarCollapsed()" [isMobile]="!isDesktop()" (toggleCollapse)="toggleCollapse()"
+    (closeMobile)="closeMobileMenu()" (navigate)="closeMobileMenu()">
+  </app-sidebar>
+
+  <!-- Conteúdo Principal -->
+  <div class="flex min-w-0 flex-1 flex-col h-full overflow-hidden">
+    <app-topbar [isDesktop]="isDesktop()" (menuClick)="openMobileMenu()"></app-topbar>
+    <main class="min-h-0 flex-1 overflow-y-auto" [class.overflow-hidden]="isDesktop()"
+      [class.overflow-y-auto]="!isDesktop()">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

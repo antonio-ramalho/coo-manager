@@ -11,6 +11,11 @@
 
   --red-alert: #E53935;
   --primary-red-alert: #FFEBEE;
+  --yellow-alert: #fffad0;
+  --yellow-alert-hover: #e2dc37;
+
+  --blue: #0891b2;
+  --orange: #d97706;
 
   --text-main: #111827;
   --text-aux: #6b7280;
@@ -40,6 +45,7 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

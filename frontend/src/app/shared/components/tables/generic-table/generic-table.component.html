@@ -1,0 +1,76 @@
+<div class="table-container custom-scrollbar">
+  <table class="generic-table">
+    <thead>
+      <tr>
+        @for (col of columns; track col.key) {
+          <th
+            [style.width]="col.width"
+            [class.text-left]="!col.align || col.align === 'left'"
+            [class.text-center]="col.align === 'center'"
+            [class.text-right]="col.align === 'right'"
+          >
+            {{ col.header }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (loading) {
+        <tr>
+          <td [attr.colspan]="columns.length" class="text-center py-8">
+            <div class="flex items-center justify-center gap-2 text-(--text-aux) text-sm">
+              <span class="animate-pulse">Carregando dados...</span>
+            </div>
+          </td>
+        </tr>
+      } @else if (!data || data.length === 0) {
+        <tr>
+          <td [attr.colspan]="columns.length" class="empty-cell">
+            <div class="empty-state">
+              <span>{{ emptyMessage }}</span>
+            </div>
+          </td>
+        </tr>
+      } @else {
+        @for (row of data; track trackByItem($index, row)) {
+          <tr class="table-row">
+            @for (col of columns; track col.key) {
+              <td
+                [style.width]="col.width"
+                [class.text-left]="!col.align || col.align === 'left'"
+                [class.text-center]="col.align === 'center'"
+                [class.text-right]="col.align === 'right'"
+              >
+                @if (col.cellTemplate) {
+                  <ng-container
+                    *ngTemplateOutlet="col.cellTemplate; context: { $implicit: row, column: col }"
+                  ></ng-container>
+                } @else if (getTemplate(col.key)) {
+                  <ng-container
+                    *ngTemplateOutlet="getTemplate(col.key)!; context: { $implicit: row, column: col }"
+                  ></ng-container>
+                } @else if (col.type === 'badge') {
+                  <span
+                    class="badge"
+                    [ngClass]="col.cellClass ? col.cellClass(row) : ''"
+                  >
+                    {{ getCellValue(row, col) }}
+                  </span>
+                } @else if (col.type === 'date') {
+                  <span>{{ getCellValue(row, col) | date:'dd/MM/yyyy' }}</span>
+                } @else if (col.type === 'currency') {
+                  <span>{{ getCellValue(row, col) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+                } @else {
+                  <span [ngClass]="col.cellClass ? col.cellClass(row) : ''">
+                    {{ getCellValue(row, col) }}
+                  </span>
+                }
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

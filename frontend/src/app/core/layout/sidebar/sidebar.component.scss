@@ -1,0 +1,42 @@
+@use "tailwind-ref";
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.aside-container {
+  @apply relative h-full bg-(--bg-surface) border-r border-(--border-neutral) shadow-sm transition-all duration-300 flex flex-col z-20;
+}
+
+.menu-link {
+  @apply flex items-center mx-4 rounded-(--radius-btn) cursor-pointer transition-colors duration-200 outline-none overflow-hidden text-(--text-aux) no-underline;
+}
+
+.menu-link:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-main);
+}
+
+.active {
+  background-color: var(--primary-light);
+  color: var(--primary-base);
+  font-weight: 600;
+
+  span,
+  svg {
+    color: var(--primary-base);
+  }
+}
+
+.link-icon-container {
+  @apply w-12 h-12 flex items-center justify-center shrink-0;
+}
+
+.link-span {
+  @apply whitespace-nowrap transition-opacity duration-300 pr-4;
+}
+
+.toggle-button {
+  @apply absolute -right-3 top-8 w-6 h-6 bg-white border border-(--border-neutral) rounded-full flex items-center justify-center text-(--text-aux) hover:text-(--text-main) shadow-(--shadow-btn) z-50 focus:outline-none transition-transform cursor-pointer;
+}

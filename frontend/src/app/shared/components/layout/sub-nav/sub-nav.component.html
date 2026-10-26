@@ -1,0 +1,11 @@
+<nav class="h-full flex items-center gap-6 overflow-x-auto scrollbar-hide">
+  @for (tab of tabs; track tab.route) {
+    <a
+      [routerLink]="tab.route"
+      routerLinkActive="active-tab"
+      class="sub-nav-link"
+    >
+      {{ tab.label }}
+    </a>
+  }
+</nav>

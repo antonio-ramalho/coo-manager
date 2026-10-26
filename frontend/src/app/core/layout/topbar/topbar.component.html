@@ -1,0 +1,57 @@
+<header class="flex justify-between items-center w-full h-18 px-4 md:px-8 bg-white border-b border-(--border-neutral) shrink-0">
+  <div class="flex items-center gap-4 h-full">
+    <!-- Botão Hambúrguer Mobile -->
+    <button
+      type="button"
+      (click)="menuClick.emit()"
+      class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-lg md:hidden focus:outline-none"
+      aria-label="Abrir menu"
+    >
+      <svg lucideMenu class="w-6 h-6"></svg>
+    </button>
+
+    @if (isDesktop && subNavTabs(); as tabs) {
+      <app-sub-nav [tabs]="tabs" class="h-full"></app-sub-nav>
+    }
+
+    <div class="h-full flex items-center">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3 sm:gap-6">
+    <div class="flex items-center gap-1 sm:gap-2">
+      <button
+        type="button"
+        class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none"
+        aria-label="Buscar"
+      >
+        <svg lucideSearch class="w-5 h-5"></svg>
+      </button>
+      <button
+        type="button"
+        class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none relative"
+        aria-label="Notificações"
+      >
+        <svg lucideBell class="w-5 h-5"></svg>
+        <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+    </div>
+
+    <div class="w-px h-8 bg-(--border-neutral)"></div>
+
+    <div class="flex items-center gap-3 cursor-pointer group">
+      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-(--bg-surface-hover) border border-(--border-neutral) flex items-center justify-center overflow-hidden">
+        <svg lucideUser class="w-5 h-5 sm:w-6 sm:h-6 text-(--text-aux) mt-0.5 group-hover:text-(--text-main) transition-colors"></svg>
+      </div>
+      <div class="hidden sm:flex flex-col">
+        <span class="text-sm font-semibold text-(--text-main) group-hover:text-black transition-colors">
+          {{ user.name }}
+        </span>
+        <span class="text-xs text-(--text-aux)">
+          {{ user.role }}
+        </span>
+      </div>
+    </div>
+  </div>
+</header>

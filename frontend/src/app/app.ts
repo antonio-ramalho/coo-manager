@@ -1,16 +1,11 @@
-import {Component, signal} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import { ToastComponent } from './shared/components/ui/toast/toast-component';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ToastComponent } from './core/components/toast/toast.component';
 
+/** Componente raiz: hospeda as notificações globais e o roteamento. */
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    ToastComponent
-  ],
+  imports: [RouterOutlet, ToastComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('CooManager');
-}
+export class App {}

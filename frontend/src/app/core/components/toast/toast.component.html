@@ -1,0 +1,14 @@
+<div class="fixed inset-x-4 top-4 z-50 flex flex-col gap-3 sm:left-auto sm:right-5 sm:top-5 sm:w-full sm:max-w-sm" aria-live="polite">
+  @for (toast of toasts(); track toast.id) {
+    <div
+      class="flex w-full items-center justify-between rounded px-4 py-3 font-medium text-white shadow-lg transition-all duration-300"
+      role="status"
+      [class.bg-red-500]="toast.type === 'error'"
+      [class.bg-yellow-500]="toast.type === 'warning'"
+      [class.bg-green-500]="toast.type === 'success'"
+    >
+      <span class="min-w-0 break-words">{{ toast.message }}</span>
+      <button type="button" class="ml-4 shrink-0 text-white hover:text-gray-200" aria-label="Fechar notificação" (click)="remove(toast.id)">✕</button>
+    </div>
+  }
+</div>

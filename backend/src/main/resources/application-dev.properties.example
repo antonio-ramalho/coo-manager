@@ -1,0 +1,15 @@
+# DATASOURCE
+spring.datasource.url=COLOQUE_SUA_URL_DO_BANCO
+spring.datasource.username=SEU_USUARIO
+spring.datasource.password=SUA_SENHA
+
+# JPA, SQL
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Hibernate DDL Auto
+spring.jpa.hibernate.ddl-auto=update
+
+# Cors
+cors.allowed-origins=http://localhost:4200

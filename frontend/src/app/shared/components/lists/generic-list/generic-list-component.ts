@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PaginationComponent } from '../generic-pagination/pagination-component';
 import { SearchBarComponent } from '../search-bar/search-bar-component';
 import { NameFormatPipe } from '../../../pipes/name-format-pipe';
-import {ISimpleListCard} from '../../../../core/interfaces/ISimpleListCard';
+import { ListCardItem } from '../../../models/list-card-item.model';
 import { GenericCardListComponent } from '../generic-card-list/generic-card-list-component';
 
 @Component({
@@ -13,10 +13,11 @@ import { GenericCardListComponent } from '../generic-card-list/generic-card-list
   styleUrl: './generic-list-component.scss',
 })
 export class GenericListComponent {
-  @Input() items: ISimpleListCard[] = [];
+  @Input() items: ListCardItem[] = [];
   @Input() currentPage: number = 1;
   @Input() totalItems: number = 0;
   @Input() altText: string | undefined;
+  @Input() searchPlaceholder: string = 'Buscar...';
 
   @Output() viewDetails = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();

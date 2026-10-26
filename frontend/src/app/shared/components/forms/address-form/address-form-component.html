@@ -25,9 +25,9 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="number">Bairro</label>
+    <label class="txt-label" for="neighborhood">Bairro</label>
     <input
-      id="number"
+      id="neighborhood"
       type="text"
       formControlName="neighborhood"
       [class.input-error]="group.get('neighborhood')?.invalid && group.get('neighborhood')?.touched"
@@ -49,7 +49,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-8">
-    <label class="txt-label" for="city">Estado</label>
+    <label class="txt-label" for="state">Estado</label>
     <select
       id="state"
       formControlName="state"
@@ -69,10 +69,11 @@
   <div class="flex flex-col gap-1 md:col-span-4">
     <label class="txt-label" for="number">Número</label>
     <input
+      #numberInput
       id="number"
       type="text"
       formControlName="number"
-      class="input-base txt-body "
+      class="input-base txt-body"
       placeholder="Digite o número da casa...">
   </div>
 </div>

@@ -1,0 +1,7 @@
+export enum BatchStatus {
+  IN_STOCK = 'IN_STOCK',
+  LOW_STOCK = 'LOW_STOCK',
+  OUT_OF_STOCK = 'OUT_OF_STOCK',
+  EXPIRED = 'EXPIRED',
+  INACTIVE = 'INACTIVE',
+}

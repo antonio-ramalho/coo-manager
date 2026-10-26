@@ -1,0 +1,1157 @@
+{
+  "info": {
+    "_postman_id": "a469ba25-9a67-492e-9101-0f61d0c1347b",
+    "name": "Projeto Coopafi",
+    "description": "Essa coleção contem os links que eu usei para testar os endpoinst e as regras de negócio. Ao mudar alguns dados, erros e excessões podem estourar, principalmente no cadastro do contract (edital).\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54233019",
+    "_collection_link": "https://go.postman.co/collection/54233019-a469ba25-9a67-492e-9101-0f61d0c1347b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "farmers",
+      "item": [
+        {
+          "name": "insert farmer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Breno Gabriel\",\r\n    \"cpfNumber\": \"12721369067\",\r\n    \"birthDate\": \"2000-10-13\",\r\n    \"phoneNumber\": \"42988654433\",\r\n    \"addressEmail\": \"breno@agrinho.com\",\r\n    \"addressNumber\": \"76\",\r\n    \"city\": \"Ipiranga\",\r\n    \"neighborhood\": \"Centro\",\r\n    \"street\": \"Rua do Marechal\",\r\n    \"cepNumber\": \"80010444\",\r\n    \"cafId\" : \"2\",\r\n    \"certificateId\" : \"1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/farmers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "farmers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update farmer",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Breno Gabriel\",\r\n    \"cpfNumber\": \"12721369067\",\r\n    \"birthDate\": \"2000-10-13\",\r\n    \"phoneNumber\": \"42988654433\",\r\n    \"addressEmail\": \"breno@agrinho.com\",\r\n    \"addressNumber\": \"76\",\r\n    \"city\": \"Ipiranga\",\r\n    \"neighborhood\": \"Centro\",\r\n    \"street\": \"Rua do Floriano\",\r\n    \"cepNumber\": \"80010444\",\r\n    \"cafId\" : \"1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/farmers/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "farmers",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get farmer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/farmers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "farmers"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "institutions",
+      "item": [
+        {
+          "name": "insert institution",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"legalName\": \"Compania Nacional Do Abastecimento\",\r\n    \"cnpjNumber\": \"01350533000166\",\r\n    \"tradeName\" : \"CONAB\",\r\n    \"birthDate\": \"1985-10-28\",\r\n    \"phoneNumber\": \"42988654433\",\r\n    \"addressEmail\": \"conabPr@conab.pr.com\",\r\n    \"addressNumber\": \"76\",\r\n    \"city\": \"Curitiba\",\r\n    \"neighborhood\": \"Centro\",\r\n    \"street\": \"Rua do Catete\",\r\n    \"cepNumber\": \"80010444\",\r\n    \"institutionSphere\" : \"PUBLIC\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/institutions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "institutions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update institution",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"legalName\": \"Compania Nacional Do Abastecimento\",\r\n    \"cnpjNumber\": \"01350533000166\",\r\n    \"tradeName\" : \"CONAB\",\r\n    \"birthDate\": \"2000-10-13\",\r\n    \"phoneNumber\": \"42988654433\",\r\n    \"addressEmail\": \"conabPr@conab.pr.com\",\r\n    \"addressNumber\": \"110\",\r\n    \"city\": \"Curitiba\",\r\n    \"neighborhood\": \"Prado Velho\",\r\n    \"street\": \"Rua do Catete\",\r\n    \"cepNumber\": \"80010444\",\r\n    \"institutionSphere\" : \"PUBLIC\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/institutions/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "institutions",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get instituition",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/institutions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "institutions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "consumerUnits",
+      "item": [
+        {
+          "name": "insert consumerUnit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"legalName\": \"Prefeitura Municipal de Curitiba\",\r\n  \"tradeName\": \"Secretaria Municipal de Educação\",\r\n  \"cnpj\": \"66104128000103\",\r\n  \"birthDate\": \"1985-10-28\",\r\n  \"addressEmail\": \"contato@sme.curitiba.pr.gov.br\",\r\n  \"phoneNumber\": \"4133334444\",\r\n  \"foundationDate\": \"1990-01-01\",\r\n\r\n  \"cepNumber\": \"80020320\",\r\n  \"street\": \"Avenida Cândido de Abreu\",\r\n  \"neighborhood\": \"Centro Cívico\",\r\n  \"city\": \"Curitiba\",\r\n  \"addressNumber\": \"817\",\r\n\r\n  \"deliveryCep\": \"80530000\",\r\n  \"deliveryStreet\": \"Rua Deputado Mário de Barros\",\r\n  \"deliveryNeighborhood\": \"Centro Cívico\",\r\n  \"deliveryCity\": \"Curitiba\",\r\n  \"deliveryNumber\": \"1290\",\r\n\r\n  \"agents\": [\r\n    {\r\n        \"agentName\": \"Carlos Silva\",\r\n        \"agentCpf\": \"23882818069\",\r\n        \"agentBirthDate\": \"1985-05-20\",\r\n        \"agentEmail\": \"carlos.silva@sme.curitiba.pr.gov.br\",\r\n        \"agentPhone\": \"41999998888\",\r\n        \"agentCargo\": \"Diretor de Merenda Escolar\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "insert consumerUnit 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"legalName\": \"Prefeitura Municipal de Curitiba\",\r\n  \"tradeName\": \"Secretaria Municipal de Educação\",\r\n  \"cnpj\": \"12345678000199\",\r\n  \"birthDate\": \"1985-10-28\",\r\n  \"addressEmail\": \"contato@sme.curitiba.pr.gov.br\",\r\n  \"phoneNumber\": \"4133334444\",\r\n  \"foundationDate\": \"1990-01-01\",\r\n\r\n  \"cepNumber\": \"80020320\",\r\n  \"street\": \"Avenida Cândido de Abreu\",\r\n  \"neighborhood\": \"Centro Cívico\",\r\n  \"city\": \"Curitiba\",\r\n  \"addressNumber\": \"817\",\r\n\r\n  \"deliveryCep\": \"80530000\",\r\n  \"deliveryStreet\": \"Rua Deputado Mário de Barros\",\r\n  \"deliveryNeighborhood\": \"Centro Cívico\",\r\n  \"deliveryCity\": \"Curitiba\",\r\n  \"deliveryNumber\": \"1290\",\r\n\r\n  \"agents\": [\r\n    {\r\n      \"agentName\": \"Carlos Silva\",\r\n      \"agentCpf\": \"40503232068\",\r\n      \"agentBirthDate\": \"1985-05-20\",\r\n      \"agentEmail\": \"carlos.silva@sme.curitiba.pr.gov.br\",\r\n      \"agentPhone\": \"41999998888\",\r\n      \"agentCargo\": \"Diretor de Merenda Escolar\"\r\n    },\r\n    {\r\n      \"agentName\": \"Mariana Souza\",\r\n      \"agentCpf\": \"62377858090\",\r\n      \"agentBirthDate\": \"1990-08-15\",\r\n      \"agentEmail\": \"mariana.souza@sme.curitiba.pr.gov.br\",\r\n      \"agentPhone\": \"41988887777\",\r\n      \"agentCargo\": \"Coordenadora de Compras\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update consumerUnit",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"legalName\": \"Prefeitura Municipal de Curitiba\",\r\n  \"tradeName\": \"Secretaria Municipal de Educação\",\r\n  \"cnpj\": \"12345678000199\",\r\n  \"addressEmail\": \"contato@sme.curitiba.pr.gov.br\",\r\n  \"phoneNumber\": \"4133334444\",\r\n  \"foundationDate\": \"1990-01-01\",\r\n\r\n  \"cepNumber\": \"80020320\",\r\n  \"street\": \"Avenida Cândido de Abreu\",\r\n  \"neighborhood\": \"Centro Cívico\",\r\n  \"city\": \"Curitiba\",\r\n  \"addressNumber\": \"817\",\r\n\r\n  \"deliveryCep\": \"80530000\",\r\n  \"deliveryStreet\": \"Rua Deputado Mário de Barros\",\r\n  \"deliveryNeighborhood\": \"Centro Cívico\",\r\n  \"deliveryCity\": \"Curitiba\",\r\n  \"deliveryNumber\": \"1290\",\r\n\r\n  \"agentName\": \"Carlos Silva\",\r\n  \"agentCpf\": \"11122233344\",\r\n  \"agentBirthDate\": \"1985-05-20\",\r\n  \"agentEmail\": \"carlos.silva@sme.curitiba.pr.gov.br\",\r\n  \"agentPhone\": \"41999998888\",\r\n  \"agentCargo\": \"Diretor de Merenda Escolar\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get consumerunit",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"legalName\": \"Prefeitura Municipal de Curitiba\",\r\n  \"tradeName\": \"Secretaria Municipal de Educação\",\r\n  \"cnpj\": \"12345678000199\",\r\n  \"birthDate\": \"1985-10-28\",\r\n  \"addressEmail\": \"contato@sme.curitiba.pr.gov.br\",\r\n  \"phoneNumber\": \"4133334444\",\r\n  \"foundationDate\": \"1990-01-01\",\r\n\r\n  \"cepNumber\": \"80020320\",\r\n  \"street\": \"Avenida Cândido de Abreu\",\r\n  \"neighborhood\": \"Centro Cívico\",\r\n  \"city\": \"Curitiba\",\r\n  \"addressNumber\": \"817\",\r\n\r\n  \"deliveryCep\": \"80530000\",\r\n  \"deliveryStreet\": \"Rua Deputado Mário de Barros\",\r\n  \"deliveryNeighborhood\": \"Centro Cívico\",\r\n  \"deliveryCity\": \"Curitiba\",\r\n  \"deliveryNumber\": \"1290\",\r\n\r\n  \"agentName\": \"Carlos Silva\",\r\n  \"agentCpf\": \"23882818069\",\r\n  \"agentBirthDate\": \"1985-05-20\",\r\n  \"agentEmail\": \"carlos.silva@sme.curitiba.pr.gov.br\",\r\n  \"agentPhone\": \"41999998888\",\r\n  \"agentCargo\": \"Diretor de Merenda Escolar\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "agent",
+      "item": [
+        {
+          "name": "update agent",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"agentName\": \"Ana Barbosa Andrade\",\r\n  \"agentEmail\": \"anabarbosa.agronomo@coopafi.com\",\r\n  \"agentPhone\": \"41999998888\",\r\n  \"agentCargo\": \"Gerente de Operações\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits/2/agents/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits",
+                "2",
+                "agents",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete Agent",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/consumerunits/3/agents/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "consumerunits",
+                "3",
+                "agents",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "inputProduct",
+      "item": [
+        {
+          "name": "insert inputProduct",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"productName\": \"Semente de Milho Híbrido\",\r\n  \"productCode\": \"SM-MIL-001\",\r\n  \"measureUnit\": \"KILOGRAM\",\r\n  \"ncmValue\": \"10051000\",\r\n  \"priceValue\": 250.75\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get inputProduct",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-products/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-products",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete inputProduct",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-products/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-products",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update InputProduct",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n  \"productName\": \"Sementes de Milho Híbrido\",\r\n  \"productCode\": \"SEM-MIL-002\",\r\n  \"measureUnit\": \"KILOGRAM\",\r\n  \"ncm\": \"10059090\",\r\n  \"priceValue\": 150.00\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-products/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-products",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "agriculturalProducts",
+      "item": [
+        {
+          "name": "insert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"productName\": \"Maçã Gala Orgânica\",\r\n  \"measureUnit\": \"KILOGRAM\",\r\n  \"ncmValue\": \"08081000\",\r\n  \"priceValue\": 8.50,\r\n  \"cultivationType\": \"ORGANIC\",\r\n  \"productGroup\": \"FRUITS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/agricultural-products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "agricultural-products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/agricultural-products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "agricultural-products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/agricultural-products/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "agricultural-products",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"productName\": \"Maçã Gala Orgânica\",\r\n  \"measureUnit\": \"KILOGRAM\",\r\n  \"ncmValue\": \"08081000\",\r\n  \"priceValue\": 5.5,\r\n  \"cultivationType\": \"ORGANIC\",\r\n  \"productGroup\": \"FRUITS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/agricultural-products/11",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "agricultural-products",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "inputBatch",
+      "item": [
+        {
+          "name": "insert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"inputProductId\": 3,\r\n  \"quantityValue\": 250.0,\r\n  \"expirationDate\": \"2026-12-31\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-batch",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-batch"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-batch/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-batch",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-batch/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-batch",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"expirationDate\": \"2026-06-15\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/input-batch/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "input-batch",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "purchase",
+      "item": [
+        {
+          "name": "insert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"farmerId\": 1,\r\n  \"items\": [\r\n    {\r\n      \"batchId\": 1,\r\n      \"quantity\": 10.0\r\n    },\r\n    {\r\n      \"batchId\": 2,\r\n      \"quantity\": 5.0\r\n    },\r\n    {\r\n      \"batchId\": 3,\r\n      \"quantity\": 2.5\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/purchase",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "purchase"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/purchase",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "purchase"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/purchase",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "purchase"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/purchase/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "purchase",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "contract",
+      "item": [
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/contract/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "contract",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "insert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"institutionId\": 1,\r\n  \"initialContractDate\": \"2026-01-01\",\r\n  \"finalContractDate\": \"2026-12-31\",\r\n  \"totalContractValue\": 20000.0,\r\n  \"globalLimit\": 15000.0,\r\n  \"participationRule\": \"PER_CPF\",\r\n  \"productDeliveryRule\": \"QUANTITY_LOCKED\",\r\n  \"products\": [\r\n    {\r\n      \"agriculturalProductId\": 1,\r\n      \"productName\": \"Tomate Orgânico Coopafi\",\r\n      \"fixedPrice\": 10.00,\r\n      \"quantity\" : 500.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 2,\r\n      \"productName\": \"Alface Crespa Orgânica\",\r\n      \"fixedPrice\": 12.00,\r\n      \"quantity\" : 400.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 3,\r\n      \"productName\": \"Morango Orgânico\",\r\n      \"fixedPrice\": 30.00,\r\n      \"quantity\" : 100.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 4,\r\n      \"productName\": \"Maça convencional\",\r\n      \"fixedPrice\": 18.00,\r\n      \"quantity\" : 400.00\r\n    }\r\n  ],\r\n  \"contractConsumers\": [\r\n    {\r\n      \"consumerId\": 1\r\n    },\r\n    {\r\n      \"consumerId\": 2\r\n    }\r\n  ],\r\n  \"farmerContracts\": [\r\n    {\r\n      \"farmerId\": 2,\r\n      \"specificCota\": 9800.0,\r\n      \"quotas\": [\r\n        {\r\n          \"agriculturalProductId\": 1,\r\n          \"maxQuantity\": 500.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 2,\r\n          \"maxQuantity\": 400.0\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"farmerId\": 3,\r\n      \"specificCota\": 10200.0,\r\n      \"quotas\": [\r\n        {\r\n          \"agriculturalProductId\": 3,\r\n          \"maxQuantity\": 100.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 4,\r\n          \"maxQuantity\": 400.0\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/contract",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "contract"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"institutionId\": 1,\r\n  \"initialContractDate\": \"2026-02-01\",\r\n  \"finalContractDate\": \"2026-12-31\",\r\n  \"totalContractValue\": 20000.0,\r\n  \"globalLimit\": 15000.0,\r\n  \"participationRule\": \"PER_CPF\",\r\n  \"productDeliveryRule\": \"QUANTITY_LOCKED\",\r\n  \"products\": [\r\n    {\r\n      \"agriculturalProductId\": 1,\r\n      \"productName\": \"Tomate Orgânico Coopafi\",\r\n      \"fixedPrice\": 10.00,\r\n      \"quantity\": 500.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 2,\r\n      \"productName\": \"Alface Crespa Orgânica\",\r\n      \"fixedPrice\": 12.00,\r\n      \"quantity\": 400.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 3,\r\n      \"productName\": \"Morango Orgânico\",\r\n      \"fixedPrice\": 30.00,\r\n      \"quantity\": 100.00\r\n    },\r\n    {\r\n      \"agriculturalProductId\": 4,\r\n      \"productName\": \"Maça convencional\",\r\n      \"fixedPrice\": 18.00,\r\n      \"quantity\": 400.00\r\n    }\r\n  ],\r\n  \"contractConsumers\": [\r\n    {\r\n      \"consumerId\": 1\r\n    },\r\n    {\r\n      \"consumerId\": 2\r\n    }\r\n  ],\r\n  \"farmerContracts\": [\r\n    {\r\n      \"farmerId\": 2,\r\n      \"specificCota\": 5900.0,\r\n      \"quotas\": [\r\n        {\r\n          \"agriculturalProductId\": 1,\r\n          \"maxQuantity\": 200.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 2,\r\n          \"maxQuantity\": 200.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 3,\r\n          \"maxQuantity\": 50.0\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"farmerId\": 3,\r\n      \"specificCota\": 14100.0,\r\n      \"quotas\": [\r\n        {\r\n          \"agriculturalProductId\": 1,\r\n          \"maxQuantity\": 300.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 2,\r\n          \"maxQuantity\": 200.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 3,\r\n          \"maxQuantity\": 50.0\r\n        },\r\n        {\r\n          \"agriculturalProductId\": 4,\r\n          \"maxQuantity\": 400.0\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/contract/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "contract",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "item": [
+        {
+          "name": "cadastro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@coopafi.com\",\r\n  \"password\": \"senhaAdmin123\",\r\n  \"photoFileName\": \"admin_perfil.png\",\r\n  \"photoUrl\": \"https://storage.coopafi.com/admin.png\",\r\n  \"profiles\": [\"ADMIN\"]\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cadastro 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"operador@coopafi.com\",\r\n  \"password\": \"senhaOperador123\",\r\n  \"photoFileName\": \"operador_perfil.png\",\r\n  \"photoUrl\": \"https://storage.coopafi.com/operador.png\",\r\n  \"profiles\": [\"OPERATOR\"]\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@coopafi.com\",\r\n  \"password\": \"senhaAdmin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "clients",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/clients/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "clients",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

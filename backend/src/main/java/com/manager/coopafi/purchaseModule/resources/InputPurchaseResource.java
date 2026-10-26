@@ -3,8 +3,8 @@ package com.manager.coopafi.purchaseModule.resources;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseMinDto;
-import com.manager.coopafi.purchaseModule.services.InputPurchaseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manager.coopafi.purchaseModule.services.interfaces.InputPurchaseService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,12 +13,15 @@ import java.util.List;
 @RequestMapping(value = "/purchase")
 public class InputPurchaseResource {
 
-    @Autowired
-    private InputPurchaseService service;
+    private final InputPurchaseService service;
+
+    public InputPurchaseResource(InputPurchaseService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<InputPurchaseMinDto>> findAllByStatus() {
-        List <InputPurchaseMinDto> list = service.findAllByStatus();
+        List<InputPurchaseMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 

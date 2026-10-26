@@ -16,10 +16,10 @@ import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchTableDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
-import com.manager.coopafi.purchaseModule.services.batchValidators.BatchExpirationDateValidator;
-import com.manager.coopafi.purchaseModule.services.batchValidators.BatchQuantityValidator;
-import com.manager.coopafi.purchaseModule.services.batchValidators.BatchValidationStrategy;
 import com.manager.coopafi.purchaseModule.services.impl.InputBatchServiceImpl;
+import com.manager.coopafi.purchaseModule.services.validator.BatchExpirationDateValidator;
+import com.manager.coopafi.purchaseModule.services.validator.BatchQuantityValidator;
+import com.manager.coopafi.purchaseModule.services.validator.BatchValidationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,9 @@ class InputBatchServiceTest {
         validationStrategies.clear();
         validationStrategies.add(new BatchExpirationDateValidator());
         validationStrategies.add(new BatchQuantityValidator());
-        validationStrategies.add(new com.manager.coopafi.purchaseModule.services.batchValidators.BatchProductCatalogStatusValidator(productRepository));
+        validationStrategies
+                .add(new com.manager.coopafi.purchaseModule.services.validator.BatchProductCatalogStatusValidator(
+                        productRepository));
         ReflectionTestUtils.setField(batchService, "validationStrategies", validationStrategies);
 
         testProduct = new InputProduct(
@@ -111,7 +113,7 @@ class InputBatchServiceTest {
     @Test
     @DisplayName("Deve lançar DomainException ao tentar cadastrar lote para produto inativo no catálogo")
     void shouldThrowExceptionWhenProductStatusIsNotActive() {
-        testProduct.deactivate(); // sets productCatalogStatus to INACTIVE
+        testProduct.deactivate();
         when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct));
 
         InputBatchInsertDto dto = new InputBatchInsertDto(
@@ -122,7 +124,8 @@ class InputBatchServiceTest {
 
         assertThatThrownBy(() -> batchService.insert(dto))
                 .isInstanceOf(DomainException.class)
-                .hasMessageContaining("Não é permitido cadastrar lote para um produto que não esteja com status ATIVO no catálogo.");
+                .hasMessageContaining(
+                        "Não é permitido cadastrar lote para um produto que não esteja com status ATIVO no catálogo.");
 
         verify(batchRepository, never()).save(any());
     }

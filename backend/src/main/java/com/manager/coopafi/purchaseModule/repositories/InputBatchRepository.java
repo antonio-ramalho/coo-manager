@@ -44,6 +44,19 @@ public interface InputBatchRepository extends JpaRepository<InputBatch, Long> {
             @Param("endDate") LocalDate endDate);
 
     @Query("""
+                SELECT COALESCE(SUM(b.currentQuantity.amount * b.inputProduct.productPrice.value), 0)
+                FROM InputBatch b
+                WHERE b.productStatus IN (
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.IN_STOCK,
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.LOW_STOCK
+                )
+                AND b.expirationDate.value BETWEEN :startDate AND :endDate
+            """)
+    BigDecimal calculateExpiringStockValue(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
+
+    @Query("""
                 SELECT b FROM InputBatch b
                 WHERE (:searchTerm IS NULL OR :searchTerm = '' OR
                        LOWER(b.batchCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR

@@ -2,6 +2,7 @@ package com.manager.coopafi.purchaseModule.resources;
 
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.SalesDashboardDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
 import com.manager.coopafi.purchaseModule.services.interfaces.InventoryDashboardService;
 
@@ -40,5 +41,11 @@ public class InventoryDashboardResource {
             @RequestParam(defaultValue = "7") int periodDays) {
         List<TopSellingProductDto> list = dashboardService.getTopSellingProducts(periodDays);
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping(value = "/sales")
+    public ResponseEntity<SalesDashboardDto> getSalesDashboard() {
+        SalesDashboardDto dto = dashboardService.getSalesDashboard();
+        return ResponseEntity.ok(dto);
     }
 }

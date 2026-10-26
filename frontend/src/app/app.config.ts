@@ -7,6 +7,7 @@ import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 registerLocaleData(localePt);
 
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([errorInterceptor])),
     provideEnvironmentNgxMask(),
     provideFlatpickrDefaults(),
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideCharts(withDefaultRegisterables()),
   ],
 };

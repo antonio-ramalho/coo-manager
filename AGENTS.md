@@ -22,12 +22,14 @@ Principais domínios e contextos:
 - Buscas no Banco: Use a API de Optional com `.orElseThrow()` e lance exceções de negócio customizadas. Evite retornar null.
 - Código Limpo: Aplique os princípios do SOLID e Object Calisthenics (ex: evite else, mantenha baixo acoplamento).
 - Regras e polimorfismo na enum: Sempre que possível e adequado, use a enum juntamente com o poliofismo para determinadas regras serem validades dentro da própria enum. 
+- Os endpoints do back devem sempre retornar para o front a resposta com o código HTTP correspondente ao verbo HTTP utilizado no request. EX: a operação de put deve ter o retorno HTTP 201.
 
 # Arquitetura e Padrões (Frontend)
 - Componentização: Separe estritamente em Smart Components (lidam com serviços e estado) e Dumb Components (focados apenas em UI e @Input/@Output).
 - Estrutura de Arquivos: Separação clara entre `.html`, `.ts` e `.scss` para cada componente.
 - Ecossistema: Utilize Interfaces (para tipagem rigorosa), Enums, Custom Pipes, Validators customizados, Interceptors (para chamadas HTTP) e Router Guards.
 - Padronização: Mantenha um sistema de nomenclatura claro, descritivo e coeso (ex: `feature-name.component.ts`).
+- Antes de gerar um plano de execução de sprints, sempre verifique os componentes reutilizaveis (paginação, table, list, etc) que podem ser usados durante a implementação, deixe explicito quais componentes você vai reutilizar. 
 
 # Idioma e Documentação
 - Todo o código-fonte (variáveis, classes, métodos) DEVE ser escrito em Inglês.

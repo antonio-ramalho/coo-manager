@@ -1,24 +1,28 @@
 package com.manager.coopafi.purchaseModule.services.impl;
 
-import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.StockOccupancyDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.*;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
+import com.manager.coopafi.purchaseModule.entities.InputPurchase;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
 import com.manager.coopafi.purchaseModule.repositories.projections.TopSellingProductProjection;
 import com.manager.coopafi.purchaseModule.services.interfaces.InventoryDashboardService;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryDashboardServiceImpl implements InventoryDashboardService {
@@ -96,5 +100,81 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
         }
 
         return List.of();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SalesDashboardDto getSalesDashboard() {
+        Double averageTicket = calculateAverageTicket();
+        Double expirationRiskRate = calculateExpirationRiskRate(90);
+        List<MonthlySalesDto> monthlySales = calculateMonthlySales(6);
+        List<TopSellingProductDto> topSelling = getTopSellingProducts(90);
+
+        return new SalesDashboardDto(averageTicket, expirationRiskRate, monthlySales, topSelling);
+    }
+
+    private Double calculateAverageTicket() {
+        Double avg = purchaseRepository.calculateAverageTicket();
+        return avg != null ? BigDecimal.valueOf(avg).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0.0;
+    }
+
+    private Double calculateExpirationRiskRate(int days) {
+        BigDecimal totalStock = batchRepository.calculateTotalStockValue();
+        if (totalStock == null || totalStock.compareTo(BigDecimal.ZERO) <= 0) {
+            return 0.0;
+        }
+
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(days);
+        BigDecimal expiringStock = batchRepository.calculateExpiringStockValue(startDate, endDate);
+        if (expiringStock == null || expiringStock.compareTo(BigDecimal.ZERO) <= 0) {
+            return 0.0;
+        }
+
+        return expiringStock
+                .multiply(BigDecimal.valueOf(100))
+                .divide(totalStock, 2, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+    private List<MonthlySalesDto> calculateMonthlySales(int monthsCount) {
+        YearMonth currentMonth = YearMonth.now();
+        YearMonth startMonth = currentMonth.minusMonths(monthsCount - 1);
+        LocalDateTime sinceDate = startMonth.atDay(1).atStartOfDay();
+
+        List<InputPurchase> purchases = purchaseRepository.findPaidPurchasesSince(sinceDate);
+
+        Map<YearMonth, List<InputPurchase>> purchasesByMonth = purchases.stream()
+                .filter(p -> p.getEmissionDate() != null)
+                .collect(Collectors.groupingBy(p -> YearMonth.from(p.getEmissionDate())));
+
+        List<MonthlySalesDto> result = new ArrayList<>();
+        YearMonth cursor = startMonth;
+        Locale ptBr = Locale.of("pt", "BR");
+
+        while (!cursor.isAfter(currentMonth)) {
+            List<InputPurchase> monthPurchases = purchasesByMonth.getOrDefault(cursor, List.of());
+
+            double totalMonthValue = monthPurchases.stream()
+                    .filter(p -> p.getTotalValue() != null && p.getTotalValue().getValue() != null)
+                    .mapToDouble(p -> p.getTotalValue().getValue().doubleValue())
+                    .sum();
+
+            BigDecimal roundedTotal = BigDecimal.valueOf(totalMonthValue).setScale(2, RoundingMode.HALF_UP);
+            String rawMonth = cursor.getMonth().getDisplayName(TextStyle.SHORT, ptBr).replace(".", "");
+            String formattedMonth = rawMonth.substring(0, 1).toUpperCase(ptBr) + rawMonth.substring(1);
+            String label = formattedMonth + "/" + cursor.getYear();
+
+            result.add(new MonthlySalesDto(
+                    cursor.getYear(),
+                    cursor.getMonthValue(),
+                    label,
+                    roundedTotal.doubleValue(),
+                    (long) monthPurchases.size()));
+
+            cursor = cursor.plusMonths(1);
+        }
+
+        return result;
     }
 }

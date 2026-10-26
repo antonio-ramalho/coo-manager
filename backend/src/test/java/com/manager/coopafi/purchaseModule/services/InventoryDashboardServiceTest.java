@@ -8,8 +8,11 @@ import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.SalesDashboardDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
+import com.manager.coopafi.purchaseModule.entities.InputPurchase;
+import com.manager.coopafi.personModule.entities.Person;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
@@ -25,10 +28,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -145,5 +150,29 @@ class InventoryDashboardServiceTest {
         List<TopSellingProductDto> result = dashboardService.getTopSellingProducts(7);
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Deve calcular métricas gerenciais do painel de vendas corretamente")
+    void shouldCalculateSalesDashboardMetricsCorrectly() {
+        when(purchaseRepository.calculateAverageTicket()).thenReturn(350.50);
+        when(batchRepository.calculateTotalStockValue()).thenReturn(new BigDecimal("10000.00"));
+        when(batchRepository.calculateExpiringStockValue(any(), any())).thenReturn(new BigDecimal("1500.00"));
+        when(purchaseRepository.findTopSellingProducts(any(), any())).thenReturn(Collections.emptyList());
+
+        Person client = mock(Person.class);
+        InputPurchase purchase = new InputPurchase(client);
+        ReflectionTestUtils.setField(purchase, "totalValue", new Price(new BigDecimal("200.00")));
+        ReflectionTestUtils.setField(purchase, "emissionDate", LocalDateTime.now());
+
+        when(purchaseRepository.findPaidPurchasesSince(any())).thenReturn(List.of(purchase));
+
+        SalesDashboardDto salesDashboard = dashboardService.getSalesDashboard();
+
+        assertThat(salesDashboard).isNotNull();
+        assertThat(salesDashboard.averageTicket()).isEqualTo(350.50);
+        assertThat(salesDashboard.expirationRiskRate()).isEqualTo(15.0);
+        assertThat(salesDashboard.monthlySales()).hasSize(6);
+        assertThat(salesDashboard.topSellingProducts()).isEmpty();
     }
 }

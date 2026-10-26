@@ -30,11 +30,15 @@ public class InputPurchaseServiceImpl implements InputPurchaseService {
 
     private final InputBatchRepository batchRepository;
 
+    private final List<com.manager.coopafi.purchaseModule.services.validator.PurchaseItemValidationStrategy> itemValidators;
+
     public InputPurchaseServiceImpl(InputPurchaseRepository purchaseRepository, PersonRepository personRepository,
-            InputBatchRepository batchRepository) {
+            InputBatchRepository batchRepository,
+            List<com.manager.coopafi.purchaseModule.services.validator.PurchaseItemValidationStrategy> itemValidators) {
         this.purchaseRepository = purchaseRepository;
         this.personRepository = personRepository;
         this.batchRepository = batchRepository;
+        this.itemValidators = itemValidators;
     }
 
     @Override
@@ -68,6 +72,12 @@ public class InputPurchaseServiceImpl implements InputPurchaseService {
             InputBatch batch = batchRepository.findById(itemDto.batchId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Lote de produto não encontrado"));
+
+            if (itemValidators != null) {
+                for (com.manager.coopafi.purchaseModule.services.validator.PurchaseItemValidationStrategy validator : itemValidators) {
+                    validator.validate(batch, itemDto.quantity());
+                }
+            }
 
             Quantity quantity = new Quantity(new BigDecimal(itemDto.quantity()));
             InputPurchaseItem item = new InputPurchaseItem(quantity, batch.getInputProduct().getProductPrice(), batch);

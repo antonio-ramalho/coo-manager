@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class BaseReceipt <T extends BaseReceiptItem<?>> implements Serializable {
+public abstract class BaseReceipt<T extends BaseReceiptItem<?>> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public abstract class BaseReceipt <T extends BaseReceiptItem<?>> implements Seri
     @Enumerated(EnumType.STRING)
     protected PaymentStatus status;
 
-    public  BaseReceipt() {
+    public BaseReceipt() {
         this.emissionDate = LocalDateTime.now();
         this.status = PaymentStatus.PENDING;
         this.totalValue = new Price(BigDecimal.ZERO);
@@ -38,6 +38,7 @@ public abstract class BaseReceipt <T extends BaseReceiptItem<?>> implements Seri
     public abstract void addItem(T item);
 
     public void markAsPaid() {
+        this.status.validateCanTransitionTo(PaymentStatus.PAID);
         this.status = PaymentStatus.PAID;
     }
 }

@@ -33,4 +33,19 @@ public interface InputPurchaseRepository extends JpaRepository<InputPurchase, Lo
   List<TopSellingProductProjection> findTopSellingProducts(
       @Param("sinceDate") LocalDateTime sinceDate,
       Pageable pageable);
+
+  @Query("""
+          SELECT COALESCE(AVG(p.totalValue.value), 0.0)
+          FROM InputPurchase p
+          WHERE p.status = com.manager.coopafi.purchaseModule.enums.PaymentStatus.PAID
+      """)
+  Double calculateAverageTicket();
+
+  @Query("""
+          SELECT p FROM InputPurchase p
+          WHERE p.status = com.manager.coopafi.purchaseModule.enums.PaymentStatus.PAID
+            AND p.emissionDate >= :sinceDate
+          ORDER BY p.emissionDate ASC
+      """)
+  List<InputPurchase> findPaidPurchasesSince(@Param("sinceDate") LocalDateTime sinceDate);
 }

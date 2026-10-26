@@ -18,12 +18,14 @@ import com.manager.coopafi.purchaseModule.entities.InputPurchase;
 import com.manager.coopafi.purchaseModule.enums.PaymentStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
+import com.manager.coopafi.purchaseModule.services.impl.BatchStockAvailabilityValidator;
 import com.manager.coopafi.purchaseModule.services.impl.InputPurchaseServiceImpl;
+import com.manager.coopafi.purchaseModule.services.validator.NonExpiredBatchValidator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -48,7 +50,6 @@ class InputPurchaseServiceTest {
     @Mock
     private InputBatchRepository batchRepository;
 
-    @InjectMocks
     private InputPurchaseServiceImpl purchaseService;
 
     private Person mockPerson;
@@ -57,6 +58,11 @@ class InputPurchaseServiceTest {
 
     @BeforeEach
     void setUp() {
+        purchaseService = new InputPurchaseServiceImpl(
+                purchaseRepository,
+                personRepository,
+                batchRepository,
+                List.of(new BatchStockAvailabilityValidator(), new NonExpiredBatchValidator()));
         mockPerson = mock(Person.class);
         ReflectionTestUtils.setField(mockPerson, "id", 1L);
 
@@ -137,7 +143,7 @@ class InputPurchaseServiceTest {
 
         assertThatThrownBy(() -> purchaseService.cancelPurchase(15L))
                 .isInstanceOf(DomainException.class)
-                .hasMessageContaining("Não é possível alterar uma compra cancelada ou paga.");
+                .hasMessageContaining("Transição de status inválida de Pago para Cancelado.");
 
         verify(purchaseRepository, never()).save(purchase);
     }
@@ -192,5 +198,47 @@ class InputPurchaseServiceTest {
         assertThatThrownBy(() -> purchaseService.registerPayment(999L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Venda não encontrada");
+    }
+
+    @Test
+    @DisplayName("Deve lançar DomainException via BatchStockAvailabilityValidator quando quantidade solicitada exceder estoque")
+    void shouldThrowDomainExceptionWhenQuantityExceedsAvailableStock() {
+        InputPurchaseItemInsertDto itemDto = new InputPurchaseItemInsertDto(200L, 100.0);
+        InputPurchaseInsertDto dto = new InputPurchaseInsertDto(1L, List.of(itemDto));
+
+        when(personRepository.findById(1L)).thenReturn(Optional.of(mockPerson));
+        when(batchRepository.findById(200L)).thenReturn(Optional.of(testBatch));
+
+        assertThatThrownBy(() -> purchaseService.processPurchase(dto))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Saldo insuficiente no lote");
+
+        verify(purchaseRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve lançar DomainException via NonExpiredBatchValidator quando lote estiver vencido")
+    void shouldThrowDomainExceptionWhenBatchIsExpired() {
+        ExpirationDate expDate = new ExpirationDate(LocalDate.now().plusDays(10));
+        ReflectionTestUtils.setField(expDate, "value", LocalDate.now().minusDays(1));
+
+        InputBatch expiredBatch = new InputBatch(
+                new Quantity(new BigDecimal("50.00")),
+                testProduct,
+                new Quantity(new BigDecimal("50.00")),
+                expDate);
+        ReflectionTestUtils.setField(expiredBatch, "id", 201L);
+
+        InputPurchaseItemInsertDto itemDto = new InputPurchaseItemInsertDto(201L, 5.0);
+        InputPurchaseInsertDto dto = new InputPurchaseInsertDto(1L, List.of(itemDto));
+
+        when(personRepository.findById(1L)).thenReturn(Optional.of(mockPerson));
+        when(batchRepository.findById(201L)).thenReturn(Optional.of(expiredBatch));
+
+        assertThatThrownBy(() -> purchaseService.processPurchase(dto))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("está vencido desde");
+
+        verify(purchaseRepository, never()).save(any());
     }
 }

@@ -4,10 +4,11 @@ import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseMinDto;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputPurchaseService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.net.URI;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/purchase")
@@ -34,7 +35,10 @@ public class InputPurchaseResource {
     @PostMapping
     public ResponseEntity<InputPurchaseDto> insert(@RequestBody InputPurchaseInsertDto dto) {
         InputPurchaseDto newPurchase = service.processPurchase(dto);
-        return ResponseEntity.ok().body(newPurchase);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newPurchase.id()).toUri();
+        return ResponseEntity.created(uri).body(newPurchase);
     }
 
     @PatchMapping(value = "/{id}")

@@ -6,14 +6,19 @@ export const SALES_ROUTES: Routes = [
     path: '',
     component: SalesShellComponent,
     children: [
-      { path: '', redirectTo: 'nova-venda', pathMatch: 'full' },
       {
-        path: 'nova-venda',
+        path: '',
         loadComponent: () =>
-          import('./pages/new-sale/new-sale.component').then((m) => m.NewSaleComponent),
+          import('./pages/sales-page/sales-page.component').then((m) => m.SalesPageComponent),
       },
       {
-        path: 'dashboard',
+        path: 'cadastro',
+        loadComponent: () =>
+          import('./pages/new-sale/new-sale.component').then((m) => m.NewSaleComponent),
+        data: { hideSubNav: true },
+      },
+      {
+        path: 'estatisticas',
         loadComponent: () =>
           import('./pages/sales-dashboard/sales-dashboard.component').then(
             (m) => m.SalesDashboardComponent,

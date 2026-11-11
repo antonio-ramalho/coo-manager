@@ -21,8 +21,8 @@ export class SalesShellComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly tabs: SubNavTab[] = [
-    { label: 'Nova Venda', route: '/home/vendas/nova-venda' },
-    { label: 'Dashboard', route: '/home/vendas/dashboard' },
+    { label: 'Vendas', route: '/home/vendas', exact: true },
+    { label: 'Estatísticas', route: '/home/vendas/estatisticas', exact: true },
   ];
 
   constructor() {

@@ -8,6 +8,8 @@ import com.manager.coopafi.personModule.repositories.PersonRepository;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseMinDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseTableDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.RecentSaleDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchaseItem.InputPurchaseItemInsertDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
 import com.manager.coopafi.purchaseModule.entities.InputPurchase;
@@ -16,9 +18,12 @@ import com.manager.coopafi.purchaseModule.enums.PaymentStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputPurchaseService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,6 +51,33 @@ public class InputPurchaseServiceImpl implements InputPurchaseService {
     public List<InputPurchaseMinDto> findAllByStatus() {
         List<InputPurchase> list = purchaseRepository.findAllByStatus(PaymentStatus.PAID);
         return list.stream().map(InputPurchaseMinDto::new).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<InputPurchaseTableDto> searchPurchases(int page, int size, String searchTerm) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        String codeTerm = normalizeSaleCodeSearchTerm(searchTerm);
+        Page<InputPurchase> purchasePage = purchaseRepository.searchPurchases(searchTerm, codeTerm, pageRequest);
+        return purchasePage.map(InputPurchaseTableDto::new);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RecentSaleDto> findRecentPurchases() {
+        List<InputPurchase> purchases = purchaseRepository.findRecentPurchases(PageRequest.of(0, 5));
+        return purchases.stream().map(RecentSaleDto::new).toList();
+    }
+
+    private String normalizeSaleCodeSearchTerm(String searchTerm) {
+        if (searchTerm == null) {
+            return "";
+        }
+        String trimmed = searchTerm.trim();
+        if (trimmed.toUpperCase().startsWith("VND-")) {
+            return trimmed.substring(4).trim();
+        }
+        return trimmed;
     }
 
     @Override

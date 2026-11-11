@@ -48,9 +48,9 @@ public class InputBatchServiceImpl implements InputBatchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm) {
+    public Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm, boolean onlyInStock) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<InputBatch> batchPage = batchRepository.searchBatches(searchTerm, pageable);
+        Page<InputBatch> batchPage = batchRepository.searchBatches(searchTerm, onlyInStock, pageable);
         return batchPage.map(InputBatchTableDto::new);
     }
 

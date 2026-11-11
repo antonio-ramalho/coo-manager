@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlatpickrDirective } from 'angularx-flatpickr';
 import { Observable } from 'rxjs';
+import { DateInputComponent } from '../date-input/date-input.component';
 import { InputErrorComponent } from '../input-error/input-error-component';
 import { SearchableSelectComponent } from '../searchable-select/searchable-select.component';
 import { InputProductSummary } from '../../../../features/inputs/models/input-product.model';
@@ -17,7 +17,7 @@ import { InputProductSummary } from '../../../../features/inputs/models/input-pr
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    FlatpickrDirective,
+    DateInputComponent,
     InputErrorComponent,
     SearchableSelectComponent,
   ],

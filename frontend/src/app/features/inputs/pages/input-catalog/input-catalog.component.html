@@ -12,22 +12,22 @@
 
   <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
     <aside class="aside-container custom-scrollbar">
-      @if (page$ | async; as pageData) {
+      @let pageData = (page$ | async) ?? { content: [], totalElements: 0 };
       <app-generic-list class="flex-1 flex flex-col min-h-0" [items]="pageData.content"
-        [totalItems]="pageData.totalElements" [currentPage]="currentPage"
+        [currentPage]="currentPage" [loading]="loadingList" loadingText="Buscando insumos no catálogo..."
         searchPlaceholder="Buscar por nome, código ou ncm..." altText="Nenhum insumo encontrado."
         (searchChanged)="applyFilters($event)" (pageChanged)="swappedPage($event)" (viewDetails)="viewDetails($event)"
         (deactivate)="deactivateProduct($event)" (activate)="activateProduct($event)" (edit)="editProduct($event)">
       </app-generic-list>
-      } @else {
-      <div class="flex justify-center p-8">
-        <p class="txt-aux">Buscando insumos no catálogo...</p>
-      </div>
-      }
     </aside>
 
     <main class="main-container custom-scrollbar">
-      @if (productDetails$ | async; as details) {
+      @let details = productDetails$ | async;
+      @if (loadingDetails) {
+      <div class="card card-details-container">
+        <app-loading-spinner size="md" message="Carregando detalhes do insumo..."></app-loading-spinner>
+      </div>
+      } @else if (details) {
       <app-input-product-details-panel [product]="details" (edit)="editProduct($event)">
       </app-input-product-details-panel>
       } @else {

@@ -52,9 +52,8 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
 
         StockOccupancyDto occupancy = new StockOccupancyDto(totalProducts, inStock, lowStock, outOfStock);
         List<ExpiringBatchDto> expiring = getExpiringBatches(3);
-        List<TopSellingProductDto> topSelling = getTopSellingProducts(7);
 
-        return new InventoryDashboardDto(totalStockValue, occupancy, expiring, topSelling);
+        return new InventoryDashboardDto(totalStockValue, occupancy, expiring);
     }
 
     @Override
@@ -68,23 +67,47 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
         return batches.stream().map(batch -> {
             LocalDate expDate = batch.getExpirationDate().getValue();
             long daysRemaining = Math.max(0, ChronoUnit.DAYS.between(startDate, expDate));
-            String productName = batch.getInputProduct() != null ? batch.getInputProduct().getProductName()
-                    : "Produto sem nome";
-            Double quantity = batch.getCurrentQuantity() != null ? batch.getCurrentQuantity().getAmount().doubleValue()
-                    : 0.0;
 
             return new ExpiringBatchDto(
                     batch.getId(),
-                    productName,
+                    resolveProductName(batch),
                     expDate,
                     daysRemaining,
-                    quantity);
+                    resolveCurrentQuantity(batch));
         }).toList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TopSellingProductDto> getTopSellingProducts(int periodDays) {
+
+    public List<ExpiredBatchDto> getExpiredBatches(int days) {
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = today.minusDays(days);
+
+        List<InputBatch> batches = batchRepository.findExpiredBatches(startDate, today);
+
+        return batches.stream().map(batch -> {
+            LocalDate expDate = batch.getExpirationDate().getValue();
+            long daysExpired = Math.max(1, ChronoUnit.DAYS.between(expDate, today));
+
+            return new ExpiredBatchDto(
+                    batch.getId(),
+                    resolveProductName(batch),
+                    expDate,
+                    daysExpired,
+                    resolveCurrentQuantity(batch));
+        }).toList();
+    }
+
+    private String resolveProductName(InputBatch batch) {
+        return batch.getInputProduct() != null ? batch.getInputProduct().getProductName() : "Produto sem nome";
+    }
+
+    private Double resolveCurrentQuantity(InputBatch batch) {
+        return batch.getCurrentQuantity() != null ? batch.getCurrentQuantity().getAmount().doubleValue() : 0.0;
+    }
+
+    private List<TopSellingProductDto> getAbcCurveProducts(int periodDays) {
         LocalDateTime sinceDate = LocalDateTime.now().minusDays(periodDays);
         List<TopSellingProductProjection> projections = purchaseRepository.findTopSellingProducts(sinceDate,
                 PageRequest.of(0, 5));
@@ -108,7 +131,7 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
         Double averageTicket = calculateAverageTicket();
         Double expirationRiskRate = calculateExpirationRiskRate(90);
         List<MonthlySalesDto> monthlySales = calculateMonthlySales(6);
-        List<TopSellingProductDto> topSelling = getTopSellingProducts(90);
+        List<TopSellingProductDto> topSelling = getAbcCurveProducts(90);
 
         return new SalesDashboardDto(averageTicket, expirationRiskRate, monthlySales, topSelling);
     }
@@ -124,9 +147,8 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
             return 0.0;
         }
 
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = startDate.plusDays(days);
-        BigDecimal expiringStock = batchRepository.calculateExpiringStockValue(startDate, endDate);
+        LocalDate endDate = LocalDate.now().plusDays(days);
+        BigDecimal expiringStock = batchRepository.calculateExpiringStockValue(endDate);
         if (expiringStock == null || expiringStock.compareTo(BigDecimal.ZERO) <= 0) {
             return 0.0;
         }

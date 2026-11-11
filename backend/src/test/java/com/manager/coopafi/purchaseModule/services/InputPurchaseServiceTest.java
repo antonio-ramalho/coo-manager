@@ -12,6 +12,8 @@ import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseTableDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.RecentSaleDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchaseItem.InputPurchaseItemInsertDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
 import com.manager.coopafi.purchaseModule.entities.InputPurchase;
@@ -28,14 +30,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,6 +72,7 @@ class InputPurchaseServiceTest {
                 List.of(new BatchStockAvailabilityValidator(), new NonExpiredBatchValidator()));
         mockPerson = mock(Person.class);
         ReflectionTestUtils.setField(mockPerson, "id", 1L);
+        lenient().when(mockPerson.getLegalName()).thenReturn("Carlos Ferreira");
 
         testProduct = new InputProduct(
                 MeasureUnit.KILOGRAM,
@@ -159,8 +167,61 @@ class InputPurchaseServiceTest {
 
         InputPurchaseDto result = purchaseService.registerPayment(20L);
 
-        assertThat(result.paymentStatus()).isEqualTo(PaymentStatus.PAID.getDescription());
+        assertThat(result.paymentStatus()).isEqualTo(PaymentStatus.PAID.name());
+        assertThat(result.paymentStatusDescription()).isEqualTo(PaymentStatus.PAID.getDescription());
         verify(purchaseRepository).save(purchase);
+    }
+
+    @Test
+    @DisplayName("Deve buscar vendas paginadas com mapeamento de UUID e normalização de prefixo VND- na pesquisa")
+    void shouldSearchPurchasesPagedSuccessfully() {
+        InputPurchase purchase = new InputPurchase(mockPerson);
+        ReflectionTestUtils.setField(purchase, "id", 50L);
+        ReflectionTestUtils.setField(purchase, "emissionDate", LocalDateTime.now());
+
+        Page<InputPurchase> purchasePage = new PageImpl<>(List.of(purchase), PageRequest.of(0, 10), 1);
+        when(purchaseRepository.searchPurchases(eq("VND-550E"), eq("550E"), any(PageRequest.class)))
+                .thenReturn(purchasePage);
+
+        Page<InputPurchaseTableDto> result = purchaseService.searchPurchases(0, 10, "VND-550E");
+
+        assertThat(result).isNotNull();
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getContent().getFirst().clientName()).isEqualTo("Carlos Ferreira");
+        assertThat(result.getContent().getFirst().uuid()).isEqualTo(purchase.getUuid().toString());
+    }
+
+    @Test
+    @DisplayName("Deve buscar as últimas 5 vendas recentes sem filtro de dias")
+    void shouldFindRecentPurchasesSuccessfully() {
+        InputPurchase purchase = new InputPurchase(mockPerson);
+        ReflectionTestUtils.setField(purchase, "id", 60L);
+        ReflectionTestUtils.setField(purchase, "emissionDate", LocalDateTime.now());
+
+        when(purchaseRepository.findRecentPurchases(any(PageRequest.class)))
+                .thenReturn(List.of(purchase));
+
+        List<RecentSaleDto> result = purchaseService.findRecentPurchases();
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().id()).isEqualTo(60L);
+        assertThat(result.getFirst().productName()).isEqualTo("Venda #60");
+        verify(purchaseRepository).findRecentPurchases(eq(PageRequest.of(0, 5)));
+    }
+
+    @Test
+    @DisplayName("Deve comparar igualdade entre vendas utilizando o UUID de BaseReceipt")
+    void shouldComparePurchasesByUuid() {
+        InputPurchase first = new InputPurchase(mockPerson);
+        InputPurchase second = new InputPurchase(mockPerson);
+        ReflectionTestUtils.setField(first, "id", 1L);
+        ReflectionTestUtils.setField(second, "id", 1L);
+
+        assertThat(first).isNotEqualTo(second);
+
+        ReflectionTestUtils.setField(second, "uuid", first.getUuid());
+        assertThat(first).isEqualTo(second);
+        assertThat(first.hashCode()).isEqualTo(second.hashCode());
     }
 
     @Test

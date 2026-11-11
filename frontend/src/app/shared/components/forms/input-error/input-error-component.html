@@ -1,7 +1,10 @@
 <div class="text-[var(--red-alert)] text-xs mt-0.5 flex flex-col min-h-0">
   @if (control && control.invalid && control.touched) {
 
-  @if (control.hasError('required')) {
+  @if (control.hasError('invalidDate')) {
+  <span>Data inválida. Use o formato DD/MM/AAAA.</span>
+  }
+  @else if (control.hasError('required')) {
   <span>Campo obrigatório.</span>
   }
   @else if (control.hasError('mask')) {

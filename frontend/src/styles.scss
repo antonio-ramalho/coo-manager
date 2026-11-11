@@ -177,3 +177,15 @@ body {
   border-color: var(--primary-base) !important;
   color: #fff !important;
 }
+
+/* Remove setas padrão de inputs numéricos globalmente */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

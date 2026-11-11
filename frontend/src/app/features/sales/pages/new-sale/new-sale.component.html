@@ -1,10 +1,54 @@
-<div class="flex flex-col flex-1 h-full min-h-0 w-full p-4 lg:p-6 overflow-y-auto">
-  <div class="flex items-center justify-between mb-6">
-    <div>
-      <h1 class="txt-h1">Nova Venda</h1>
-      <p class="text-sm text-neutral-500 mt-1">
-        Fluxo transacional de saída e comercialização de insumos para cooperados e clientes.
-      </p>
-    </div>
-  </div>
+<div class="flex flex-col w-full h-full min-h-0 overflow-y-auto lg:overflow-hidden p-3 sm:p-4 md:py-3 md:px-6">
+  <app-page-title title="Nova venda" [showBackButton]="true" (back)="cancel()" class="shrink-0 mb-3">
+  </app-page-title>
+
+  <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()" class="flex-1 min-h-0 flex flex-col w-full">
+    <app-stepper-layout
+      [steps]="stepLabels"
+      [currentStep]="currentPage"
+      [nextDisabled]="isCurrentStepInvalid"
+      [submitDisabled]="isSubmitDisabled"
+      [isSubmitting]="isSubmitting()"
+      (next)="nextPage()"
+      (back)="backPage()"
+      (cancel)="cancel()"
+    >
+      @switch (currentPage) {
+        @case (1) {
+          <h3 class="txt-h2 mb-3">Identificação do Cooperado / Cliente</h3>
+          <app-sale-client-step
+            [formGroup]="salesForm"
+            [clientPreview]="selectedClientPreview()"
+            [isLoadingDetails]="isLoadingClientDetails()"
+            [searchClientsFn]="searchClientsFn"
+            (clientSelected)="onClientSelected($event)"
+            (proceed)="nextPage()"
+          ></app-sale-client-step>
+        }
+        @case (2) {
+          <h3 class="txt-h2 mb-3">Carrinho de Insumos</h3>
+          <app-sale-cart-step
+            [formGroup]="salesForm"
+            [searchBatchesFn]="searchBatchesFn"
+            [totalValue]="totalSaleValue()"
+            (batchSelected)="onBatchSelected($event)"
+            (removeItem)="onRemoveItem($event)"
+            (backToClient)="backPage()"
+            (finalizeSale)="openConfirmationDialog()"
+          ></app-sale-cart-step>
+        }
+      }
+    </app-stepper-layout>
+  </form>
 </div>
+
+<app-sale-confirmation-dialog
+  [isOpen]="isDialogOpen()"
+  [clientName]="confirmationClientName"
+  [clientDocument]="confirmationClientDoc"
+  [items]="confirmationItems"
+  [totalValue]="totalSaleValue()"
+  [isSubmitting]="isSubmitting()"
+  (confirm)="executeSaleSubmission()"
+  (cancel)="closeConfirmationDialog()"
+></app-sale-confirmation-dialog>

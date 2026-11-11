@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export interface SubNavTab {
   label: string;
   route: string;
+  exact?: boolean;
 }
 
 /**

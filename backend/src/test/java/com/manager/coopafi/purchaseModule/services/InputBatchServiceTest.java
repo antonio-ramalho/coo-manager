@@ -248,7 +248,7 @@ class InputBatchServiceTest {
     @DisplayName("Deve retornar página de lotes formatados para tabela com batchCode prioritário")
     void shouldReturnPagedBatchesForTable() {
         Page<InputBatch> page = new PageImpl<>(List.of(testBatch), PageRequest.of(0, 10), 1);
-        when(batchRepository.searchBatches(eq("Adubo"), any())).thenReturn(page);
+        when(batchRepository.searchBatches(eq("Adubo"), eq(false), any())).thenReturn(page);
 
         Page<InputBatchTableDto> result = batchService.searchBatches(0, 10, "Adubo");
 
@@ -256,5 +256,17 @@ class InputBatchServiceTest {
         assertThat(result.getContent().getFirst().batchCode()).isEqualTo("LOT-2024-001");
         assertThat(result.getContent().getFirst().productName()).isEqualTo("Adubo Orgânico");
         assertThat(result.getContent().getFirst().statusDescription()).isEqualTo("Em Estoque");
+    }
+
+    @Test
+    @DisplayName("Deve buscar lotes disponíveis em estoque com onlyInStock = true")
+    void shouldReturnOnlyInStockBatches() {
+        Page<InputBatch> page = new PageImpl<>(List.of(testBatch), PageRequest.of(0, 10), 1);
+        when(batchRepository.searchBatches(eq("Adubo"), eq(true), any())).thenReturn(page);
+
+        Page<InputBatchTableDto> result = batchService.searchBatches(0, 10, "Adubo", true);
+
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().batchCode()).isEqualTo("LOT-2024-001");
     }
 }

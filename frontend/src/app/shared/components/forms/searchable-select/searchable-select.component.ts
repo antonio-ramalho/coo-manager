@@ -2,12 +2,14 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  EventEmitter,
   forwardRef,
   HostListener,
   inject,
   Input,
   OnChanges,
   OnInit,
+  Output,
   signal,
   SimpleChanges,
   viewChild,
@@ -62,6 +64,7 @@ export class SearchableSelectComponent<T = any> implements ControlValueAccessor,
   @Input() labelFormatter?: (item: T) => string;
   @Input() searchFunction?: (item: T, term: string) => boolean;
   @Input() isInvalid: boolean = false;
+  @Output() selectedOptionChange = new EventEmitter<T | null>();
 
   private readonly elementRef = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
@@ -226,6 +229,7 @@ export class SearchableSelectComponent<T = any> implements ControlValueAccessor,
     this.currentValue = value;
     this.onChange(value);
     this.onTouched();
+    this.selectedOptionChange.emit(item);
     this.close();
     this.searchControl.setValue('');
     this.searchTerm.set('');
@@ -239,6 +243,7 @@ export class SearchableSelectComponent<T = any> implements ControlValueAccessor,
     this.currentValue = null;
     this.onChange(null);
     this.onTouched();
+    this.selectedOptionChange.emit(null);
     this.searchControl.setValue('');
     this.searchTerm.set('');
     this.open();

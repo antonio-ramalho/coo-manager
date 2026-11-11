@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -90,4 +91,11 @@ public abstract class Person implements Serializable {
     }
 
     public abstract String getDocumentNumber();
+
+    /**
+     * Retorna a data de nascimento quando aplicável ao tipo de pessoa.
+     */
+    public LocalDate resolveBirthDate() {
+        return null;
+    }
 }

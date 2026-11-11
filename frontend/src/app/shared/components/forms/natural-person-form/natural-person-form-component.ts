@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
-import { FlatpickrDirective } from 'angularx-flatpickr';
 import { Gender } from '../../../enums/gender';
 import { GenderPipe } from '../../../pipes/gender-pipe';
+import { DateInputComponent } from '../date-input/date-input.component';
 import { InputErrorComponent } from '../input-error/input-error-component';
 
 @Component({
@@ -12,7 +12,7 @@ import { InputErrorComponent } from '../input-error/input-error-component';
     FormsModule,
     ReactiveFormsModule,
     NgxMaskDirective,
-    FlatpickrDirective,
+    DateInputComponent,
     GenderPipe,
     InputErrorComponent,
   ],

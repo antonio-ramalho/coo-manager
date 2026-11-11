@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ToastMessage, ToastType } from '../models/toast-message.model';
 
-/** Barramento global de notificações; o `ToastComponent` é o único consumidor. */
+const TOAST_PRIORITY_MAP: Record<ToastType, number> = {
+  error: 3,
+  warning: 2,
+  success: 1,
+};
+
 @Injectable({ providedIn: 'root' })
 export class ToastService {
   private readonly toastSubject = new Subject<ToastMessage>();
@@ -23,6 +28,16 @@ export class ToastService {
   }
 
   private emit(message: string, type: ToastType): void {
-    this.toastSubject.next({ id: ++this.nextId, message, type });
+    const normalized = message.trim();
+    if (!normalized) {
+      return;
+    }
+
+    this.toastSubject.next({
+      id: ++this.nextId,
+      message: normalized,
+      type,
+      priority: TOAST_PRIORITY_MAP[type],
+    });
   }
 }

@@ -3,7 +3,7 @@
     <div class="widget-header">
       <h3 class="widget-title">Lotes vencendo</h3>
       <div class="filter-pills">
-        @for (opt of expiringFilterOptions; track opt.value) {
+        @for (opt of periodFilterOptions; track opt.value) {
         <button type="button" class="pill-btn" [class.active]="selectedExpiringDays === opt.value"
           (click)="onSelectExpiringDays(opt.value)">
           {{ opt.label }}
@@ -15,7 +15,7 @@
     <div class="widget-content custom-scrollbar">
       @if (loadingExpiring) {
       <div class="loading-state">
-        <span>Atualizando lotes...</span>
+        <app-loading-spinner size="sm" message="Atualizando lotes..."></app-loading-spinner>
       </div>
       } @else if (!expiringBatches || expiringBatches.length === 0) {
       <div class="empty-state">
@@ -36,32 +36,32 @@
 
   <div class="card widget-card">
     <div class="widget-header">
-      <h3 class="widget-title">Ranking dos mais vendidos</h3>
+      <h3 class="widget-title">Lotes vencidos</h3>
       <div class="filter-pills">
-        @for (opt of topSellingFilterOptions; track opt.value) {
-        <button type="button" class="pill-btn" [class.active]="selectedTopSellingDays === opt.value"
-          (click)="onSelectTopSellingDays(opt.value)">
-          {{ opt.label }}
-        </button>
-        }
+          @for (opt of periodFilterOptions; track opt.value) {
+          <button type="button" class="pill-btn" [class.active]="selectedExpiredDays === opt.value"
+            (click)="onSelectExpiredDays(opt.value)">
+            {{ opt.label }}
+          </button>
+          }
       </div>
     </div>
 
     <div class="widget-content custom-scrollbar">
-      @if (loadingTopSelling) {
+      @if (loadingExpired) {
       <div class="loading-state">
-        <span>Atualizando ranking...</span>
+        <app-loading-spinner size="sm" message="Atualizando lotes vencidos..."></app-loading-spinner>
       </div>
-      } @else if (!topSellingProducts || topSellingProducts.length === 0) {
+      } @else if (!expiredBatches || expiredBatches.length === 0) {
       <div class="empty-state">
-        <span>Nenhuma venda registrada no período.</span>
+        <span>Nenhum lote vencido no período.</span>
       </div>
       } @else {
       <ul class="widget-list">
-        @for (prod of topSellingProducts; track prod.productId) {
+        @for (batch of expiredBatches; track batch.batchId) {
         <li class="widget-list-item">
-          <span class="item-name truncate" [title]="prod.productName">{{ prod.productName }}</span>
-          <span class="item-value">{{ prod.totalQuantitySold }}</span>
+          <span class="item-name truncate" [title]="batch.productName">{{ batch.productName }}</span>
+          <span class="item-value">{{ batch.expirationDate | date:'dd/MM/yyyy' }}</span>
         </li>
         }
       </ul>

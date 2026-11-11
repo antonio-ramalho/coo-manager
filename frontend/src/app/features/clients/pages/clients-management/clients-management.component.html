@@ -12,30 +12,23 @@
 
   <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
     <aside class="aside-container custom-scrollbar">
-      @if (page$ | async; as pageData) {
-      <app-generic-list
-        class="flex-1 flex flex-col min-h-0"
-        [items]="pageData.content"
-        [totalItems]="pageData.totalElements"
-        [currentPage]="currentPage"
-        searchPlaceholder="Buscar por nome, CPF ou CNPJ..."
-        altText="Nenhum cliente encontrado."
-        (searchChanged)="applyFilters($event)"
-        (pageChanged)="swappedPage($event)"
-        (viewDetails)="viewDetails($event)"
-        (deactivate)="deactivateClient($event)"
-        (edit)="editClient($event)"
+      @let pageData = (page$ | async) ?? { content: [], totalElements: 0 };
+      <app-generic-list class="flex-1 flex flex-col min-h-0" [items]="pageData.content"
+        [totalItems]="pageData.totalElements" [currentPage]="currentPage" [loading]="loadingList"
+        loadingText="Buscando clientes..." searchPlaceholder="Buscar por nome, CPF ou CNPJ..."
+        altText="Nenhum cliente encontrado." (searchChanged)="applyFilters($event)" (pageChanged)="swappedPage($event)"
+        (viewDetails)="viewDetails($event)" (deactivate)="deactivateClient($event)" (edit)="editClient($event)"
         (activate)="activateClient($event)">
       </app-generic-list>
-      } @else {
-      <div class="flex justify-center p-8">
-        <p class="text-gray-500">Buscando clientes...</p>
-      </div>
-      }
     </aside>
 
     <main class="main-container custom-scrollbar">
-      @if (clientDetails$ | async; as details) {
+      @let details = clientDetails$ | async;
+      @if (loadingDetails) {
+      <div class="card card-details-container">
+        <app-loading-spinner size="md" message="Carregando detalhes do cliente..."></app-loading-spinner>
+      </div>
+      } @else if (details) {
       <app-client-details-panel [details]="details" (edit)="editClient($event)"></app-client-details-panel>
       } @else {
       <div class="card card-details-container">

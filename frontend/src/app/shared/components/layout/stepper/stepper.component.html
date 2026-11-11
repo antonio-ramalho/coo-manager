@@ -1,4 +1,4 @@
-<div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch w-full max-w-7xl mx-auto mt-0">
+<div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch w-full max-w-7xl mx-auto mt-0 lg:h-full lg:min-h-0">
   <aside class="w-full lg:w-64 lg:shrink-0 flex flex-col gap-3 lg:gap-4">
     <div>
       <h2 class="txt-h2 mb-0.5">Progresso do Cadastro</h2>
@@ -37,8 +37,8 @@
   </aside>
 
   <main
-    class="w-full flex-1 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] flex flex-col shadow-xs justify-between">
-    <div class="flex-1 p-4 sm:p-5 lg:p-6">
+    class="w-full flex-1 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] flex flex-col shadow-xs justify-between lg:h-full lg:min-h-0 overflow-hidden">
+    <div class="flex-1 p-4 sm:p-5 lg:p-6 lg:overflow-y-auto lg:min-h-0 custom-scrollbar">
       <ng-content></ng-content>
     </div>
 

@@ -1,0 +1,28 @@
+<div class="date-input-wrapper">
+  <input
+    #dateInput
+    type="text"
+    inputmode="numeric"
+    maxlength="10"
+    [id]="inputId || null"
+    [value]="displayValue"
+    [placeholder]="placeholder"
+    [disabled]="isDisabled"
+    [class.input-error]="isInvalid"
+    (input)="onTextInput($event)"
+    (blur)="onBlur()"
+    class="input-base txt-body w-full pr-10"
+  />
+
+  <button
+    type="button"
+    class="calendar-trigger"
+    [disabled]="isDisabled"
+    (click)="openCalendar()"
+    aria-label="Abrir calendário"
+    title="Abrir calendário"
+  >
+    <svg lucideCalendar class="w-4 h-4"></svg>
+  </button>
+</div>
+

@@ -1,0 +1,24 @@
+<div class="card chart-card">
+  <div class="chart-header">
+    <div>
+      <h3 class="txt-h2 text-base md:text-lg">Volume de Vendas Mensal</h3>
+      <p class="text-xs text-[var(--text-aux)] mt-0.5">Evolução do faturamento nos últimos meses</p>
+    </div>
+  </div>
+
+  <div class="chart-body">
+    @if (loading) {
+      <div class="chart-state-msg">
+        <app-loading-spinner size="md" message="Carregando dados de vendas mensais..."></app-loading-spinner>
+      </div>
+      } @else if (!monthlySales || monthlySales.length === 0) {
+      <div class="chart-state-msg">
+        <span>Nenhum histórico de vendas registrado no período.</span>
+      </div>
+      } @else {
+      <div class="canvas-wrapper">
+        <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions"></canvas>
+      </div>
+      }
+    </div>
+  </div>

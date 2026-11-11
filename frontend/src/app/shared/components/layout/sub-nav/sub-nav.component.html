@@ -3,6 +3,7 @@
     <a
       [routerLink]="tab.route"
       routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: tab.exact ?? false }"
       class="sub-nav-link"
     >
       {{ tab.label }}

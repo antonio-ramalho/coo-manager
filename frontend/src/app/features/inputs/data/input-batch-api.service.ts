@@ -19,12 +19,14 @@ export class InputBatchApiService {
     page: number = 0,
     size: number = 10,
     searchTerm: string = '',
+    onlyInStock: boolean = false,
   ): Observable<Page<InputBatchTableItem>> {
     const params = new HttpParams({
       fromObject: {
         page,
         size,
         ...(searchTerm ? { searchTerm } : {}),
+        ...(onlyInStock ? { onlyInStock: true } : {}),
       },
     });
 

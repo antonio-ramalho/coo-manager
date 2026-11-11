@@ -16,24 +16,25 @@
         [occupancy]="summary.occupancy"></app-stock-kpi-cards>
       } @else {
       <div class="card p-6 flex justify-center text-(--text-aux) text-sm shrink-0">
-        <span>Carregando dados do inventário...</span>
+        <app-loading-spinner size="sm" message="Carregando dados do inventário..."></app-loading-spinner>
       </div>
       }
 
       @if (pagedBatches$ | async; as batchPage) {
-      <app-stock-batch-table class="flex-1 min-h-0 flex flex-col" [batches]="batchPage.content" [loading]="loadingBatches"
-        [currentPage]="batchPage.pageable.pageNumber + 1" [totalElements]="batchPage.totalElements"
-        (searchChange)="onSearchChange($event)" (pageChange)="onPageChange($event)"
-        (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)" (activate)="onActivateBatch($event)"></app-stock-batch-table>
+      <app-stock-batch-table class="flex-1 min-h-0 flex flex-col" [batches]="batchPage.content"
+        [loading]="loadingBatches" [currentPage]="batchPage.pageable.pageNumber + 1"
+        [totalElements]="batchPage.totalElements" (searchChange)="onSearchChange($event)"
+        (pageChange)="onPageChange($event)" (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)"
+        (activate)="onActivateBatch($event)"></app-stock-batch-table>
       }
     </section>
 
     <aside class="sidebar-column custom-scrollbar">
       <app-stock-sidebar-widgets [expiringBatches]="(expiringBatches$ | async) ?? []"
-        [topSellingProducts]="(topSellingProducts$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
-        [selectedTopSellingDays]="(topSellingDays$ | async) ?? 7" [loadingExpiring]="loadingExpiring"
-        [loadingTopSelling]="loadingTopSelling" (expiringDaysChange)="onExpiringDaysChange($event)"
-        (topSellingDaysChange)="onTopSellingDaysChange($event)"></app-stock-sidebar-widgets>
+      [expiredBatches]="(expiredBatches$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
+      [selectedExpiredDays]="(expiredDays$ | async) ?? 3" [loadingExpiring]="loadingExpiring"
+      [loadingExpired]="loadingExpired" (expiringDaysChange)="onExpiringDaysChange($event)"
+      (expiredDaysChange)="onExpiredDaysChange($event)"></app-stock-sidebar-widgets>
     </aside>
   </div>
 </div>

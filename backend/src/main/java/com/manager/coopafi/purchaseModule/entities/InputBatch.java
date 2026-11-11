@@ -133,4 +133,14 @@ public class InputBatch implements Serializable {
         this.currentQuantity = this.currentQuantity.add(amount);
         updateStatusByStock();
     }
+
+    public String resolveBatchCode() {
+        if (this.batchCode != null && !this.batchCode.isBlank()) {
+            return this.batchCode;
+        }
+        if (this.uuid != null) {
+            return "LOT-" + this.uuid.toString().substring(0, 8).toUpperCase();
+        }
+        return "LOT-" + this.id;
+    }
 }

@@ -3,7 +3,10 @@ package com.manager.coopafi.purchaseModule.resources;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseMinDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.InputPurchaseTableDto;
+import com.manager.coopafi.purchaseModule.dto.inputPurchase.RecentSaleDto;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputPurchaseService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -23,6 +26,21 @@ public class InputPurchaseResource {
     @GetMapping
     public ResponseEntity<List<InputPurchaseMinDto>> findAllByStatus() {
         List<InputPurchaseMinDto> list = service.findAllByStatus();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/paged")
+    public ResponseEntity<Page<InputPurchaseTableDto>> findPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String searchTerm) {
+        Page<InputPurchaseTableDto> result = service.searchPurchases(page, size, searchTerm);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping(value = "/recent")
+    public ResponseEntity<List<RecentSaleDto>> findRecent() {
+        List<RecentSaleDto> list = service.findRecentPurchases();
         return ResponseEntity.ok().body(list);
     }
 

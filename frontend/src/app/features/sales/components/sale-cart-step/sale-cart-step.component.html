@@ -1,0 +1,141 @@
+<div [formGroup]="formGroup" class="flex flex-col gap-6 w-full">
+  <div
+    class="card p-5 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-[var(--shadow-card)]">
+    <div class="flex items-center gap-3 mb-2">
+      <div
+        class="w-9 h-9 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)]">
+        <svg lucideShoppingCart class="w-5 h-5"></svg>
+      </div>
+      <div>
+        <h2 class="txt-h2 text-base md:text-lg">Passo 2: Seleção de Lotes e Carrinho de Insumos</h2>
+        <p class="text-xs md:text-sm text-[var(--text-aux)]">
+          Selecione os lotes disponíveis no estoque físico. Apenas lotes ativos com saldo e não expirados são elegíveis.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4 flex flex-col gap-1 max-w-2xl">
+      <label class="txt-label" for="batchSearch">Pesquisar Lote de Insumo</label>
+      <app-searchable-select id="batchSearch" [searchFn]="searchBatchesFn" [labelFormatter]="batchLabelFormatter"
+        (selectedOptionChange)="onBatchChosen($event)" placeholder="Digite o código do lote ou nome do produto..."
+        notFoundText="Nenhum lote com estoque disponível encontrado.">
+      </app-searchable-select>
+    </div>
+  </div>
+
+  <div
+    class="card bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-[var(--shadow-card)] overflow-hidden">
+    <div class="p-4 md:p-5 border-b border-[var(--border-neutral)] flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg lucidePackage class="w-5 h-5 text-[var(--text-aux)]"></svg>
+        <h3 class="font-bold text-base text-[var(--text-main)]">
+          Itens da Venda ({{ itemsArray.length }})
+        </h3>
+      </div>
+      @if (itemsArray.length > 0) {
+      <span class="text-xs md:text-sm text-[var(--text-aux)]">
+        Total parcial: <strong class="text-[var(--primary-base)]">{{ totalValue |
+          currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      </span>
+      }
+    </div>
+
+    @if (itemsArray.length === 0) {
+    <div class="p-10 flex flex-col items-center justify-center text-center">
+      <div
+        class="w-12 h-12 rounded-full bg-[var(--bg-app)] flex items-center justify-center text-[var(--text-aux)] mb-3">
+        <svg lucideShoppingCart class="w-6 h-6"></svg>
+      </div>
+      <p class="text-sm font-medium text-[var(--text-main)]">O carrinho está vazio</p>
+      <p class="text-xs text-[var(--text-aux)] mt-1 max-w-sm">
+        Pesquise e selecione um lote no campo acima para adicionar itens à venda.
+      </p>
+    </div>
+    } @else {
+    <div class="overflow-x-auto lg:max-h-[300px] lg:overflow-y-auto custom-scrollbar" formArrayName="items">
+      <table class="w-full text-left text-sm border-collapse">
+        <thead>
+          <tr
+            class="bg-[var(--bg-app)] text-[var(--text-aux)] text-xs uppercase tracking-wider border-b border-[var(--border-neutral)]">
+            <th class="py-3 px-4 font-semibold">Produto / Lote</th>
+            <th class="py-3 px-4 font-semibold text-center">Estoque Disp.</th>
+            <th class="py-3 px-4 font-semibold text-right">Preço Unitário</th>
+            <th class="py-3 px-4 font-semibold text-center w-36">Quantidade</th>
+            <th class="py-3 px-4 font-semibold text-right">Subtotal</th>
+            <th class="py-3 px-4 font-semibold text-center w-16">Remover</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--border-neutral)]">
+          @for (itemGroup of itemsArray.controls; track $index; let i = $index) {
+          <tr [formGroupName]="i" class="hover:bg-[var(--bg-surface-hover)] transition-colors">
+            <td class="py-3.5 px-4">
+              <div class="flex flex-col">
+                <span class="font-medium text-[var(--text-main)]">
+                  {{ itemGroup.get('productName')?.value }}
+                </span>
+                <span class="text-xs text-[var(--text-aux)] flex items-center gap-1 mt-0.5">
+                  <span
+                    class="px-1.5 py-0.5 rounded bg-[var(--bg-app)] border border-[var(--border-neutral)] font-mono text-[11px]">
+                    {{ itemGroup.get('batchCode')?.value }}
+                  </span>
+                </span>
+              </div>
+            </td>
+
+            <td class="py-3.5 px-4 text-center">
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">
+                {{ itemGroup.get('availableStock')?.value }} {{ itemGroup.get('measureUnit')?.value }}
+              </span>
+            </td>
+
+            <td class="py-3.5 px-4 text-right font-medium text-[var(--text-main)]">
+              {{ (itemGroup.get('unitPrice')?.value ?? 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </td>
+
+            <td class="py-3.5 px-4 text-center">
+              <div class="flex flex-col items-center">
+                <div class="flex items-center gap-1.5">
+                  <input type="number" formControlName="quantity" step="any" min="0.001"
+                    [max]="itemGroup.get('availableStock')?.value ?? 999999"
+                    class="w-24 text-center py-1.5 px-2 text-sm border rounded-[var(--radius-btn)] bg-[var(--bg-surface)] text-[var(--text-main)] border-[var(--border-neutral)] focus:border-[var(--primary-base)] focus:ring-1 focus:ring-[var(--primary-base)] transition-colors"
+                    [class.border-[var(--red-alert)]]="itemGroup.get('quantity')?.invalid && itemGroup.get('quantity')?.touched" />
+                  <span class="text-xs text-[var(--text-aux)] font-medium">
+                    {{ itemGroup.get('measureUnit')?.value }}
+                  </span>
+                </div>
+                @if (itemGroup.get('quantity')?.hasError('max')) {
+                <span class="text-[11px] text-[var(--red-alert)] mt-1">Excede estoque!</span>
+                } @else if (itemGroup.get('quantity')?.hasError('min') ||
+                itemGroup.get('quantity')?.hasError('required')) {
+                <span class="text-[11px] text-[var(--red-alert)] mt-1">Qtd. inválida</span>
+                }
+              </div>
+            </td>
+
+            <td class="py-3.5 px-4 text-right font-bold text-[var(--text-main)]">
+              {{ (itemGroup.get('totalPrice')?.value ?? 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </td>
+
+            <td class="py-3.5 px-4 text-center">
+              <button type="button" (click)="onRemove(i)" title="Remover item do carrinho"
+                class="p-1.5 rounded-[var(--radius-btn)] text-[var(--text-aux)] hover:text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors cursor-pointer">
+                <svg lucideTrash2 class="w-4 h-4"></svg>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="p-4 md:p-5 bg-[var(--bg-surface-hover)] border-t border-[var(--border-neutral)] flex items-center justify-between">
+      <span class="text-xs uppercase text-[var(--text-aux)] font-semibold tracking-wider">Total Geral da Venda</span>
+      <div class="text-2xl font-extrabold text-[var(--primary-base)]">
+        {{ totalValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+      </div>
+    </div>
+    }
+  </div>
+</div>

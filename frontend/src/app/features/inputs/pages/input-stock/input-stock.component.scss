@@ -23,7 +23,7 @@
   }
 
   .sidebar-column {
-    @apply shrink-0 flex flex-col h-full min-h-0 overflow-y-auto;
+    @apply shrink-0 flex flex-col h-full min-h-0 overflow-hidden;
     width: 250px;
     gap: var(--space-layout);
   }
@@ -42,6 +42,14 @@
       width: 100%;
       height: auto;
       overflow: visible;
+    }
+
+    :host ::ng-deep .widget-card {
+      flex: none;
+    }
+
+    :host ::ng-deep .widget-content {
+      max-height: 240px;
     }
   }
 }

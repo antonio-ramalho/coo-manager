@@ -1,0 +1,38 @@
+<div class="kpi-grid">
+  <!-- Card 1: Ticket Médio -->
+  <div class="card kpi-card">
+    <div class="icon-wrapper icon-ticket">
+      <svg lucideTrendingUp class="kpi-icon"></svg>
+    </div>
+    <div class="kpi-content">
+      <span class="txt-tag">Ticket Médio por Venda</span>
+      <div class="kpi-main-value">
+        @if (loading) {
+        <span class="loading-placeholder">Calculando...</span>
+        } @else {
+        {{ averageTicket | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        }
+      </div>
+      <span class="kpi-subtext">Valor financeiro médio por transação concluída</span>
+    </div>
+  </div>
+
+  <!-- Card 2: Risco de Vencimento -->
+  <div class="card kpi-card">
+    <div class="icon-wrapper icon-risk" [class.high-risk]="expirationRiskRate > 20">
+      <svg lucideAlertTriangle class="kpi-icon"></svg>
+    </div>
+    <div class="kpi-content">
+      <span class="txt-tag">Taxa de Risco de Vencimento</span>
+      <div class="kpi-main-value" [class.text-amber-600]="expirationRiskRate > 15" [class.text-red-600]="expirationRiskRate > 30">
+        @if (loading) {
+        <span class="loading-placeholder">Calculando...</span>
+        } @else {
+        {{ expirationRiskRate | number:'1.1-1':'pt-BR' }}%
+        }
+      </div>
+      <span class="kpi-subtext">Proporção do valor de estoque vencendo nos próximos 90 dias</span>
+    </div>
+  </div>
+</div>
+

@@ -14,6 +14,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
+import org.hibernate.annotations.Filter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,10 +24,11 @@ import java.util.*;
 
 @Entity
 @Table(name = "tb_contracts")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Contract implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Contract extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

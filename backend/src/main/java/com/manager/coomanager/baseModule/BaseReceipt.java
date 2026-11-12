@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
+import org.hibernate.annotations.Filter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,9 +16,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class BaseReceipt<T extends BaseReceiptItem<?>> implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public abstract class BaseReceipt<T extends BaseReceiptItem<?>> extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

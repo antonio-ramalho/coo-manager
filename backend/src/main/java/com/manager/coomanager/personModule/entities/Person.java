@@ -12,16 +12,19 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
+import org.hibernate.annotations.Filter;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_person")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Person implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public abstract class Person extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -92,9 +95,6 @@ public abstract class Person implements Serializable {
 
     public abstract String getDocumentNumber();
 
-    /**
-     * Retorna a data de nascimento quando aplicável ao tipo de pessoa.
-     */
     public LocalDate resolveBirthDate() {
         return null;
     }

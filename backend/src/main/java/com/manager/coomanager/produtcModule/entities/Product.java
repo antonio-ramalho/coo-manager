@@ -9,16 +9,18 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
+import org.hibernate.annotations.Filter;
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Product implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public abstract class Product extends TenantEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;

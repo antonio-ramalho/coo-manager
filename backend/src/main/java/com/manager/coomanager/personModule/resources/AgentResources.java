@@ -24,10 +24,9 @@ public class AgentResources {
     }
 
     @DeleteMapping("/{agentId}")
-    public ResponseEntity <Void> delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long unitId,
-            @PathVariable Long agentId
-    ) {
+            @PathVariable Long agentId) {
         service.deleteAgent(unitId, agentId);
         return ResponseEntity.noContent().build();
     }

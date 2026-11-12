@@ -8,6 +8,7 @@
             "mainClass": "com.manager.coomanager.CooManagerApplication",
             "projectName": "coo-manager",
             "args": "",
+            "vmArgs": "-Dspring.profiles.active=dev -Dspring.config.additional-location=file:///${userHome}/.config/coo-manager/",
             "envFile": "${workspaceFolder}/.env"
         }
     ]

@@ -13,7 +13,7 @@
   border-style: solid;
   border-color: var(--border-neutral);
   border-top-color: var(--primary-base);
-  animation: coopafi-spin 0.75s linear infinite;
+  animation: coo-manager-spin 0.75s linear infinite;
 }
 
 .size-sm .spinner-ring {
@@ -41,7 +41,7 @@
   text-align: center;
 }
 
-@keyframes coopafi-spin {
+@keyframes coo-manager-spin {
   to {
     transform: rotate(360deg);
   }

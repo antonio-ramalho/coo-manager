@@ -121,7 +121,7 @@ O back-end segue uma **arquitetura em camadas** (Resources, Services, Repositori
 **Pré-requisitos:** Java JDK 25, Maven, Node.js com npm e MySQL instalados e configurados.
 
 1. Clone o repositório e entre na pasta do projeto.
-2. No MySQL, crie um banco de dados vazio: `CREATE DATABASE coopafi_db;`
+2. No MySQL, crie um banco de dados vazio: `CREATE DATABASE coo_manager_db;`
 3. No back-end, copie `src/main/resources/application-dev.properties.example` para `application-dev.properties` e preencha com os dados do seu banco local (URL, usuário e senha).
 4. Suba a API com o perfil de desenvolvimento:
    ```bash

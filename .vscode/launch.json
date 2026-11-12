@@ -2,11 +2,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-CoopafiApplication<coopafi>",
+            "name": "Spring Boot-CooManager<coo-manager>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "com.manager.coopafi.CoopafiApplication",
-            "projectName": "coopafi",
+            "mainClass": "com.manager.coomanager.CooManagerApplication",
+            "projectName": "coo-manager",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

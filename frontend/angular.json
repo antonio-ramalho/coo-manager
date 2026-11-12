@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "coopafi-front": {
+    "coo-manager-front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -68,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "coopafi-front:build:production"
+              "buildTarget": "coo-manager-front:build:production"
             },
             "development": {
-              "buildTarget": "coopafi-front:build:development"
+              "buildTarget": "coo-manager-front:build:development"
             }
           },
           "defaultConfiguration": "development"

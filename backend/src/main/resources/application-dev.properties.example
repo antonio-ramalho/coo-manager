@@ -13,3 +13,7 @@ spring.jpa.hibernate.ddl-auto=update
 
 # Cors
 cors.allowed-origins=http://localhost:4200
+
+# JWT Security
+security.jwt.secret=COLOQUE_SUA_CHAVE_AQUI
+security.jwt.expiration-ms=COLOQUE_SEU_TEMPO_DE_EXPIRACAO

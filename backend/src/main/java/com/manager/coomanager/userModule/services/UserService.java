@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
@@ -28,15 +29,18 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final CooperativeRepository cooperativeRepository;
     private final List<UserValidator> validators;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
             RoleRepository roleRepository,
             CooperativeRepository cooperativeRepository,
-            List<UserValidator> validators) {
+            List<UserValidator> validators,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.cooperativeRepository = cooperativeRepository;
         this.validators = validators;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +66,7 @@ public class UserService {
                         "Cooperativa não encontrada com o ID: " + dto.cooperativeId()));
 
         PasswordHash passwordHash = (dto.password() != null && !dto.password().isBlank())
-                ? new PasswordHash(dto.password())
+                ? new PasswordHash(passwordEncoder.encode(dto.password()))
                 : null;
 
         User user = new User(dto.fullName().trim(), new Email(dto.email()), passwordHash, cooperative);

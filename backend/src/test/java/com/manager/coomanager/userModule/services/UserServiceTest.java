@@ -3,11 +3,9 @@ package com.manager.coomanager.userModule.services;
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.cooperativeModule.repositories.CooperativeRepository;
 import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
 import com.manager.coomanager.infrastructure.valueObjects.*;
 import com.manager.coomanager.personModule.enums.BrazilianState;
 import com.manager.coomanager.personModule.enums.Status;
-import com.manager.coomanager.userModule.dto.UserMinDto;
 import com.manager.coomanager.userModule.dto.UserRequestDto;
 import com.manager.coomanager.userModule.dto.UserResponseDto;
 import com.manager.coomanager.userModule.dto.UserUpdateDto;
@@ -24,13 +22,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 class UserServiceTest {
 
@@ -50,7 +47,12 @@ class UserServiceTest {
         UserEmailUniqueValidator emailValidator = new UserEmailUniqueValidator(userRepository);
         UserCooperativeActiveValidator coopValidator = new UserCooperativeActiveValidator(cooperativeRepository);
 
-        service = new UserService(userRepository, roleRepository, cooperativeRepository, List.of(emailValidator, coopValidator));
+        service = new UserService(
+                userRepository,
+                roleRepository,
+                cooperativeRepository,
+                List.of(emailValidator, coopValidator),
+                new BCryptPasswordEncoder());
 
         activeCooperative = new Cooperative(
                 new Address(new Cep("56300-000"), "Rua A", "Centro", "Petrolina", "10", BrazilianState.PE),
@@ -60,8 +62,7 @@ class UserServiceTest {
                 new Cnpj("12.345.678/0001-95"),
                 "Coop Ativa LTDA",
                 "Coop Ativa",
-                new StateRegistration("123456789")
-        );
+                new StateRegistration("123456789"));
         ReflectionTestUtils.setField(activeCooperative, "id", 1L);
         cooperativeRepository.save(activeCooperative);
 
@@ -79,8 +80,7 @@ class UserServiceTest {
                 "carlos@coop.com",
                 "senha12345",
                 1L,
-                Set.of(10L)
-        );
+                Set.of(10L));
 
         UserResponseDto response = service.insert(dto);
 
@@ -115,8 +115,7 @@ class UserServiceTest {
                 new Cnpj("99.888.777/0001-66"),
                 "Coop Inativa LTDA",
                 "Coop Inativa",
-                new StateRegistration("987654321")
-        );
+                new StateRegistration("987654321"));
         inactiveCoop.deactivate();
         ReflectionTestUtils.setField(inactiveCoop, "id", 2L);
         cooperativeRepository.save(inactiveCoop);
@@ -175,7 +174,8 @@ class UserServiceTest {
         @Override
         public Page<User> findAllByCooperativeId(Long cooperativeId, Pageable pageable) {
             List<User> list = database.values().stream()
-                    .filter(u -> u.getCooperative() != null && Objects.equals(u.getCooperative().getId(), cooperativeId))
+                    .filter(u -> u.getCooperative() != null
+                            && Objects.equals(u.getCooperative().getId(), cooperativeId))
                     .toList();
             return new PageImpl<>(list, pageable, list.size());
         }
@@ -192,7 +192,8 @@ class UserServiceTest {
         @Override
         public Page<User> searchByCooperativeAndTerm(Long cooperativeId, String searchTerm, Pageable pageable) {
             List<User> list = database.values().stream()
-                    .filter(u -> u.getCooperative() != null && Objects.equals(u.getCooperative().getId(), cooperativeId))
+                    .filter(u -> u.getCooperative() != null
+                            && Objects.equals(u.getCooperative().getId(), cooperativeId))
                     .filter(u -> searchTerm.isBlank() ||
                             u.getFullName().toLowerCase().contains(searchTerm.toLowerCase()) ||
                             u.getEmail().getAddressEmail().toLowerCase().contains(searchTerm.toLowerCase()))
@@ -214,124 +215,487 @@ class UserServiceTest {
             return Optional.ofNullable(database.get(aLong));
         }
 
-        @Override public boolean existsById(Long aLong) { return database.containsKey(aLong); }
-        @Override public List<User> findAll() { return new ArrayList<>(database.values()); }
-        @Override public List<User> findAllById(Iterable<Long> longs) { return List.of(); }
-        @Override public long count() { return database.size(); }
-        @Override public void deleteById(Long aLong) { database.remove(aLong); }
-        @Override public void delete(User entity) { database.remove(entity.getId()); }
-        @Override public void deleteAllById(Iterable<? extends Long> longs) {}
-        @Override public void deleteAll(Iterable<? extends User> entities) {}
-        @Override public void deleteAll() {}
-        @Override public <S extends User> List<S> saveAll(Iterable<S> entities) { return List.of(); }
-        @Override public void flush() {}
-        @Override public <S extends User> S saveAndFlush(S entity) { return save(entity); }
-        @Override public <S extends User> List<S> saveAllAndFlush(Iterable<S> entities) { return List.of(); }
-        @Override public void deleteAllInBatch(Iterable<User> entities) {}
-        @Override public void deleteAllByIdInBatch(Iterable<Long> longs) {}
-        @Override public void deleteAllInBatch() {}
-        @Override public User getOne(Long aLong) { return database.get(aLong); }
-        @Override public User getById(Long aLong) { return database.get(aLong); }
-        @Override public User getReferenceById(Long aLong) { return database.get(aLong); }
-        @Override public <S extends User> Optional<S> findOne(Example<S> example) { return Optional.empty(); }
-        @Override public <S extends User> List<S> findAll(Example<S> example) { return List.of(); }
-        @Override public <S extends User> List<S> findAll(Example<S> example, Sort sort) { return List.of(); }
-        @Override public <S extends User> Page<S> findAll(Example<S> example, Pageable pageable) { return Page.empty(); }
-        @Override public <S extends User> long count(Example<S> example) { return 0; }
-        @Override public <S extends User> boolean exists(Example<S> example) { return false; }
-        @Override public <S extends User, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
-        @Override public List<User> findAll(Sort sort) { return List.of(); }
-        @Override public Page<User> findAll(Pageable pageable) { return Page.empty(); }
+        @Override
+        public boolean existsById(Long aLong) {
+            return database.containsKey(aLong);
+        }
+
+        @Override
+        public List<User> findAll() {
+            return new ArrayList<>(database.values());
+        }
+
+        @Override
+        public List<User> findAllById(Iterable<Long> longs) {
+            return List.of();
+        }
+
+        @Override
+        public long count() {
+            return database.size();
+        }
+
+        @Override
+        public void deleteById(Long aLong) {
+            database.remove(aLong);
+        }
+
+        @Override
+        public void delete(User entity) {
+            database.remove(entity.getId());
+        }
+
+        @Override
+        public void deleteAllById(Iterable<? extends Long> longs) {
+        }
+
+        @Override
+        public void deleteAll(Iterable<? extends User> entities) {
+        }
+
+        @Override
+        public void deleteAll() {
+        }
+
+        @Override
+        public <S extends User> List<S> saveAll(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void flush() {
+        }
+
+        @Override
+        public <S extends User> S saveAndFlush(S entity) {
+            return save(entity);
+        }
+
+        @Override
+        public <S extends User> List<S> saveAllAndFlush(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void deleteAllInBatch(Iterable<User> entities) {
+        }
+
+        @Override
+        public void deleteAllByIdInBatch(Iterable<Long> longs) {
+        }
+
+        @Override
+        public void deleteAllInBatch() {
+        }
+
+        @Override
+        public User getOne(Long aLong) {
+            return database.get(aLong);
+        }
+
+        @Override
+        public User getById(Long aLong) {
+            return database.get(aLong);
+        }
+
+        @Override
+        public User getReferenceById(Long aLong) {
+            return database.get(aLong);
+        }
+
+        @Override
+        public <S extends User> Optional<S> findOne(Example<S> example) {
+            return Optional.empty();
+        }
+
+        @Override
+        public <S extends User> List<S> findAll(Example<S> example) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends User> List<S> findAll(Example<S> example, Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends User> Page<S> findAll(Example<S> example, Pageable pageable) {
+            return Page.empty();
+        }
+
+        @Override
+        public <S extends User> long count(Example<S> example) {
+            return 0;
+        }
+
+        @Override
+        public <S extends User> boolean exists(Example<S> example) {
+            return false;
+        }
+
+        @Override
+        public <S extends User, R> R findBy(Example<S> example,
+                Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+            return null;
+        }
+
+        @Override
+        public List<User> findAll(Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public Page<User> findAll(Pageable pageable) {
+            return Page.empty();
+        }
     }
 
     private static class InMemoryRoleRepository implements RoleRepository {
         private final Map<Long, Role> database = new HashMap<>();
-        @Override public List<Role> findByCooperativeId(Long cooperativeId) { return List.of(); }
-        @Override public List<Role> findBySystemRoleTrue() { return List.of(); }
-        @Override public List<Role> findAllAvailableForCooperative(Long cooperativeId) { return List.of(); }
-        @Override public boolean existsByNameAndCooperativeId(String name, Long cooperativeId) { return false; }
-        @Override public Optional<Role> findByNameAndCooperativeId(String name, Long cooperativeId) { return Optional.empty(); }
-        @Override public <S extends Role> S save(S entity) {
+
+        @Override
+        public List<Role> findByCooperativeId(Long cooperativeId) {
+            return List.of();
+        }
+
+        @Override
+        public List<Role> findBySystemRoleTrue() {
+            return List.of();
+        }
+
+        @Override
+        public List<Role> findAllAvailableForCooperative(Long cooperativeId) {
+            return List.of();
+        }
+
+        @Override
+        public boolean existsByNameAndCooperativeId(String name, Long cooperativeId) {
+            return false;
+        }
+
+        @Override
+        public Optional<Role> findByNameAndCooperativeId(String name, Long cooperativeId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public <S extends Role> S save(S entity) {
             database.put(entity.getId(), entity);
             return entity;
         }
-        @Override public Optional<Role> findById(Long aLong) { return Optional.ofNullable(database.get(aLong)); }
-        @Override public boolean existsById(Long aLong) { return database.containsKey(aLong); }
-        @Override public List<Role> findAll() { return List.of(); }
-        @Override public List<Role> findAllById(Iterable<Long> longs) {
+
+        @Override
+        public Optional<Role> findById(Long aLong) {
+            return Optional.ofNullable(database.get(aLong));
+        }
+
+        @Override
+        public boolean existsById(Long aLong) {
+            return database.containsKey(aLong);
+        }
+
+        @Override
+        public List<Role> findAll() {
+            return List.of();
+        }
+
+        @Override
+        public List<Role> findAllById(Iterable<Long> longs) {
             List<Role> list = new ArrayList<>();
             for (Long id : longs) {
-                if (database.containsKey(id)) list.add(database.get(id));
+                if (database.containsKey(id))
+                    list.add(database.get(id));
             }
             return list;
         }
-        @Override public long count() { return 0; }
-        @Override public void deleteById(Long aLong) {}
-        @Override public void delete(Role entity) {}
-        @Override public void deleteAllById(Iterable<? extends Long> longs) {}
-        @Override public void deleteAll(Iterable<? extends Role> entities) {}
-        @Override public void deleteAll() {}
-        @Override public <S extends Role> List<S> saveAll(Iterable<S> entities) { return List.of(); }
-        @Override public void flush() {}
-        @Override public <S extends Role> S saveAndFlush(S entity) { return null; }
-        @Override public <S extends Role> List<S> saveAllAndFlush(Iterable<S> entities) { return List.of(); }
-        @Override public void deleteAllInBatch(Iterable<Role> entities) {}
-        @Override public void deleteAllByIdInBatch(Iterable<Long> longs) {}
-        @Override public void deleteAllInBatch() {}
-        @Override public Role getOne(Long aLong) { return null; }
-        @Override public Role getById(Long aLong) { return null; }
-        @Override public Role getReferenceById(Long aLong) { return null; }
-        @Override public <S extends Role> Optional<S> findOne(Example<S> example) { return Optional.empty(); }
-        @Override public <S extends Role> List<S> findAll(Example<S> example) { return List.of(); }
-        @Override public <S extends Role> List<S> findAll(Example<S> example, Sort sort) { return List.of(); }
-        @Override public <S extends Role> Page<S> findAll(Example<S> example, Pageable pageable) { return Page.empty(); }
-        @Override public <S extends Role> long count(Example<S> example) { return 0; }
-        @Override public <S extends Role> boolean exists(Example<S> example) { return false; }
-        @Override public <S extends Role, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
-        @Override public List<Role> findAll(Sort sort) { return List.of(); }
-        @Override public Page<Role> findAll(Pageable pageable) { return Page.empty(); }
+
+        @Override
+        public long count() {
+            return 0;
+        }
+
+        @Override
+        public void deleteById(Long aLong) {
+        }
+
+        @Override
+        public void delete(Role entity) {
+        }
+
+        @Override
+        public void deleteAllById(Iterable<? extends Long> longs) {
+        }
+
+        @Override
+        public void deleteAll(Iterable<? extends Role> entities) {
+        }
+
+        @Override
+        public void deleteAll() {
+        }
+
+        @Override
+        public <S extends Role> List<S> saveAll(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void flush() {
+        }
+
+        @Override
+        public <S extends Role> S saveAndFlush(S entity) {
+            return null;
+        }
+
+        @Override
+        public <S extends Role> List<S> saveAllAndFlush(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void deleteAllInBatch(Iterable<Role> entities) {
+        }
+
+        @Override
+        public void deleteAllByIdInBatch(Iterable<Long> longs) {
+        }
+
+        @Override
+        public void deleteAllInBatch() {
+        }
+
+        @Override
+        public Role getOne(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public Role getById(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public Role getReferenceById(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public <S extends Role> Optional<S> findOne(Example<S> example) {
+            return Optional.empty();
+        }
+
+        @Override
+        public <S extends Role> List<S> findAll(Example<S> example) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends Role> List<S> findAll(Example<S> example, Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends Role> Page<S> findAll(Example<S> example, Pageable pageable) {
+            return Page.empty();
+        }
+
+        @Override
+        public <S extends Role> long count(Example<S> example) {
+            return 0;
+        }
+
+        @Override
+        public <S extends Role> boolean exists(Example<S> example) {
+            return false;
+        }
+
+        @Override
+        public <S extends Role, R> R findBy(Example<S> example,
+                Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+            return null;
+        }
+
+        @Override
+        public List<Role> findAll(Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public Page<Role> findAll(Pageable pageable) {
+            return Page.empty();
+        }
     }
 
     private static class InMemoryCooperativeRepository implements CooperativeRepository {
         private final Map<Long, Cooperative> database = new HashMap<>();
-        @Override public boolean existsByCnpj(Cnpj cnpj) { return false; }
-        @Override public boolean existsByEmail(Email email) { return false; }
-        @Override public Optional<Cooperative> findByCnpj(Cnpj cnpj) { return Optional.empty(); }
-        @Override public Optional<Cooperative> findByEmail(Email email) { return Optional.empty(); }
-        @Override public Page<Cooperative> findAllBySearchTerm(String searchTerm, Pageable pageable) { return Page.empty(); }
-        @Override public <S extends Cooperative> S save(S entity) {
+
+        @Override
+        public boolean existsByCnpj(Cnpj cnpj) {
+            return false;
+        }
+
+        @Override
+        public boolean existsByEmail(Email email) {
+            return false;
+        }
+
+        @Override
+        public Optional<Cooperative> findByCnpj(Cnpj cnpj) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Cooperative> findByEmail(Email email) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Page<Cooperative> findAllBySearchTerm(String searchTerm, Pageable pageable) {
+            return Page.empty();
+        }
+
+        @Override
+        public <S extends Cooperative> S save(S entity) {
             database.put(entity.getId(), entity);
             return entity;
         }
-        @Override public Optional<Cooperative> findById(Long aLong) { return Optional.ofNullable(database.get(aLong)); }
-        @Override public boolean existsById(Long aLong) { return database.containsKey(aLong); }
-        @Override public List<Cooperative> findAll() { return List.of(); }
-        @Override public List<Cooperative> findAllById(Iterable<Long> longs) { return List.of(); }
-        @Override public long count() { return 0; }
-        @Override public void deleteById(Long aLong) {}
-        @Override public void delete(Cooperative entity) {}
-        @Override public void deleteAllById(Iterable<? extends Long> longs) {}
-        @Override public void deleteAll(Iterable<? extends Cooperative> entities) {}
-        @Override public void deleteAll() {}
-        @Override public <S extends Cooperative> List<S> saveAll(Iterable<S> entities) { return List.of(); }
-        @Override public void flush() {}
-        @Override public <S extends Cooperative> S saveAndFlush(S entity) { return null; }
-        @Override public <S extends Cooperative> List<S> saveAllAndFlush(Iterable<S> entities) { return List.of(); }
-        @Override public void deleteAllInBatch(Iterable<Cooperative> entities) {}
-        @Override public void deleteAllByIdInBatch(Iterable<Long> longs) {}
-        @Override public void deleteAllInBatch() {}
-        @Override public Cooperative getOne(Long aLong) { return null; }
-        @Override public Cooperative getById(Long aLong) { return null; }
-        @Override public Cooperative getReferenceById(Long aLong) { return null; }
-        @Override public <S extends Cooperative> Optional<S> findOne(Example<S> example) { return Optional.empty(); }
-        @Override public <S extends Cooperative> List<S> findAll(Example<S> example) { return List.of(); }
-        @Override public <S extends Cooperative> List<S> findAll(Example<S> example, Sort sort) { return List.of(); }
-        @Override public <S extends Cooperative> Page<S> findAll(Example<S> example, Pageable pageable) { return Page.empty(); }
-        @Override public <S extends Cooperative> long count(Example<S> example) { return 0; }
-        @Override public <S extends Cooperative> boolean exists(Example<S> example) { return false; }
-        @Override public <S extends Cooperative, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
-        @Override public List<Cooperative> findAll(Sort sort) { return List.of(); }
-        @Override public Page<Cooperative> findAll(Pageable pageable) { return Page.empty(); }
+
+        @Override
+        public Optional<Cooperative> findById(Long aLong) {
+            return Optional.ofNullable(database.get(aLong));
+        }
+
+        @Override
+        public boolean existsById(Long aLong) {
+            return database.containsKey(aLong);
+        }
+
+        @Override
+        public List<Cooperative> findAll() {
+            return List.of();
+        }
+
+        @Override
+        public List<Cooperative> findAllById(Iterable<Long> longs) {
+            return List.of();
+        }
+
+        @Override
+        public long count() {
+            return 0;
+        }
+
+        @Override
+        public void deleteById(Long aLong) {
+        }
+
+        @Override
+        public void delete(Cooperative entity) {
+        }
+
+        @Override
+        public void deleteAllById(Iterable<? extends Long> longs) {
+        }
+
+        @Override
+        public void deleteAll(Iterable<? extends Cooperative> entities) {
+        }
+
+        @Override
+        public void deleteAll() {
+        }
+
+        @Override
+        public <S extends Cooperative> List<S> saveAll(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void flush() {
+        }
+
+        @Override
+        public <S extends Cooperative> S saveAndFlush(S entity) {
+            return null;
+        }
+
+        @Override
+        public <S extends Cooperative> List<S> saveAllAndFlush(Iterable<S> entities) {
+            return List.of();
+        }
+
+        @Override
+        public void deleteAllInBatch(Iterable<Cooperative> entities) {
+        }
+
+        @Override
+        public void deleteAllByIdInBatch(Iterable<Long> longs) {
+        }
+
+        @Override
+        public void deleteAllInBatch() {
+        }
+
+        @Override
+        public Cooperative getOne(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public Cooperative getById(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public Cooperative getReferenceById(Long aLong) {
+            return null;
+        }
+
+        @Override
+        public <S extends Cooperative> Optional<S> findOne(Example<S> example) {
+            return Optional.empty();
+        }
+
+        @Override
+        public <S extends Cooperative> List<S> findAll(Example<S> example) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends Cooperative> List<S> findAll(Example<S> example, Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public <S extends Cooperative> Page<S> findAll(Example<S> example, Pageable pageable) {
+            return Page.empty();
+        }
+
+        @Override
+        public <S extends Cooperative> long count(Example<S> example) {
+            return 0;
+        }
+
+        @Override
+        public <S extends Cooperative> boolean exists(Example<S> example) {
+            return false;
+        }
+
+        @Override
+        public <S extends Cooperative, R> R findBy(Example<S> example,
+                Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+            return null;
+        }
+
+        @Override
+        public List<Cooperative> findAll(Sort sort) {
+            return List.of();
+        }
+
+        @Override
+        public Page<Cooperative> findAll(Pageable pageable) {
+            return Page.empty();
+        }
     }
 }
-

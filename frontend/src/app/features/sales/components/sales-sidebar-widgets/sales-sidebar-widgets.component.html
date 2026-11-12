@@ -1,0 +1,28 @@
+<div class="widgets-container">
+  <div class="card widget-card">
+    <div class="widget-header">
+      <h3 class="widget-title">Últimas vendas</h3>
+    </div>
+
+    <div class="widget-content custom-scrollbar">
+      @if (loadingRecent) {
+      <div class="loading-state">
+        <app-loading-spinner size="sm" message="Atualizando vendas..."></app-loading-spinner>
+      </div>
+      } @else if (!recentSales || recentSales.length === 0) {
+      <div class="empty-state">
+        <span>Nenhuma venda registrada.</span>
+      </div>
+      } @else {
+      <ul class="widget-list">
+        @for (sale of recentSales; track sale.id) {
+        <li class="widget-list-item">
+          <span class="item-name truncate" [title]="sale.productName">{{ sale.productName }}</span>
+          <span class="item-value">{{ sale.purchaseDate | date:'dd/MM/yyyy' }}</span>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+  </div>
+</div>

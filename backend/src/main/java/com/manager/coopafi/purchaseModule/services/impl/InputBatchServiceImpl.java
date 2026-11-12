@@ -13,8 +13,8 @@ import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchUpdateDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
-import com.manager.coopafi.purchaseModule.services.batchValidators.BatchValidationStrategy;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputBatchService;
+import com.manager.coopafi.purchaseModule.services.validator.BatchValidationStrategy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,9 +48,9 @@ public class InputBatchServiceImpl implements InputBatchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm) {
+    public Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm, boolean onlyInStock) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<InputBatch> batchPage = batchRepository.searchBatches(searchTerm, pageable);
+        Page<InputBatch> batchPage = batchRepository.searchBatches(searchTerm, onlyInStock, pageable);
         return batchPage.map(InputBatchTableDto::new);
     }
 

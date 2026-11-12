@@ -7,6 +7,8 @@ export interface InputBatchTableItem {
   productCode: string;
   expirationDate: string;
   currentQuantity: number;
+  unitPrice?: number;
+  measureUnit?: string;
   status: BatchStatus | string;
   statusDescription: string;
 }

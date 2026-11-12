@@ -1,8 +1,9 @@
 package com.manager.coopafi.purchaseModule.resources;
 
+import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiredBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.SalesDashboardDto;
 import com.manager.coopafi.purchaseModule.services.interfaces.InventoryDashboardService;
 
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,16 @@ public class InventoryDashboardResource {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(value = "/top-selling")
-    public ResponseEntity<List<TopSellingProductDto>> getTopSellingProducts(
-            @RequestParam(defaultValue = "7") int periodDays) {
-        List<TopSellingProductDto> list = dashboardService.getTopSellingProducts(periodDays);
+    @GetMapping(value = "/expired")
+    public ResponseEntity<List<ExpiredBatchDto>> getExpiredBatches(
+            @RequestParam(defaultValue = "3") int days) {
+        List<ExpiredBatchDto> list = dashboardService.getExpiredBatches(days);
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping(value = "/sales")
+    public ResponseEntity<SalesDashboardDto> getSalesDashboard() {
+        SalesDashboardDto dto = dashboardService.getSalesDashboard();
+        return ResponseEntity.ok(dto);
     }
 }

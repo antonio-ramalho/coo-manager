@@ -1,25 +1,28 @@
 package com.manager.coopafi.purchaseModule.services.impl;
 
-import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.StockOccupancyDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.*;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
+import com.manager.coopafi.purchaseModule.entities.InputPurchase;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
 import com.manager.coopafi.purchaseModule.repositories.projections.TopSellingProductProjection;
 import com.manager.coopafi.purchaseModule.services.interfaces.InventoryDashboardService;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryDashboardServiceImpl implements InventoryDashboardService {
@@ -49,9 +52,8 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
 
         StockOccupancyDto occupancy = new StockOccupancyDto(totalProducts, inStock, lowStock, outOfStock);
         List<ExpiringBatchDto> expiring = getExpiringBatches(3);
-        List<TopSellingProductDto> topSelling = getTopSellingProducts(7);
 
-        return new InventoryDashboardDto(totalStockValue, occupancy, expiring, topSelling);
+        return new InventoryDashboardDto(totalStockValue, occupancy, expiring);
     }
 
     @Override
@@ -65,23 +67,47 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
         return batches.stream().map(batch -> {
             LocalDate expDate = batch.getExpirationDate().getValue();
             long daysRemaining = Math.max(0, ChronoUnit.DAYS.between(startDate, expDate));
-            String productName = batch.getInputProduct() != null ? batch.getInputProduct().getProductName()
-                    : "Produto sem nome";
-            Double quantity = batch.getCurrentQuantity() != null ? batch.getCurrentQuantity().getAmount().doubleValue()
-                    : 0.0;
 
             return new ExpiringBatchDto(
                     batch.getId(),
-                    productName,
+                    resolveProductName(batch),
                     expDate,
                     daysRemaining,
-                    quantity);
+                    resolveCurrentQuantity(batch));
         }).toList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TopSellingProductDto> getTopSellingProducts(int periodDays) {
+
+    public List<ExpiredBatchDto> getExpiredBatches(int days) {
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = today.minusDays(days);
+
+        List<InputBatch> batches = batchRepository.findExpiredBatches(startDate, today);
+
+        return batches.stream().map(batch -> {
+            LocalDate expDate = batch.getExpirationDate().getValue();
+            long daysExpired = Math.max(1, ChronoUnit.DAYS.between(expDate, today));
+
+            return new ExpiredBatchDto(
+                    batch.getId(),
+                    resolveProductName(batch),
+                    expDate,
+                    daysExpired,
+                    resolveCurrentQuantity(batch));
+        }).toList();
+    }
+
+    private String resolveProductName(InputBatch batch) {
+        return batch.getInputProduct() != null ? batch.getInputProduct().getProductName() : "Produto sem nome";
+    }
+
+    private Double resolveCurrentQuantity(InputBatch batch) {
+        return batch.getCurrentQuantity() != null ? batch.getCurrentQuantity().getAmount().doubleValue() : 0.0;
+    }
+
+    private List<TopSellingProductDto> getAbcCurveProducts(int periodDays) {
         LocalDateTime sinceDate = LocalDateTime.now().minusDays(periodDays);
         List<TopSellingProductProjection> projections = purchaseRepository.findTopSellingProducts(sinceDate,
                 PageRequest.of(0, 5));
@@ -96,21 +122,81 @@ public class InventoryDashboardServiceImpl implements InventoryDashboardService 
                     .toList();
         }
 
-        // Mock para demonstração inicial quando não houver compras registradas no
-        // período
-        return getMockTopSellingProducts(periodDays);
+        return List.of();
     }
 
-    private List<TopSellingProductDto> getMockTopSellingProducts(int periodDays) {
-        List<TopSellingProductDto> mocks = new ArrayList<>();
-        double factor = periodDays == 365 ? 12.0 : (periodDays == 30 ? 3.0 : 1.0);
+    @Override
+    @Transactional(readOnly = true)
+    public SalesDashboardDto getSalesDashboard() {
+        Double averageTicket = calculateAverageTicket();
+        Double expirationRiskRate = calculateExpirationRiskRate(90);
+        List<MonthlySalesDto> monthlySales = calculateMonthlySales(6);
+        List<TopSellingProductDto> topSelling = getAbcCurveProducts(90);
 
-        mocks.add(new TopSellingProductDto(1L, "Adubo Orgânico Fosfatado", 45.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(2L, "Calcário Agrícola Calcitico", 30.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(3L, "Biofertilizante Foliar NPK", 18.0 * factor, "LITER"));
-        mocks.add(new TopSellingProductDto(4L, "Semente de Milho Crioulo", 12.0 * factor, "KILOGRAM"));
-        mocks.add(new TopSellingProductDto(5L, "Substrato para Mudas", 8.0 * factor, "UNIT"));
+        return new SalesDashboardDto(averageTicket, expirationRiskRate, monthlySales, topSelling);
+    }
 
-        return mocks;
+    private Double calculateAverageTicket() {
+        Double avg = purchaseRepository.calculateAverageTicket();
+        return avg != null ? BigDecimal.valueOf(avg).setScale(2, RoundingMode.HALF_UP).doubleValue() : 0.0;
+    }
+
+    private Double calculateExpirationRiskRate(int days) {
+        BigDecimal totalStock = batchRepository.calculateTotalStockValue();
+        if (totalStock == null || totalStock.compareTo(BigDecimal.ZERO) <= 0) {
+            return 0.0;
+        }
+
+        LocalDate endDate = LocalDate.now().plusDays(days);
+        BigDecimal expiringStock = batchRepository.calculateExpiringStockValue(endDate);
+        if (expiringStock == null || expiringStock.compareTo(BigDecimal.ZERO) <= 0) {
+            return 0.0;
+        }
+
+        return expiringStock
+                .multiply(BigDecimal.valueOf(100))
+                .divide(totalStock, 2, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+    private List<MonthlySalesDto> calculateMonthlySales(int monthsCount) {
+        YearMonth currentMonth = YearMonth.now();
+        YearMonth startMonth = currentMonth.minusMonths(monthsCount - 1);
+        LocalDateTime sinceDate = startMonth.atDay(1).atStartOfDay();
+
+        List<InputPurchase> purchases = purchaseRepository.findPaidPurchasesSince(sinceDate);
+
+        Map<YearMonth, List<InputPurchase>> purchasesByMonth = purchases.stream()
+                .filter(p -> p.getEmissionDate() != null)
+                .collect(Collectors.groupingBy(p -> YearMonth.from(p.getEmissionDate())));
+
+        List<MonthlySalesDto> result = new ArrayList<>();
+        YearMonth cursor = startMonth;
+        Locale ptBr = Locale.of("pt", "BR");
+
+        while (!cursor.isAfter(currentMonth)) {
+            List<InputPurchase> monthPurchases = purchasesByMonth.getOrDefault(cursor, List.of());
+
+            double totalMonthValue = monthPurchases.stream()
+                    .filter(p -> p.getTotalValue() != null && p.getTotalValue().getValue() != null)
+                    .mapToDouble(p -> p.getTotalValue().getValue().doubleValue())
+                    .sum();
+
+            BigDecimal roundedTotal = BigDecimal.valueOf(totalMonthValue).setScale(2, RoundingMode.HALF_UP);
+            String rawMonth = cursor.getMonth().getDisplayName(TextStyle.SHORT, ptBr).replace(".", "");
+            String formattedMonth = rawMonth.substring(0, 1).toUpperCase(ptBr) + rawMonth.substring(1);
+            String label = formattedMonth + "/" + cursor.getYear();
+
+            result.add(new MonthlySalesDto(
+                    cursor.getYear(),
+                    cursor.getMonthValue(),
+                    label,
+                    roundedTotal.doubleValue(),
+                    (long) monthPurchases.size()));
+
+            cursor = cursor.plusMonths(1);
+        }
+
+        return result;
     }
 }

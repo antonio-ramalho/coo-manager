@@ -2,11 +2,13 @@
   <app-page-title [title]="isEditing ? 'Edição de lote' : 'Cadastro de lote'" [showBackButton]="true" (back)="cancel()">
   </app-page-title>
 
-  <form (ngSubmit)="save()" class="flex flex-col w-full min-h-0">
+  <form [formGroup]="batchGroup" (ngSubmit)="save($event)" (submit)="$event.preventDefault()"
+    class="flex flex-col w-full min-h-0">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="batchGroup.invalid" [isSubmitting]="isSubmitting" (cancel)="cancel()">
       <h3 class="txt-h2 mb-3">Informações do Lote</h3>
-      <app-batch-form [group]="batchGroup" [showProductSelect]="!isEditing" [products]="products()"></app-batch-form>
+      <app-batch-form [group]="batchGroup" [showProductSelect]="!isEditing" [products]="products()"
+        [searchProductsFn]="searchProductsFn"></app-batch-form>
     </app-stepper-layout>
   </form>
 </div>

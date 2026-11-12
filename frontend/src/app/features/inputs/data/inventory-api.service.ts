@@ -3,9 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
+  ExpiredBatch,
   ExpiringBatch,
   InventoryDashboard,
-  TopSellingProduct,
 } from '../models/inventory-dashboard.model';
 
 @Injectable({ providedIn: 'root' })
@@ -22,8 +22,8 @@ export class InventoryApiService {
     return this.http.get<ExpiringBatch[]>(`${this.baseUrl}/expiring`, { params });
   }
 
-  getTopSellingProducts(periodDays: number): Observable<TopSellingProduct[]> {
-    const params = new HttpParams().set('periodDays', periodDays);
-    return this.http.get<TopSellingProduct[]>(`${this.baseUrl}/top-selling`, { params });
+    getExpiredBatches(days: number): Observable < ExpiredBatch[] > {
+      const params = new HttpParams().set('days', days);
+      return this.http.get<ExpiredBatch[]>(`${this.baseUrl}/expired`, { params });
+    }
   }
-}

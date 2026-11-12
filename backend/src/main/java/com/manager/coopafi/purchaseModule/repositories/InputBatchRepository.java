@@ -45,10 +45,51 @@ public interface InputBatchRepository extends JpaRepository<InputBatch, Long> {
 
     @Query("""
                 SELECT b FROM InputBatch b
-                WHERE (:searchTerm IS NULL OR :searchTerm = '' OR
-                       LOWER(b.inputProduct.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
-                       LOWER(b.inputProduct.productCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+                WHERE b.productStatus <> com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.INACTIVE
+                AND b.expirationDate.value >= :startDate
+                AND b.expirationDate.value < :today
+                ORDER BY b.expirationDate.value DESC
+            """)
+    List<InputBatch> findExpiredBatches(
+            @Param("startDate") LocalDate startDate,
+            @Param("today") LocalDate today);
+
+    @Query("""
+                SELECT b FROM InputBatch b
+                WHERE b.productStatus IN (
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.IN_STOCK,
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.LOW_STOCK,
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.OUT_OF_STOCK
+                )
+                AND b.expirationDate.value < :today
+            """)
+    List<InputBatch> findUnmarkedExpiredBatches(@Param("today") LocalDate today);
+
+    @Query("""
+                SELECT COALESCE(SUM(b.currentQuantity.amount * b.inputProduct.productPrice.value), 0)
+                FROM InputBatch b
+                WHERE b.productStatus IN (
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.IN_STOCK,
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.LOW_STOCK
+                )
+                AND b.expirationDate.value <= :endDate
+            """)
+    BigDecimal calculateExpiringStockValue(@Param("endDate") LocalDate endDate);
+
+    @Query("""
+                SELECT b FROM InputBatch b
+                WHERE (:onlyInStock = false OR b.productStatus IN (
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.IN_STOCK,
+                    com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus.LOW_STOCK
+                ))
+                AND (:searchTerm IS NULL OR :searchTerm = '' OR
+                     LOWER(b.batchCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                     LOWER(b.inputProduct.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                     LOWER(b.inputProduct.productCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
                 ORDER BY b.id DESC
             """)
-    Page<InputBatch> searchBatches(@Param("searchTerm") String searchTerm, Pageable pageable);
+    Page<InputBatch> searchBatches(
+            @Param("searchTerm") String searchTerm,
+            @Param("onlyInStock") boolean onlyInStock,
+            Pageable pageable);
 }

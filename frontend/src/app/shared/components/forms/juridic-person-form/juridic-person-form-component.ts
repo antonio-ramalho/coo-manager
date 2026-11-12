@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { FlatpickrDirective } from 'angularx-flatpickr';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective } from 'ngx-mask';
+import { DateInputComponent } from '../date-input/date-input.component';
 import { InputErrorComponent } from '../input-error/input-error-component';
 
 @Component({
   selector: 'app-juridic-person-form',
   imports: [
-    FlatpickrDirective,
+    DateInputComponent,
     FormsModule,
     NgxMaskDirective,
     ReactiveFormsModule,

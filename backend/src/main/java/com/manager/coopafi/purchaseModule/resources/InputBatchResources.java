@@ -31,8 +31,9 @@ public class InputBatchResources {
     public ResponseEntity<Page<InputBatchTableDto>> findAllPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "") String searchTerm) {
-        Page<InputBatchTableDto> result = service.searchBatches(page, size, searchTerm);
+            @RequestParam(required = false, defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "false") boolean onlyInStock) {
+        Page<InputBatchTableDto> result = service.searchBatches(page, size, searchTerm, onlyInStock);
         return ResponseEntity.ok().body(result);
     }
 

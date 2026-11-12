@@ -1,4 +1,3 @@
-
 export interface StockOccupancy {
   totalProducts: number;
   inStockCount: number;
@@ -14,16 +13,16 @@ export interface ExpiringBatch {
   currentQuantity: number;
 }
 
-export interface TopSellingProduct {
-  productId: number;
+export interface ExpiredBatch {
+  batchId: number;
   productName: string;
-  totalQuantitySold: number;
-  measureUnit: string;
+  expirationDate: string;
+  daysExpired: number;
+  currentQuantity: number;
 }
 
 export interface InventoryDashboard {
   totalStockValue: number;
   occupancy: StockOccupancy;
   expiringBatches: ExpiringBatch[];
-  topSellingProducts: TopSellingProduct[];
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -45,5 +46,10 @@ public class NaturalPerson extends Person {
     @Override
     public String getDocumentNumber() {
         return this.cpf != null ? this.cpf.getCpfNumber() : null;
+    }
+
+    @Override
+    public LocalDate resolveBirthDate() {
+        return this.birthDate != null ? this.birthDate.getDate() : null;
     }
 }

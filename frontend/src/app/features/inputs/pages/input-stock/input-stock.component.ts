@@ -9,10 +9,11 @@ import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedba
 import { StockKpiCardsComponent } from '../../components/stock-kpi-cards/stock-kpi-cards.component';
 import { StockBatchTableComponent } from '../../components/stock-batch-table/stock-batch-table.component';
 import { StockSidebarWidgetsComponent } from '../../components/stock-sidebar-widgets/stock-sidebar-widgets.component';
+import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
 import { InventoryApiService } from '../../data/inventory-api.service';
 import { InputBatchApiService } from '../../data/input-batch-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
-import { ExpiringBatch, InventoryDashboard, TopSellingProduct } from '../../models/inventory-dashboard.model';
+import { ExpiredBatch, ExpiringBatch, InventoryDashboard } from '../../models/inventory-dashboard.model';
 import { InputBatchTableItem } from '../../models/input-batch.model';
 import { Page } from '../../../../core/models/page.model';
 
@@ -33,6 +34,7 @@ import { Page } from '../../../../core/models/page.model';
     StockKpiCardsComponent,
     StockBatchTableComponent,
     StockSidebarWidgetsComponent,
+    LoadingSpinnerComponent,
   ],
   templateUrl: './input-stock.component.html',
   styleUrls: ['./input-stock.component.scss'],
@@ -50,14 +52,14 @@ export class InputStockComponent {
   );
 
   readonly expiringDays$ = new BehaviorSubject<number>(3);
-  readonly topSellingDays$ = new BehaviorSubject<number>(7);
+  readonly expiredDays$ = new BehaviorSubject<number>(3);
   readonly pageIndex$ = new BehaviorSubject<number>(0);
   readonly searchTerm$ = new BehaviorSubject<string>('');
   private readonly refreshTrigger$ = new BehaviorSubject<void>(undefined);
 
   loadingBatches = false;
   loadingExpiring = false;
-  loadingTopSelling = false;
+  loadingExpired = false;
 
   readonly summary$: Observable<InventoryDashboard | null> = this.refreshTrigger$.pipe(
     switchMap(() =>
@@ -86,18 +88,21 @@ export class InputStockComponent {
     tap(() => (this.loadingExpiring = false)),
   );
 
-  readonly topSellingProducts$: Observable<TopSellingProduct[]> = this.topSellingDays$.pipe(
-    tap(() => (this.loadingTopSelling = true)),
-    switchMap((days) =>
-      this.inventoryService.getTopSellingProducts(days).pipe(
-        catchError((err) => {
-          console.error('Erro ao buscar ranking de produtos:', err);
-          return of([]);
-        }),
-      ),
-    ),
-    tap(() => (this.loadingTopSelling = false)),
-  );
+        readonly expiredBatches$: Observable<ExpiredBatch[]> = combineLatest([
+          this.expiredDays$,
+          this.refreshTrigger$,
+        ]).pipe(
+          tap(() => (this.loadingExpired = true)),
+          switchMap(([days]) =>
+            this.inventoryService.getExpiredBatches(days).pipe(
+              catchError((err) => {
+                console.error('Erro ao buscar lotes vencidos:', err);
+                return of([]);
+              }),
+            ),
+          ),
+          tap(() => (this.loadingExpired = false)),
+        );
 
   readonly pagedBatches$: Observable<Page<InputBatchTableItem>> = combineLatest([
     this.pageIndex$,
@@ -136,37 +141,37 @@ export class InputStockComponent {
     this.expiringDays$.next(days);
   }
 
-  onTopSellingDaysChange(days: number): void {
-    this.topSellingDays$.next(days);
-  }
+    onExpiredDaysChange(days: number): void {
+      this.expiredDays$.next(days);
+    }
 
-  onEditBatch(id: number): void {
-    void this.router.navigate(['/home/insumos/lotes/editar', id]);
-  }
+    onEditBatch(id: number): void {
+      void this.router.navigate(['/home/insumos/lotes/editar', id]);
+    }
 
-  onDeactivateBatch(id: number): void {
-    this.batchService.delete(id).subscribe({
-      next: () => {
-        this.toastService.showSuccess('Lote desativado com sucesso.');
-        this.refreshTrigger$.next();
-      },
-      error: (err: unknown) => {
-        this.toastService.showError('Erro ao desativar o lote.');
-        console.error(err);
-      },
-    });
-  }
+    onDeactivateBatch(id: number): void {
+      this.batchService.delete(id).subscribe({
+        next: () => {
+          this.toastService.showSuccess('Lote desativado com sucesso.');
+          this.refreshTrigger$.next();
+        },
+        error: (err: unknown) => {
+          this.toastService.showError('Erro ao desativar o lote.');
+          console.error(err);
+        },
+      });
+    }
 
-  onActivateBatch(id: number): void {
-    this.batchService.activate(id).subscribe({
-      next: () => {
-        this.toastService.showSuccess('Lote ativado com sucesso.');
-        this.refreshTrigger$.next();
-      },
-      error: (err: unknown) => {
-        this.toastService.showError('Erro ao ativar o lote.');
-        console.error(err);
-      },
-    });
+    onActivateBatch(id: number): void {
+      this.batchService.activate(id).subscribe({
+        next: () => {
+          this.toastService.showSuccess('Lote ativado com sucesso.');
+          this.refreshTrigger$.next();
+        },
+        error: (err: unknown) => {
+          this.toastService.showError('Erro ao ativar o lote.');
+          console.error(err);
+        },
+      });
+    }
   }
-}

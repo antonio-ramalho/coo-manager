@@ -4,11 +4,12 @@ import { SearchBarComponent } from '../search-bar/search-bar-component';
 import { NameFormatPipe } from '../../../pipes/name-format-pipe';
 import { ListCardItem } from '../../../models/list-card-item.model';
 import { GenericCardListComponent } from '../generic-card-list/generic-card-list-component';
+import { LoadingSpinnerComponent } from '../../ui/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-generic-list',
   standalone: true,
-  imports: [GenericCardListComponent, PaginationComponent, SearchBarComponent, NameFormatPipe],
+  imports: [GenericCardListComponent, PaginationComponent, SearchBarComponent, NameFormatPipe, LoadingSpinnerComponent],
   templateUrl: './generic-list-component.html',
   styleUrl: './generic-list-component.scss',
 })
@@ -16,6 +17,8 @@ export class GenericListComponent {
   @Input() items: ListCardItem[] = [];
   @Input() currentPage: number = 1;
   @Input() totalItems: number = 0;
+  @Input() loading: boolean = false;
+  @Input() loadingText: string = 'Carregando registros...';
   @Input() altText: string | undefined;
   @Input() searchPlaceholder: string = 'Buscar...';
 

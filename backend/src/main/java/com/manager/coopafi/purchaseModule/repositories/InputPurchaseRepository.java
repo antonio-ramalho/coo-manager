@@ -3,6 +3,7 @@ package com.manager.coopafi.purchaseModule.repositories;
 import com.manager.coopafi.purchaseModule.entities.InputPurchase;
 import com.manager.coopafi.purchaseModule.enums.PaymentStatus;
 import com.manager.coopafi.purchaseModule.repositories.projections.TopSellingProductProjection;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,61 @@ public interface InputPurchaseRepository extends JpaRepository<InputPurchase, Lo
   List<TopSellingProductProjection> findTopSellingProducts(
       @Param("sinceDate") LocalDateTime sinceDate,
       Pageable pageable);
+
+  @Query("""
+          SELECT COALESCE(AVG(p.totalValue.value), 0.0)
+          FROM InputPurchase p
+          WHERE p.status = com.manager.coopafi.purchaseModule.enums.PaymentStatus.PAID
+      """)
+  Double calculateAverageTicket();
+
+  @Query("""
+          SELECT p FROM InputPurchase p
+          WHERE p.status = com.manager.coopafi.purchaseModule.enums.PaymentStatus.PAID
+            AND p.emissionDate >= :sinceDate
+          ORDER BY p.emissionDate ASC
+      """)
+  List<InputPurchase> findPaidPurchasesSince(@Param("sinceDate") LocalDateTime sinceDate);
+
+  @Query(value = """
+          SELECT DISTINCT p FROM InputPurchase p
+          LEFT JOIN p.person person
+          LEFT JOIN p.purchaseItems item
+          LEFT JOIN item.inputBatch batch
+          LEFT JOIN batch.inputProduct product
+          WHERE (:searchTerm IS NULL OR :searchTerm = '' OR
+                 (:codeTerm IS NOT NULL AND :codeTerm <> '' AND LOWER(CAST(p.uuid AS string)) LIKE LOWER(CONCAT('%', :codeTerm, '%'))) OR
+                 LOWER(person.legalName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 TREAT(person AS NaturalPerson).cpf.cpfNumber LIKE CONCAT('%', :searchTerm, '%') OR
+                 TREAT(person AS JuridicPerson).cnpj.cnpjNumber LIKE CONCAT('%', :searchTerm, '%') OR
+                 LOWER(product.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 LOWER(product.productCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 LOWER(batch.batchCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+          ORDER BY p.id DESC
+      """,
+      countQuery = """
+          SELECT COUNT(DISTINCT p) FROM InputPurchase p
+          LEFT JOIN p.person person
+          LEFT JOIN p.purchaseItems item
+          LEFT JOIN item.inputBatch batch
+          LEFT JOIN batch.inputProduct product
+          WHERE (:searchTerm IS NULL OR :searchTerm = '' OR
+                 (:codeTerm IS NOT NULL AND :codeTerm <> '' AND LOWER(CAST(p.uuid AS string)) LIKE LOWER(CONCAT('%', :codeTerm, '%'))) OR
+                 LOWER(person.legalName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 TREAT(person AS NaturalPerson).cpf.cpfNumber LIKE CONCAT('%', :searchTerm, '%') OR
+                 TREAT(person AS JuridicPerson).cnpj.cnpjNumber LIKE CONCAT('%', :searchTerm, '%') OR
+                 LOWER(product.productName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 LOWER(product.productCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                 LOWER(batch.batchCode) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+      """)
+  Page<InputPurchase> searchPurchases(
+      @Param("searchTerm") String searchTerm,
+      @Param("codeTerm") String codeTerm,
+      Pageable pageable);
+
+  @Query("""
+          SELECT p FROM InputPurchase p
+          ORDER BY p.emissionDate DESC, p.id DESC
+      """)
+  List<InputPurchase> findRecentPurchases(Pageable pageable);
 }

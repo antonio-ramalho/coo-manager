@@ -1,0 +1,40 @@
+@use "tailwind-ref";
+
+:host {
+  @apply flex-1 flex flex-col min-h-0;
+}
+
+.dashboard-container {
+  @apply flex-1 flex flex-col min-h-0 overflow-y-auto box-border;
+  gap: var(--space-layout);
+}
+
+.header-container {
+  @apply flex justify-between items-center shrink-0;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-layout);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  align-items: stretch;
+  gap: var(--space-layout);
+  width: 100%;
+
+  .chart-item {
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}

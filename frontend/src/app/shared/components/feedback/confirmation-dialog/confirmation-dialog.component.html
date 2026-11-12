@@ -1,0 +1,63 @@
+@if (isOpen) {
+<div class="confirmation-backdrop" (click)="onCancel()" role="dialog" aria-modal="true">
+  <div class="confirmation-card" (click)="$event.stopPropagation()">
+    <header class="dialog-header">
+      <div class="flex items-center gap-3">
+        <div
+          class="icon-wrapper"
+          [class.icon-primary]="variant === 'primary'"
+          [class.icon-danger]="variant === 'danger'"
+          [class.icon-warning]="variant === 'warning'"
+        >
+          @switch (variant) {
+            @case ('danger') {
+              <svg lucideAlertTriangle class="w-5 h-5"></svg>
+            }
+            @case ('warning') {
+              <svg lucideAlertCircle class="w-5 h-5"></svg>
+            }
+            @default {
+              <svg lucideHelpCircle class="w-5 h-5"></svg>
+            }
+          }
+        </div>
+        <h3 class="txt-h2 text-base md:text-lg">{{ title }}</h3>
+      </div>
+
+      <button type="button" class="close-btn" (click)="onCancel()" title="Fechar">
+        <svg lucideX class="w-5 h-5"></svg>
+      </button>
+    </header>
+
+    <div class="dialog-body">
+      @if (message) {
+      <p class="text-sm text-[var(--text-main)] leading-relaxed">
+        {{ message }}
+      </p>
+      }
+      <ng-content></ng-content>
+    </div>
+
+    <footer class="dialog-footer">
+      <button type="button" appButton variant="surface" (click)="onCancel()" [disabled]="isSubmitting">
+        {{ cancelText }}
+      </button>
+
+      <button
+        type="button"
+        appButton
+        variant="primary"
+        [class.btn-danger]="variant === 'danger'"
+        (click)="onConfirm()"
+        [disabled]="isSubmitting"
+      >
+        @if (isSubmitting) {
+        Processando...
+        } @else {
+        {{ confirmText }}
+        }
+      </button>
+    </footer>
+  </div>
+</div>
+}

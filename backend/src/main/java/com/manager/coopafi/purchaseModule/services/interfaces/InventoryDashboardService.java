@@ -1,8 +1,9 @@
 package com.manager.coopafi.purchaseModule.services.interfaces;
 
+import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiredBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.SalesDashboardDto;
 import java.util.List;
 
 public interface InventoryDashboardService {
@@ -11,5 +12,8 @@ public interface InventoryDashboardService {
 
     List<ExpiringBatchDto> getExpiringBatches(int days);
 
-    List<TopSellingProductDto> getTopSellingProducts(int periodDays);
+
+    List<ExpiredBatchDto> getExpiredBatches(int days);
+
+    SalesDashboardDto getSalesDashboard();
 }

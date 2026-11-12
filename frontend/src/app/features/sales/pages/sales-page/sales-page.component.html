@@ -1,3 +1,48 @@
-<div class="flex flex-col w-full content-interface" style="gap: var(--space-layout)">
-  <h1 class="txt-h1">Vendas</h1>
+<!-- Bloqueio no mobile via diretiva @if: não executa subscrições pesadas em telas menores -->
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Vendas">
+  <a appButton variant="primary" routerLink="/home/vendas/cadastro">Nova venda</a>
+</app-desktop-only-notice>
+} @else {
+<div class="content-interface sales-container">
+  <header class="header-container">
+    <h1 class="txt-h1">Vendas</h1>
+    <button type="button" appButton variant="primary" routerLink="/home/vendas/cadastro">
+      Nova venda
+    </button>
+  </header>
+
+  <div class="sales-layout custom-scrollbar">
+    <section class="main-column">
+      @if (pagedSales$ | async; as salesPage) {
+      <app-sales-table
+        class="flex-1 min-h-0 flex flex-col"
+        [sales]="salesPage.content"
+        [loading]="loadingSales"
+        [currentPage]="salesPage.pageable.pageNumber + 1"
+        [totalElements]="salesPage.totalElements"
+        (searchChange)="onSearchChange($event)"
+        (pageChange)="onPageChange($event)"
+        (viewDetails)="onViewDetails($event)"
+        (registerPayment)="onRegisterPayment($event)"
+        (cancelSale)="onCancelSale($event)"
+      ></app-sales-table>
+      }
+    </section>
+
+    <aside class="sidebar-column custom-scrollbar">
+      <app-sales-sidebar-widgets
+        [recentSales]="(recentSales$ | async) ?? []"
+        [loadingRecent]="loadingRecent"
+      ></app-sales-sidebar-widgets>
+    </aside>
+  </div>
 </div>
+
+<app-sale-details-dialog
+  [isOpen]="isDetailsOpen()"
+  [loading]="loadingDetails()"
+  [sale]="selectedSaleDetails()"
+  (close)="closeDetailsDialog()"
+></app-sale-details-dialog>
+}

@@ -12,7 +12,11 @@ public interface InputBatchService {
 
     List<InputBatchMinDto> findAllByStatus();
 
-    Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm);
+    default Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm) {
+        return searchBatches(page, size, searchTerm, false);
+    }
+
+    Page<InputBatchTableDto> searchBatches(int page, int size, String searchTerm, boolean onlyInStock);
 
     InputBatchDto findById(Long id);
 

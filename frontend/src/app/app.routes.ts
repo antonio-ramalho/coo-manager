@@ -23,10 +23,8 @@ export const routes: Routes = [
       },
       {
         path: 'vendas',
-        loadComponent: () =>
-          import('./features/sales/pages/sales-page/sales-page.component').then(
-            (m) => m.SalesPageComponent,
-          ),
+        loadChildren: () =>
+          import('./features/sales/sales.routes').then((m) => m.SALES_ROUTES),
       },
       {
         path: 'financeiro',

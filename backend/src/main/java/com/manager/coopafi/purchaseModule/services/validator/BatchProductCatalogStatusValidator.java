@@ -1,4 +1,4 @@
-package com.manager.coopafi.purchaseModule.services.batchValidators;
+package com.manager.coopafi.purchaseModule.services.validator;
 
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
 import com.manager.coopafi.infrastructure.exceptions.ResourceNotFoundException;
@@ -30,7 +30,8 @@ public class BatchProductCatalogStatusValidator implements BatchValidationStrate
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não cadastrado ou inativo"));
 
         if (product.getProductCatalogStatus() == null || !product.getProductCatalogStatus().canReceiveBatches()) {
-            throw new DomainException("Não é permitido cadastrar lote para um produto que não esteja com status ATIVO no catálogo.");
+            throw new DomainException(
+                    "Não é permitido cadastrar lote para um produto que não esteja com status ATIVO no catálogo.");
         }
     }
 }

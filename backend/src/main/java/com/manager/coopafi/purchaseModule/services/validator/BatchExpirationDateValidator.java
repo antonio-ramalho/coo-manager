@@ -1,4 +1,4 @@
-package com.manager.coopafi.purchaseModule.services.batchValidators;
+package com.manager.coopafi.purchaseModule.services.validator;
 
 import com.manager.coopafi.infrastructure.exceptions.DomainException;
 import com.manager.coopafi.purchaseModule.dto.inputBatch.InputBatchInsertDto;

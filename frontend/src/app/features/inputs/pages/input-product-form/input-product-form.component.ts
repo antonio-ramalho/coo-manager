@@ -108,7 +108,11 @@ export class InputProductFormComponent implements OnInit {
     this.location.back();
   }
 
-  save(): void {
+  save(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+
     if (this.isCurrentStepInvalid) {
       this.markAllTouched();
       this.toastService.showError('Preencha todos os campos obrigatórios corretamente.');
@@ -128,10 +132,11 @@ export class InputProductFormComponent implements OnInit {
       this.productService
         .update(this.productId, {
           productName: productValues.productName,
-          priceValue: Number(productValues.price),
+          priceValue: Number(String(productValues.price).replace(',', '.')),
         })
         .subscribe({
           next: () => {
+            this.isSubmitting = false;
             this.toastService.showSuccess('Insumo atualizado com sucesso!');
             this.location.back();
           },
@@ -144,12 +149,14 @@ export class InputProductFormComponent implements OnInit {
       return;
     }
 
+    const cleanNcm = String(productValues.ncm || '').replace(/\D/g, '');
+
     const insertProductDto = {
       productName: productValues.productName,
       productCode: productValues.productCode,
       measureUnit: productValues.measureUnit,
-      ncmValue: productValues.ncm,
-      priceValue: Number(productValues.price),
+      ncmValue: cleanNcm,
+      priceValue: Number(String(productValues.price).replace(',', '.')),
     };
 
     if (this.includeInitialBatch()) {
@@ -162,13 +169,14 @@ export class InputProductFormComponent implements OnInit {
             return this.batchService.insert({
               batchCode: batchValues.batchCode,
               inputProductId: createdProduct.id,
-              quantityValue: Number(batchValues.quantityValue),
+              quantityValue: Number(String(batchValues.quantityValue).replace(',', '.')),
               expirationDate: batchValues.expirationDate,
             });
           }),
         )
         .subscribe({
           next: () => {
+            this.isSubmitting = false;
             this.toastService.showSuccess('Insumo e lote inicial cadastrados com sucesso!');
             this.location.back();
           },
@@ -181,6 +189,7 @@ export class InputProductFormComponent implements OnInit {
     } else {
       this.productService.insert(insertProductDto).subscribe({
         next: () => {
+          this.isSubmitting = false;
           this.toastService.showSuccess('Insumo cadastrado com sucesso!');
           this.location.back();
         },

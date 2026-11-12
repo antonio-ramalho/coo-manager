@@ -16,19 +16,12 @@
 
   <div class="flex flex-col gap-1 md:col-span-6">
     <label class="txt-label" for="foundationDate">Data de fundação</label>
-    <input
-      class="input-base txt-body"
-      id="foundationDate"
-      type="text"
-      name="foundationDate"
+    <app-date-input
+      inputId="foundationDate"
       formControlName="foundationDate"
-      (flatpickrClose)="group.get('birthDate')?.markAsTouched()"
-      mwlFlatpickr
-      [altInput]="true"
-      [class.input-error]="group.get('foundationDate')?.invalid && group.get('foundationDate')?.touched"
-      altFormat="d/m/Y"
-      dateFormat="Y-m-d"
-      placeholder="Selecione uma data...">
+      placeholder="DD/MM/AAAA"
+      [isInvalid]="!!(group.get('foundationDate')?.invalid && group.get('foundationDate')?.touched)"
+    ></app-date-input>
     <app-input-error [control]="group.get('foundationDate')"></app-input-error>
   </div>
 

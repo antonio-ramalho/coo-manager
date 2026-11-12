@@ -1,0 +1,40 @@
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Dashboard de BI — Vendas">
+  <a appButton variant="primary" routerLink="/home/vendas">Ir para Vendas</a>
+</app-desktop-only-notice>
+} @else {
+<div class="content-interface dashboard-container custom-scrollbar">
+  <header class="header-container">
+    <div>
+      <h1 class="txt-h1">Estatísticas de vendas</h1>
+    </div>
+  </header>
+
+  @if (dashboard$ | async; as data) {
+  <section class="dashboard-content">
+    <!-- KPIs Principais -->
+    <app-sales-kpi-cards [averageTicket]="data.averageTicket" [expirationRiskRate]="data.expirationRiskRate"
+      [loading]="loading"></app-sales-kpi-cards>
+
+    <!-- Gráficos Analíticos -->
+    <div class="charts-grid">
+      <div class="chart-item">
+        <app-sales-monthly-chart [monthlySales]="data.monthlySales" [loading]="loading"></app-sales-monthly-chart>
+      </div>
+
+      <div class="chart-item">
+        <app-sales-abc-chart [products]="data.topSellingProducts" [loading]="loading"></app-sales-abc-chart>
+      </div>
+    </div>
+  </section>
+  } @else if (loading) {
+  <div class="card p-10 flex flex-col items-center justify-center text-[var(--text-aux)]">
+    <app-loading-spinner size="lg" message="Carregando métricas e gráficos do dashboard de BI..."></app-loading-spinner>
+  </div>
+  } @else {
+  <div class="card p-10 flex flex-col items-center justify-center text-[var(--text-aux)]">
+    <span class="text-sm">Não foi possível carregar as métricas de vendas no momento.</span>
+  </div>
+  }
+</div>
+}

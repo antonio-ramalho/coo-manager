@@ -6,14 +6,16 @@ import com.manager.coopafi.infrastructure.valueObjects.Price;
 import com.manager.coopafi.infrastructure.valueObjects.Quantity;
 import com.manager.coopafi.purchaseModule.entities.InputProduct;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
+import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiredBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coopafi.purchaseModule.dto.dashboard.InventoryDashboardDto;
-import com.manager.coopafi.purchaseModule.dto.dashboard.TopSellingProductDto;
+import com.manager.coopafi.purchaseModule.dto.dashboard.SalesDashboardDto;
 import com.manager.coopafi.purchaseModule.entities.InputBatch;
+import com.manager.coopafi.purchaseModule.entities.InputPurchase;
+import com.manager.coopafi.personModule.entities.Person;
 import com.manager.coopafi.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coopafi.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coopafi.purchaseModule.repositories.InputPurchaseRepository;
-import com.manager.coopafi.purchaseModule.repositories.projections.TopSellingProductProjection;
 import com.manager.coopafi.purchaseModule.services.impl.InventoryDashboardServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,10 +27,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,7 +73,6 @@ class InventoryDashboardServiceTest {
         when(batchRepository.countByProductStatus(ProductInventoryStatus.LOW_STOCK)).thenReturn(6L);
         when(batchRepository.countByProductStatus(ProductInventoryStatus.OUT_OF_STOCK)).thenReturn(4L);
         when(batchRepository.findExpiringBatches(any(), any())).thenReturn(List.of(expiringBatch));
-        when(purchaseRepository.findTopSellingProducts(any(), any())).thenReturn(Collections.emptyList());
 
         InventoryDashboardDto summary = dashboardService.getDashboardSummary();
 
@@ -82,7 +85,6 @@ class InventoryDashboardServiceTest {
         assertThat(summary.occupancy().outOfStockCount()).isEqualTo(4L);
 
         assertThat(summary.expiringBatches()).hasSize(1);
-        assertThat(summary.topSellingProducts()).isNotEmpty();
     }
 
     @Test
@@ -101,51 +103,58 @@ class InventoryDashboardServiceTest {
     }
 
     @Test
-    @DisplayName("Deve mapear projeção de produtos mais vendidos quando houver registros de vendas")
-    void shouldMapTopSellingProductsFromProjectionWhenAvailable() {
-        TopSellingProductProjection projection = new TopSellingProductProjection() {
-            @Override
-            public Long getProductId() {
-                return 50L;
-            }
+    @DisplayName("Deve retornar lotes vencidos dentro da janela informada com dias expirados calculados")
+    void shouldReturnExpiredBatchesWithCalculatedExpiredDays() {
+        Quantity qty = new Quantity(new BigDecimal("10.00"));
+        InputBatch expiredBatch = new InputBatch(qty, testProduct, qty,
+                new ExpirationDate(LocalDate.now().plusDays(1)));
+        ReflectionTestUtils.setField(expiredBatch, "id", 200L);
+        ReflectionTestUtils.setField(expiredBatch.getExpirationDate(), "value", LocalDate.now().minusDays(4));
 
-            @Override
-            public String getProductName() {
-                return "Biofertilizante Foliar";
-            }
+        when(batchRepository.findExpiredBatches(any(), any())).thenReturn(List.of(expiredBatch));
 
-            @Override
-            public Double getTotalQuantitySold() {
-                return 150.0;
-            }
-
-            @Override
-            public String getMeasureUnit() {
-                return "LITER";
-            }
-        };
-
-        when(purchaseRepository.findTopSellingProducts(any(), any())).thenReturn(List.of(projection));
-
-        List<TopSellingProductDto> result = dashboardService.getTopSellingProducts(30);
+        List<ExpiredBatchDto> result = dashboardService.getExpiredBatches(7);
 
         assertThat(result).hasSize(1);
-        TopSellingProductDto dto = result.getFirst();
-        assertThat(dto.productId()).isEqualTo(50L);
-        assertThat(dto.productName()).isEqualTo("Biofertilizante Foliar");
-        assertThat(dto.totalQuantitySold()).isEqualTo(150.0);
-        assertThat(dto.measureUnit()).isEqualTo("LITER");
+        ExpiredBatchDto dto = result.getFirst();
+        assertThat(dto.batchId()).isEqualTo(200L);
+        assertThat(dto.productName()).isEqualTo("Adubo Fosfatado");
+        assertThat(dto.daysExpired()).isEqualTo(4L);
+        assertThat(dto.currentQuantity()).isEqualTo(10.0);
     }
 
     @Test
-    @DisplayName("Deve retornar ranking mockado consistente quando não houver vendas no período")
-    void shouldReturnMockTopSellingProductsWhenNoSales() {
+
+    @DisplayName("Deve retornar lista vazia quando não houver lotes vencidos no período")
+    void shouldReturnEmptyListWhenNoExpiredBatches() {
+        when(batchRepository.findExpiredBatches(any(), any())).thenReturn(Collections.emptyList());
+
+        List<ExpiredBatchDto> result = dashboardService.getExpiredBatches(30);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Deve calcular métricas gerenciais do painel de vendas corretamente")
+    void shouldCalculateSalesDashboardMetricsCorrectly() {
+        when(purchaseRepository.calculateAverageTicket()).thenReturn(350.50);
+        when(batchRepository.calculateTotalStockValue()).thenReturn(new BigDecimal("10000.00"));
+        when(batchRepository.calculateExpiringStockValue(any())).thenReturn(new BigDecimal("1500.00"));
         when(purchaseRepository.findTopSellingProducts(any(), any())).thenReturn(Collections.emptyList());
 
-        List<TopSellingProductDto> result = dashboardService.getTopSellingProducts(7);
+        Person client = mock(Person.class);
+        InputPurchase purchase = new InputPurchase(client);
+        ReflectionTestUtils.setField(purchase, "totalValue", new Price(new BigDecimal("200.00")));
+        ReflectionTestUtils.setField(purchase, "emissionDate", LocalDateTime.now());
 
-        assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(5);
-        assertThat(result.getFirst().productName()).isEqualTo("Adubo Orgânico Fosfatado");
+        when(purchaseRepository.findPaidPurchasesSince(any())).thenReturn(List.of(purchase));
+
+        SalesDashboardDto salesDashboard = dashboardService.getSalesDashboard();
+
+        assertThat(salesDashboard).isNotNull();
+        assertThat(salesDashboard.averageTicket()).isEqualTo(350.50);
+        assertThat(salesDashboard.expirationRiskRate()).isEqualTo(15.0);
+        assertThat(salesDashboard.monthlySales()).hasSize(6);
+        assertThat(salesDashboard.topSellingProducts()).isEmpty();
     }
 }

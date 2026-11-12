@@ -3,7 +3,7 @@
     (back)="cancel()">
   </app-page-title>
 
-  <form [formGroup]="masterForm" (ngSubmit)="save()" class="flex flex-col w-full min-h-0">
+  <form [formGroup]="masterForm" (ngSubmit)="save()" (submit)="$event.preventDefault()" class="flex flex-col w-full min-h-0">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="masterForm.invalid" [isSubmitting]="isSubmitting" (next)="nextPage()" (back)="backPage()"
       (cancel)="cancel()">

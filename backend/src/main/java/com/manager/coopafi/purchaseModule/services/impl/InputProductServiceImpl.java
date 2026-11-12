@@ -6,7 +6,6 @@ import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductInsertDto
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductMinDto;
 import com.manager.coopafi.purchaseModule.dto.inputProduct.InputProductUpdateDto;
 import com.manager.coopafi.produtcModule.enums.MeasureUnit;
-import com.manager.coopafi.infrastructure.exceptions.DomainException;
 import com.manager.coopafi.infrastructure.exceptions.ResourceNotFoundException;
 import com.manager.coopafi.purchaseModule.repositories.InputProductRepository;
 import com.manager.coopafi.purchaseModule.services.interfaces.InputProductService;

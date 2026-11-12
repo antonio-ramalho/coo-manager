@@ -1,0 +1,74 @@
+<div class="relative w-full">
+  @if (selectedItem() && !isOpen()) {
+  <div class="input-base txt-body flex items-center justify-between cursor-pointer w-full py-2 px-3"
+    [class.input-error]="isInvalid" [class.opacity-60]="disabled()" [class.cursor-not-allowed]="disabled()"
+    (click)="toggleDropdown()">
+    <div class="flex items-center gap-2 truncate flex-1 min-w-0 mr-2">
+      <span class="text-sm font-medium text-[var(--text-main)] truncate">
+        {{ getLabel(selectedItem()!) }}
+      </span>
+    </div>
+
+    @if (!disabled()) {
+    <div class="flex items-center gap-1 shrink-0">
+      <button type="button" (click)="clearSelection($event)"
+        class="text-[var(--text-aux)] hover:text-[var(--red-alert)] p-1 rounded-sm transition-colors cursor-pointer"
+        title="Limpar seleção">
+        <svg lucideX class="w-4 h-4"></svg>
+      </button>
+      <svg lucideChevronDown class="w-4 h-4 text-[var(--text-aux)] pointer-events-none"></svg>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="relative flex items-center w-full">
+    @if (isLoading()) {
+    <div class="absolute left-3 flex items-center pointer-events-none">
+      <svg class="animate-spin h-4 w-4 text-[var(--primary-base)]" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+    </div>
+    } @else {
+    <svg lucideSearch class="w-4 h-4 text-[var(--text-aux)] absolute left-3 pointer-events-none"></svg>
+    }
+
+    <input #searchInput type="text" class="input-base txt-body search-input !pl-10 !pr-10 w-full"
+      [class.input-error]="isInvalid" [formControl]="searchControl" [placeholder]="placeholder" (focus)="open()" />
+    <button type="button" (click)="toggleDropdown()"
+      class="absolute right-2.5 text-[var(--text-aux)] hover:text-[var(--text-main)] p-1 cursor-pointer" tabindex="-1">
+      <svg lucideChevronDown class="w-4 h-4 transition-transform duration-200" [class.rotate-180]="isOpen()"></svg>
+    </button>
+  </div>
+  }
+
+  @if (isOpen()) {
+  <div class="searchable-select-dropdown">
+    @if (isLoading()) {
+    <div class="p-3 text-xs text-center text-[var(--text-aux)] flex items-center justify-center gap-2">
+      <svg class="animate-spin h-3.5 w-3.5 text-[var(--primary-base)]" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <span>Buscando registros...</span>
+    </div>
+    } @else if (displayedOptions.length === 0) {
+    <div class="p-3 text-xs text-center text-[var(--text-aux)]">
+      {{ notFoundText }}
+    </div>
+    } @else {
+    @for (item of displayedOptions; track getItemValue(item)) {
+    <div class="searchable-select-item"
+      [class.is-selected]="selectedItem() && getItemValue(item) === getItemValue(selectedItem()!)"
+      (click)="selectItem(item)">
+      <div class="text-sm font-medium text-[var(--text-main)]">
+        {{ getLabel(item) }}
+      </div>
+    </div>
+    }
+    }
+  </div>
+  }
+</div>

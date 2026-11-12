@@ -18,6 +18,8 @@ export class StepperComponent {
 
   @Input() nextDisabled = false;
   @Input() submitDisabled = false;
+  @Input() fluidHeight = false;
+  @Input() horizontalLayout = false;
 
   @Output() next = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();

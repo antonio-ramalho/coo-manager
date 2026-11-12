@@ -9,9 +9,13 @@ import { InputBatchApiService } from '../../../inputs/data/input-batch-api.servi
 import { ClientSummary } from '../../../clients/models/client.model';
 import { InputBatchTableItem } from '../../../inputs/models/input-batch.model';
 import { Status } from '../../../../shared/enums/status';
+import { MeasureUnit } from '../../../../shared/enums/measure-unit';
 import { ToastService } from '../../../../core/services/toast.service';
 import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
+import { SearchableSelectComponent } from '../../../../shared/components/forms/searchable-select/searchable-select.component';
+import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
+import { formatDocument } from '../../../../shared/utils/document-format';
 import { buildSalesForm, buildSalesItemForm, SalesForm } from '../../forms/sales-form.builder';
 import { SaleClientStepComponent } from '../../components/sale-client-step/sale-client-step.component';
 import { SaleCartStepComponent } from '../../components/sale-cart-step/sale-cart-step.component';
@@ -35,6 +39,8 @@ import { SaleClientPreview, SalesInsertDto } from '../../models/sales-transactio
     ReactiveFormsModule,
     PageTitleComponent,
     StepperComponent,
+    SearchableSelectComponent,
+    InputErrorComponent,
     SaleClientStepComponent,
     SaleCartStepComponent,
     SaleConfirmationDialogComponent,
@@ -116,6 +122,10 @@ export class NewSaleComponent implements OnInit {
     );
   };
 
+  clientLabelFormatter = (client: ClientSummary): string => {
+    return `${client.legalName} (${formatDocument(client.documentNumber)})`;
+  };
+
   onClientSelected(clientSummary: ClientSummary | null): void {
     if (!clientSummary) {
       this.selectedClientPreview.set(null);
@@ -153,7 +163,10 @@ export class NewSaleComponent implements OnInit {
       });
   }
 
-  onBatchSelected(batch: InputBatchTableItem): void {
+  onBatchSelected(batch: InputBatchTableItem | null): void {
+    if (!batch) {
+      return;
+    }
     const existingIndex = this.salesForm.controls.items.controls.findIndex(
       (ctrl) => ctrl.get('batchId')?.value === batch.id,
     );
@@ -173,7 +186,7 @@ export class NewSaleComponent implements OnInit {
       batchCode: batch.batchCode,
       availableStock: batch.currentQuantity,
       unitPrice: batch.unitPrice ?? 0,
-      measureUnit: batch.measureUnit ?? 'UN',
+      measureUnit: batch.measureUnit ?? MeasureUnit.UNIT,
       quantity: 1,
       totalPrice: batch.unitPrice ?? 0,
     });
@@ -229,7 +242,7 @@ export class NewSaleComponent implements OnInit {
       productName: item.productName ?? '',
       batchCode: item.batchCode ?? '',
       quantity: item.quantity ?? 0,
-      measureUnit: item.measureUnit ?? 'UN',
+      measureUnit: item.measureUnit ?? MeasureUnit.UNIT,
       unitPrice: item.unitPrice ?? 0,
       totalPrice: item.totalPrice ?? 0,
     }));

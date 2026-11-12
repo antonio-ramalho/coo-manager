@@ -52,7 +52,7 @@
                   <span class="text-xs text-[var(--text-aux)] font-mono">{{ item.batchCode }}</span>
                 </td>
                 <td class="text-center font-medium">
-                  {{ item.quantity }} {{ item.measureUnit }}
+                  {{ item.quantity }} {{ item.measureUnit | measureUnitAbbr }}
                 </td>
                 <td class="text-right text-[var(--text-aux)]">
                   {{ item.unitPrice | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}

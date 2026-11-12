@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { LucideCheckCircle, LucideX } from '@lucide/angular';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
+import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 
 export interface SaleConfirmationItem {
   productName: string;
@@ -19,7 +20,7 @@ export interface SaleConfirmationItem {
 @Component({
   selector: 'app-sale-confirmation-dialog',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, ButtonComponent, LucideCheckCircle, LucideX],
+  imports: [CommonModule, CurrencyPipe, ButtonComponent, MeasureUnitAbbrPipe, LucideCheckCircle, LucideX],
   templateUrl: './sale-confirmation-dialog.component.html',
   styleUrls: ['./sale-confirmation-dialog.component.scss'],
 })

@@ -22,7 +22,7 @@
     @if (ncmSuggestions().length > 0) {
     <div class="ncm-suggestions-dropdown">
       <div
-        class="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-app)] border-b border-[var(--border-neutral)] text-xs font-semibold text-[var(--text-aux)]">
+        class="flex items-center justify-between px-3 py-1.5 bg-[var(--primary-light)] border-b border-[var(--border-neutral)] text-xs font-semibold text-[var(--text-aux)]">
         <span>Outras classificações NCM encontradas</span>
         <button type="button" (click)="closeSuggestions()"
           class="text-[var(--text-aux)] hover:text-[var(--text-main)] cursor-pointer">
@@ -84,7 +84,7 @@
 
     @if (selectedNcmDescription()) {
     <div
-      class="text-xs text-[var(--text-aux)] bg-[var(--bg-app)] py-1.5 px-2.5 rounded-[var(--radius-btn)] border border-[var(--border-neutral)] mt-1 line-clamp-2"
+      class="text-xs text-[var(--text-aux)] bg-[var(--primary-light)] py-1.5 px-2.5 rounded-[var(--radius-btn)] border border-[var(--border-neutral)] mt-1 line-clamp-2"
       [title]="selectedNcmDescription() ?? ''">
       <span class="font-semibold text-[var(--text-main)]">NCM:</span> {{ selectedNcmDescription() }}
     </div>

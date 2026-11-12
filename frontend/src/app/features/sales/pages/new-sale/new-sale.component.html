@@ -1,54 +1,68 @@
-<div class="flex flex-col w-full h-full min-h-0 overflow-y-auto lg:overflow-hidden p-3 sm:p-4 md:py-3 md:px-6">
-  <app-page-title title="Nova venda" [showBackButton]="true" (back)="cancel()" class="shrink-0 mb-3">
+<div class="flex flex-col w-full h-full min-h-0 overflow-y-auto px-3 sm:px-4 md:px-6 custom-scrollbar">
+  <app-page-title title="Nova venda" [showBackButton]="true" (back)="cancel()" class="shrink-0 pt-3 md:pt-4 mb-3">
   </app-page-title>
 
-  <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()" class="flex-1 min-h-0 flex flex-col w-full">
-    <app-stepper-layout
-      [steps]="stepLabels"
-      [currentStep]="currentPage"
-      [nextDisabled]="isCurrentStepInvalid"
-      [submitDisabled]="isSubmitDisabled"
-      [isSubmitting]="isSubmitting()"
-      (next)="nextPage()"
-      (back)="backPage()"
-      (cancel)="cancel()"
-    >
+  <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()"
+    class="flex flex-col w-full min-h-0 pb-10 sm:pb-12">
+    <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
+      [submitDisabled]="isSubmitDisabled" [isSubmitting]="isSubmitting()" [fluidHeight]="true" [horizontalLayout]="true"
+      (next)="nextPage()" (back)="backPage()" (cancel)="cancel()">
+
       @switch (currentPage) {
-        @case (1) {
-          <h3 class="txt-h2 mb-3">Identificação do Cooperado / Cliente</h3>
-          <app-sale-client-step
-            [formGroup]="salesForm"
-            [clientPreview]="selectedClientPreview()"
-            [isLoadingDetails]="isLoadingClientDetails()"
-            [searchClientsFn]="searchClientsFn"
-            (clientSelected)="onClientSelected($event)"
-            (proceed)="nextPage()"
-          ></app-sale-client-step>
-        }
-        @case (2) {
-          <h3 class="txt-h2 mb-3">Carrinho de Insumos</h3>
-          <app-sale-cart-step
-            [formGroup]="salesForm"
-            [searchBatchesFn]="searchBatchesFn"
-            [totalValue]="totalSaleValue()"
-            (batchSelected)="onBatchSelected($event)"
-            (removeItem)="onRemoveItem($event)"
-            (backToClient)="backPage()"
-            (finalizeSale)="openConfirmationDialog()"
-          ></app-sale-cart-step>
-        }
+      @case (1) {
+      <div stepperTopCard
+        class="bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] p-4 sm:p-5 shadow-xs relative z-20 shrink-0">
+        <div class="flex flex-col gap-1.5 max-w-2xl">
+          <label class="txt-label" for="clientSearch">Buscar Cliente</label>
+          <app-searchable-select id="clientSearch" formControlName="personId" valueKey="id" [searchFn]="searchClientsFn"
+            [labelFormatter]="clientLabelFormatter" (selectedOptionChange)="onClientSelected($event)"
+            [isInvalid]="!!(salesForm.get('personId')?.invalid && salesForm.get('personId')?.touched)"
+            placeholder="Digite o nome, CPF ou CNPJ do cliente..."
+            notFoundText="Nenhum cooperado ou cliente encontrado.">
+          </app-searchable-select>
+          <app-input-error [control]="salesForm.get('personId')"></app-input-error>
+        </div>
+      </div>
+      }
+      @case (2) {
+      <app-sale-cart-step stepperTopCard class="relative z-20" [formGroup]="salesForm"
+        [searchBatchesFn]="searchBatchesFn" (batchSelected)="onBatchSelected($event)"
+        (removeItem)="onRemoveItem($event)">
+      </app-sale-cart-step>
+      }
+      }
+
+      @switch (currentPage) {
+      @case (1) {
+      <app-sale-client-step [clientPreview]="selectedClientPreview()" [isLoadingDetails]="isLoadingClientDetails()">
+      </app-sale-client-step>
+      }
+      @case (2) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+          <span class="txt-label">Itens no Carrinho</span>
+          <span class="text-xl font-bold text-[var(--text-main)]">
+            {{ salesForm.controls.items.length }}
+            <span class="text-sm font-medium text-[var(--text-aux)]">
+              {{ salesForm.controls.items.length === 1 ? 'item' : 'itens' }}
+            </span>
+          </span>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+          <span class="txt-label">Valor Total da Venda</span>
+          <span class="text-xl font-extrabold text-[var(--primary-base)]">
+            {{ totalSaleValue() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+          </span>
+        </div>
+      </div>
+      }
       }
     </app-stepper-layout>
   </form>
 </div>
 
-<app-sale-confirmation-dialog
-  [isOpen]="isDialogOpen()"
-  [clientName]="confirmationClientName"
-  [clientDocument]="confirmationClientDoc"
-  [items]="confirmationItems"
-  [totalValue]="totalSaleValue()"
-  [isSubmitting]="isSubmitting()"
-  (confirm)="executeSaleSubmission()"
-  (cancel)="closeConfirmationDialog()"
-></app-sale-confirmation-dialog>
+<app-sale-confirmation-dialog [isOpen]="isDialogOpen()" [clientName]="confirmationClientName"
+  [clientDocument]="confirmationClientDoc" [items]="confirmationItems" [totalValue]="totalSaleValue()"
+  [isSubmitting]="isSubmitting()" (confirm)="executeSaleSubmission()"
+  (cancel)="closeConfirmationDialog()"></app-sale-confirmation-dialog>

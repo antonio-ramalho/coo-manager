@@ -9,7 +9,7 @@ import {
 } from '@lucide/angular';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
-import { MeasureUnitPipe } from '../../../../shared/pipes/measure-unit-pipe';
+import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
 import { formatDocument } from '../../../../shared/utils/document-format';
 import { SalesDto } from '../../models/sales-transaction.model';
@@ -27,7 +27,7 @@ import { SalesDto } from '../../models/sales-transaction.model';
     DatePipe,
     ButtonComponent,
     LoadingSpinnerComponent,
-    MeasureUnitPipe,
+    MeasureUnitAbbrPipe,
     ReceiptCodePipe,
     LucideReceiptText,
     LucideUser,

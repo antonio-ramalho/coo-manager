@@ -1,19 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {
   LucidePackage,
+  LucidePlus,
   LucideShoppingCart,
   LucideTrash2,
+  LucideX,
 } from '@lucide/angular';
 import { SearchableSelectComponent } from '../../../../shared/components/forms/searchable-select/searchable-select.component';
+import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
+import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 import { InputBatchTableItem } from '../../../inputs/models/input-batch.model';
 import { SalesForm, SalesItemForm } from '../../forms/sales-form.builder';
 
 /**
- * Dumb Component para o Passo 2: Carrinho de Lotes / Itens da Venda.
- * A seleção é restrita a lotes específicos disponíveis em estoque com recálculo em tempo real.
+ * Dumb Component responsável pela visão e edição dos itens do carrinho da venda,
+ * permitindo inclusão inline via busca na tabela.
  */
 @Component({
   selector: 'app-sale-cart-step',
@@ -23,9 +27,13 @@ import { SalesForm, SalesItemForm } from '../../forms/sales-form.builder';
     ReactiveFormsModule,
     CurrencyPipe,
     SearchableSelectComponent,
+    ButtonComponent,
+    MeasureUnitAbbrPipe,
     LucideShoppingCart,
     LucidePackage,
+    LucidePlus,
     LucideTrash2,
+    LucideX,
   ],
   templateUrl: './sale-cart-step.component.html',
   styleUrl: './sale-cart-step.component.scss',
@@ -33,44 +41,37 @@ import { SalesForm, SalesItemForm } from '../../forms/sales-form.builder';
 export class SaleCartStepComponent {
   @Input({ required: true }) formGroup!: FormGroup<SalesForm>;
   @Input({ required: true }) searchBatchesFn!: (term: string) => Observable<InputBatchTableItem[]>;
-  @Input({ required: true }) totalValue: number = 0;
 
   @Output() batchSelected = new EventEmitter<InputBatchTableItem>();
   @Output() removeItem = new EventEmitter<number>();
-  @Output() backToClient = new EventEmitter<void>();
-  @Output() finalizeSale = new EventEmitter<void>();
+
+  readonly isAddingItem = signal<boolean>(false);
 
   get itemsArray(): FormArray<FormGroup<SalesItemForm>> {
     return this.formGroup.controls.items;
   }
 
   batchLabelFormatter = (batch: InputBatchTableItem): string => {
-    const priceStr = (batch.unitPrice ?? 0).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    });
-    return `[${batch.batchCode}] ${batch.productName} — Disp: ${batch.currentQuantity} ${batch.measureUnit ?? ''} (${priceStr})`;
+    return `${batch.productName} (${batch.batchCode})`;
   };
 
+  startAddingItem(): void {
+    this.isAddingItem.set(true);
+  }
+
+  cancelAddingItem(): void {
+    this.isAddingItem.set(false);
+  }
+
   onBatchChosen(batch: InputBatchTableItem | null): void {
-    if (batch) {
-      this.batchSelected.emit(batch);
+    if (!batch) {
+      return;
     }
+    this.batchSelected.emit(batch);
+    this.isAddingItem.set(false);
   }
 
   onRemove(index: number): void {
     this.removeItem.emit(index);
-  }
-
-  onBack(): void {
-    this.backToClient.emit();
-  }
-
-  onFinalize(): void {
-    if (this.formGroup.valid && this.itemsArray.length > 0) {
-      this.finalizeSale.emit();
-    } else {
-      this.formGroup.markAllAsTouched();
-    }
   }
 }

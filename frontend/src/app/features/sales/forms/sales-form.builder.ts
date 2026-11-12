@@ -1,4 +1,5 @@
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MeasureUnit } from '../../../shared/enums/measure-unit';
 import { SaleCartItem } from '../models/sales-transaction.model';
 
 export interface SalesItemForm {
@@ -39,7 +40,7 @@ export function buildSalesItemForm(
     ]),
     availableStock: fb.control<number>(availableStock, { nonNullable: true }),
     unitPrice: fb.control<number>(unitPrice, { nonNullable: true }),
-    measureUnit: fb.control<string>(item?.measureUnit ?? 'UN', { nonNullable: true }),
+    measureUnit: fb.control<string>(item?.measureUnit ?? MeasureUnit.UNIT, { nonNullable: true }),
     totalPrice: fb.control<number>(quantity * unitPrice, { nonNullable: true }),
   });
 }

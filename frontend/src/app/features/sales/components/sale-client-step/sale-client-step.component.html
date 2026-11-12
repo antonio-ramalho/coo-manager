@@ -1,80 +1,59 @@
-<div [formGroup]="formGroup" class="flex flex-col gap-5 w-full">
-  <div
-    class="card p-5 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-[var(--shadow-card)]">
-    <div class="flex items-center gap-3 mb-2">
-      <div
-        class="w-9 h-9 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)]">
-        <svg lucideUserCheck class="w-5 h-5"></svg>
-      </div>
-      <div>
-        <h2 class="txt-h2 text-base md:text-lg">Passo 1: Seleção do Cooperado ou Cliente</h2>
-        <p class="text-xs md:text-sm text-[var(--text-aux)]">
-          Pesquise pelo nome, CPF ou CNPJ do cooperado para associar a esta venda.
-        </p>
-      </div>
+@if (isLoadingDetails) {
+<div class="flex-1 flex items-center justify-center py-10">
+  <app-loading-spinner size="md" message="Carregando dados cadastrais do cliente..."></app-loading-spinner>
+</div>
+} @else if (clientPreview) {
+<div class="flex flex-col gap-5 w-full">
+  <div class="flex items-center justify-between border-b border-[var(--border-neutral)] pb-3">
+    <div>
+      <span class="text-xs uppercase font-semibold text-[var(--primary-base)] tracking-wider">Cliente Selecionado</span>
+      <h3 class="text-lg font-bold text-[var(--text-main)] mt-0.5">{{ clientPreview.legalName }}</h3>
     </div>
-
-    <div class="mt-4 flex flex-col gap-1 max-w-2xl">
-      <label class="txt-label" for="clientSearch">Buscar Cliente</label>
-      <app-searchable-select id="clientSearch" formControlName="personId" valueKey="id" [searchFn]="searchClientsFn"
-        [labelFormatter]="clientLabelFormatter" (selectedOptionChange)="onOptionSelected($event)"
-        [isInvalid]="!!(formGroup.get('personId')?.invalid && formGroup.get('personId')?.touched)"
-        placeholder="Digite o nome, CPF ou CNPJ do cliente..." notFoundText="Nenhum cooperado ou cliente encontrado.">
-      </app-searchable-select>
-      <app-input-error [control]="formGroup.get('personId')"></app-input-error>
-    </div>
+    <span class="px-2.5 py-1 text-xs font-semibold rounded-full"
+      [class.bg-[var(--primary-light)]]="clientPreview.status === 'ACTIVE'"
+      [class.text-[var(--primary-hover)]]="clientPreview.status === 'ACTIVE'"
+      [class.bg-red-50]="clientPreview.status !== 'ACTIVE'" [class.text-red-700]="clientPreview.status !== 'ACTIVE'">
+      {{ clientPreview.status === 'ACTIVE' ? 'Cadastro Ativo' : 'Cadastro Inativo' }}
+    </span>
   </div>
 
-  @if (isLoadingDetails) {
-  <div
-    class="card p-6 flex items-center justify-center border border-[var(--border-neutral)] rounded-[var(--radius-card)] bg-[var(--bg-surface)]">
-    <app-loading-spinner size="md" message="Carregando dados cadastrais do cliente..."></app-loading-spinner>
-  </div>
-  } @else if (clientPreview) {
-  <div
-    class="card p-5 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-[var(--shadow-card)] flex flex-col gap-4">
-    <div class="flex items-center justify-between border-b border-[var(--border-neutral)] pb-3">
-      <div>
-        <span class="text-xs uppercase font-semibold text-[var(--primary-base)] tracking-wider">Cliente
-          Selecionado</span>
-        <h3 class="text-lg font-bold text-[var(--text-main)] mt-0.5">{{ clientPreview.legalName }}</h3>
-      </div>
-      <span class="px-2.5 py-1 text-xs font-semibold rounded-full"
-        [class.bg-[var(--primary-light)]]="clientPreview.status === 'ACTIVE'"
-        [class.text-[var(--primary-hover)]]="clientPreview.status === 'ACTIVE'"
-        [class.bg-red-50]="clientPreview.status !== 'ACTIVE'" [class.text-red-700]="clientPreview.status !== 'ACTIVE'">
-        {{ clientPreview.status === 'ACTIVE' ? 'Cadastro Ativo' : 'Cadastro Inativo' }}
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+    <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+      <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
+        <svg lucideUser class="w-3.5 h-3.5"></svg> Nome Completo
+      </span>
+      <span class="text-sm font-semibold text-[var(--text-main)] truncate" [title]="clientPreview.legalName">
+        {{ clientPreview.legalName }}
       </span>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-      <div class="p-3 rounded-lg bg-[var(--bg-app)] border border-[var(--border-neutral)] flex flex-col gap-1">
-        <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
-          <svg lucideUser class="w-3.5 h-3.5"></svg> Nome Completo
-        </span>
-        <span class="text-sm font-semibold text-[var(--text-main)] truncate" [title]="clientPreview.legalName">
-          {{ clientPreview.legalName }}
-        </span>
-      </div>
+    <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+      <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
+        <svg lucideFileText class="w-3.5 h-3.5"></svg> CPF / CNPJ
+      </span>
+      <span class="text-sm font-semibold text-[var(--text-main)] font-mono">
+        {{ formatDoc(clientPreview.documentNumber) }}
+      </span>
+    </div>
 
-      <div class="p-3 rounded-lg bg-[var(--bg-app)] border border-[var(--border-neutral)] flex flex-col gap-1">
-        <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
-          <svg lucideFileText class="w-3.5 h-3.5"></svg> CPF / CNPJ
-        </span>
-        <span class="text-sm font-semibold text-[var(--text-main)] font-mono">
-          {{ formatDoc(clientPreview.documentNumber) }}
-        </span>
-      </div>
-
-      <div class="p-3 rounded-lg bg-[var(--bg-app)] border border-[var(--border-neutral)] flex flex-col gap-1">
-        <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
-          <svg lucideCalendar class="w-3.5 h-3.5"></svg> Data de Nascimento
-        </span>
-        <span class="text-sm font-semibold text-[var(--text-main)]">
-          {{ clientPreview.birthDate ? (clientPreview.birthDate | date:'dd/MM/yyyy') : 'Não informada' }}
-        </span>
-      </div>
+    <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+      <span class="text-xs text-[var(--text-aux)] font-medium flex items-center gap-1.5">
+        <svg lucideCalendar class="w-3.5 h-3.5"></svg> Data de Nascimento
+      </span>
+      <span class="text-sm font-semibold text-[var(--text-main)]">
+        {{ clientPreview.birthDate ? (clientPreview.birthDate | date:'dd/MM/yyyy') : 'Não informada' }}
+      </span>
     </div>
   </div>
-  }
 </div>
+} @else {
+<div class="flex-1 flex flex-col items-center justify-center text-center py-10">
+  <div class="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)] mb-3">
+    <svg lucideUserCheck class="w-6 h-6"></svg>
+  </div>
+  <p class="text-sm font-medium text-[var(--text-main)]">Nenhum cliente selecionado</p>
+  <p class="text-xs text-[var(--text-aux)] mt-1 max-w-sm">
+    Pesquise e selecione um cliente no campo acima para visualizar seus dados cadastrais.
+  </p>
+</div>
+}

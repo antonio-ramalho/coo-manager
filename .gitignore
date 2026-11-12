@@ -49,5 +49,7 @@ Thumbs.db
 .cursorrules
 .cursorconfig
 .agent
+AGENTS.md
+artefatos/
 .env
 .env.*

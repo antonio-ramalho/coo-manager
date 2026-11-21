@@ -1,8 +1,8 @@
 package com.manager.coomanager.purchaseModule.services.impl;
 
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import com.manager.coomanager.purchaseModule.entities.InputProduct;
 import com.manager.coomanager.purchaseModule.repositories.InputProductRepository;
 import com.manager.coomanager.purchaseModule.dto.inputBatch.InputBatchDto;

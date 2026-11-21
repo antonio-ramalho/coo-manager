@@ -1,7 +1,7 @@
 package com.manager.coomanager.contractModule.entities;
 
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

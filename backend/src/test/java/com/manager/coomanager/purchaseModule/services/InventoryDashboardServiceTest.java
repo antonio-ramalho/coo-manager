@@ -1,11 +1,11 @@
 package com.manager.coomanager.purchaseModule.services;
 
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
-import com.manager.coomanager.infrastructure.valueObjects.Ncm;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.Ncm;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import com.manager.coomanager.purchaseModule.entities.InputProduct;
-import com.manager.coomanager.produtcModule.enums.MeasureUnit;
+import com.manager.coomanager.productModule.enums.MeasureUnit;
 import com.manager.coomanager.purchaseModule.dto.dashboard.ExpiredBatchDto;
 import com.manager.coomanager.purchaseModule.dto.dashboard.ExpiringBatchDto;
 import com.manager.coomanager.purchaseModule.dto.dashboard.InventoryDashboardDto;

@@ -1,8 +1,8 @@
 package com.manager.coomanager.personModule.entities;
 
-import com.manager.coomanager.infrastructure.valueObjects.Address;
-import com.manager.coomanager.infrastructure.valueObjects.Email;
-import com.manager.coomanager.infrastructure.valueObjects.Phone;
+import com.manager.coomanager.shared.domain.valueobjects.Address;
+import com.manager.coomanager.shared.domain.valueobjects.Email;
+import com.manager.coomanager.shared.domain.valueobjects.Phone;
 import com.manager.coomanager.personModule.enums.PersonType;
 import com.manager.coomanager.personModule.enums.Status;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.time.LocalDate;
-import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
 import org.hibernate.annotations.Filter;
 import java.util.Objects;
 import java.util.UUID;

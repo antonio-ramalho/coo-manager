@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.institution;
 
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 
 public record InstitutionUpdateDto(
         String tradeName,

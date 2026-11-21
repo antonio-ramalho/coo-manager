@@ -1,15 +1,15 @@
 package com.manager.coomanager.purchaseModule.services;
 
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
-import com.manager.coomanager.infrastructure.valueObjects.Ncm;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.Ncm;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import com.manager.coomanager.personModule.entities.Person;
 import com.manager.coomanager.personModule.repositories.PersonRepository;
 import com.manager.coomanager.purchaseModule.entities.InputProduct;
-import com.manager.coomanager.produtcModule.enums.MeasureUnit;
+import com.manager.coomanager.productModule.enums.MeasureUnit;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseTableDto;

@@ -1,6 +1,8 @@
 package com.manager.coomanager.personModule.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,10 +14,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_agent")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Agent implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Agent extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,9 +43,13 @@ public class Agent implements Serializable {
     private ConsumerUnit consumerUnit;
 
     public Agent(String cargo, NaturalPerson natPerson) {
+        super();
         this.cargo = cargo;
         this.natPerson = natPerson;
         this.uuid = new UID();
+        if (this.getCooperativeId() == null && natPerson != null && natPerson.getCooperativeId() != null) {
+            this.setCooperativeId(natPerson.getCooperativeId());
+        }
     }
 
     public void changeCargo(String cargo) {

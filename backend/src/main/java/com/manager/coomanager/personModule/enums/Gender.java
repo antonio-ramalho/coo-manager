@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.enums;
 
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

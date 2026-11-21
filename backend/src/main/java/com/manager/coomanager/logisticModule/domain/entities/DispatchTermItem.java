@@ -2,9 +2,9 @@ package com.manager.coomanager.logisticModule.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manager.coomanager.contractModule.entities.ContractedProduct;
-import com.manager.coomanager.baseModule.BaseReceiptItem;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.shared.domain.entities.BaseReceiptItem;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,10 +1,10 @@
 package com.manager.coomanager.personModule.services;
 
 import com.manager.coomanager.infrastructure.exceptions.DatabaseException;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.infrastructure.valueObjects.*;
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.shared.domain.valueobjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 import com.manager.coomanager.personModule.dto.client.ClientMinDto;
 import com.manager.coomanager.personModule.dto.client.JuridicClientDto;
 import com.manager.coomanager.personModule.dto.client.NaturalClientDto;

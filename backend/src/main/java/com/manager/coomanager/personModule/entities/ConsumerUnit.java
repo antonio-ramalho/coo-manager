@@ -1,9 +1,11 @@
 package com.manager.coomanager.personModule.entities;
 
 import com.manager.coomanager.contractModule.entities.ContractConsumer;
-import com.manager.coomanager.infrastructure.valueObjects.Address;
+import com.manager.coomanager.shared.domain.valueobjects.Address;
 import com.manager.coomanager.personModule.enums.Status;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,10 +21,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_consumerUnit")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ConsumerUnit implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class ConsumerUnit extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -55,12 +58,16 @@ public class ConsumerUnit implements Serializable {
 
     public ConsumerUnit(@NonNull List<Agent> agents, Address deliveryAddress, JuridicPerson  juridicPerson,
                         boolean isSubsidiaryCNPJ) {
+        super();
         agents.forEach(this::addAgent);
         this.deliveryAddress = deliveryAddress;
         this.juridicPerson = juridicPerson;
         this.isSubsidiaryCNPJ = isSubsidiaryCNPJ;
         this.status = Status.ACTIVE;
         this.uuid = UUID.randomUUID();
+        if (this.getCooperativeId() == null && juridicPerson != null && juridicPerson.getCooperativeId() != null) {
+            this.setCooperativeId(juridicPerson.getCooperativeId());
+        }
     }
 
     public void addAgent(Agent agent) {

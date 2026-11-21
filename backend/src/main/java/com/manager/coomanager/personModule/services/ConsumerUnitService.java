@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.services;
 
-import com.manager.coomanager.infrastructure.valueObjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.*;
 import com.manager.coomanager.personModule.entities.Agent;
 import com.manager.coomanager.personModule.entities.ConsumerUnit;
 import com.manager.coomanager.personModule.dto.agent.AgentInsertDto;
@@ -10,7 +10,7 @@ import com.manager.coomanager.personModule.dto.consumerunit.ConsumerUnitMinDto;
 import com.manager.coomanager.personModule.dto.consumerunit.ConsumerUnitUpdateDto;
 import com.manager.coomanager.personModule.enums.Gender;
 import com.manager.coomanager.personModule.enums.Status;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.personModule.entities.JuridicPerson;
 import com.manager.coomanager.personModule.entities.NaturalPerson;
 import com.manager.coomanager.personModule.repositories.ConsumerUnitRepository;

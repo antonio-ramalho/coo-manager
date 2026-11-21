@@ -2,7 +2,7 @@ package com.manager.coomanager.personModule.interfaces;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 import com.manager.coomanager.personModule.dto.client.JuridicClientDto;
 import com.manager.coomanager.personModule.dto.client.NaturalClientDto;
 import com.manager.coomanager.personModule.enums.Status;

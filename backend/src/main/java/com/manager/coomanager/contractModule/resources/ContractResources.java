@@ -7,6 +7,7 @@ import com.manager.coomanager.contractModule.dto.contract.ContractUpdateDto;
 import com.manager.coomanager.contractModule.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,30 +19,35 @@ public class ContractResources {
     private ContractService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('CONTRACT_READ')")
     public ResponseEntity<List<ContractMinDto>> findAll() {
         List<ContractMinDto> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('CONTRACT_READ')")
     public ResponseEntity<ContractDto> findById(@PathVariable Long id) {
         ContractDto obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CONTRACT_WRITE')")
     public ResponseEntity<ContractDto> create(@RequestBody ContractInsertDto dto) {
         ContractDto newContract = service.create(dto);
         return ResponseEntity.ok().body(newContract);
     }
 
     @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('CONTRACT_WRITE')")
     public ResponseEntity<ContractDto> update(@PathVariable Long id, @RequestBody ContractUpdateDto dto) {
         ContractDto obj = service.update(id, dto);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('CONTRACT_WRITE')")
     public ResponseEntity<Void>  delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

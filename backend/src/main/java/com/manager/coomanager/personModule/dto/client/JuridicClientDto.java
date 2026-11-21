@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.client;
 
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 import com.manager.coomanager.personModule.entities.JuridicPerson;
 import com.manager.coomanager.personModule.enums.Status;
 import com.manager.coomanager.personModule.interfaces.IClientDto;

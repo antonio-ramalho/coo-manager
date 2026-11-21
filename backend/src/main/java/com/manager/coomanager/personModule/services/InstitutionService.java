@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.services;
 
-import com.manager.coomanager.infrastructure.valueObjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.*;
 import com.manager.coomanager.personModule.entities.Institution;
 import com.manager.coomanager.personModule.entities.JuridicPerson;
 import com.manager.coomanager.personModule.dto.institution.InstitutionDto;
@@ -8,7 +8,7 @@ import com.manager.coomanager.personModule.dto.institution.InstitutionInsertDto;
 import com.manager.coomanager.personModule.dto.institution.InstitutionMinDto;
 import com.manager.coomanager.personModule.dto.institution.InstitutionUpdateDto;
 import com.manager.coomanager.personModule.enums.InstitutionSphere;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.personModule.repositories.InstitutionRepository;
 import com.manager.coomanager.personModule.repositories.JuridicPersonRepository;
 import com.manager.coomanager.personModule.enums.Status;

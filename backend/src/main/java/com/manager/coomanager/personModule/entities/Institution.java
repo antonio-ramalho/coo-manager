@@ -3,6 +3,8 @@ package com.manager.coomanager.personModule.entities;
 import com.manager.coomanager.contractModule.entities.Contract;
 import com.manager.coomanager.personModule.enums.InstitutionSphere;
 import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,10 +18,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_institution")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Institution implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Institution extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -46,10 +49,14 @@ public class Institution implements Serializable {
     private InstitutionSphere institutionSphere;
 
     public Institution(InstitutionSphere institutionSphere, JuridicPerson juridicPerson) {
+        super();
         this.institutionSphere = institutionSphere;
         this.juridicPerson = juridicPerson;
         this.status = Status.ACTIVE;
         this.uuid = UUID.randomUUID();
+        if (this.getCooperativeId() == null && juridicPerson != null && juridicPerson.getCooperativeId() != null) {
+            this.setCooperativeId(juridicPerson.getCooperativeId());
+        }
     }
 
     public List<Contract> getContracts() {

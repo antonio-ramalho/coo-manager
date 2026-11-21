@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.entities;
 
-import com.manager.coomanager.infrastructure.valueObjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.*;
 import com.manager.coomanager.personModule.enums.Gender;
 import com.manager.coomanager.personModule.enums.PersonType;
 import jakarta.persistence.*;

@@ -1,24 +1,25 @@
 package com.manager.coomanager.personModule.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
 import com.manager.coomanager.personModule.enums.DocumentStatus;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Table(name = "tb_organic_certificates")
 @Entity
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class OrganicCertificate implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class OrganicCertificate extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,17 +45,12 @@ public class OrganicCertificate implements Serializable {
     private List<Farmer> farmers = new ArrayList<>();
 
     public OrganicCertificate(String certificateNumber, ExpirationDate expirationDate, String institutionName) {
+        super();
         this.certificateNumber = certificateNumber;
         this.expirationDate = expirationDate;
         this.institutionName = institutionName;
         this.documentStatus = DocumentStatus.ACTIVE;
         this.uuid = UUID.randomUUID();
-    }
-
-    private void validateExpiration(LocalDate date) {
-        if (date.isBefore(LocalDate.now())) {
-            throw new DomainException("Não é possível registrar um certificado vencido.");
-        }
     }
 
     public boolean isValid() {

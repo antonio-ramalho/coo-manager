@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.consumerunit;
 
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 import com.manager.coomanager.personModule.dto.agent.AgentInsertDto;
 import java.time.LocalDate;
 import java.util.List;

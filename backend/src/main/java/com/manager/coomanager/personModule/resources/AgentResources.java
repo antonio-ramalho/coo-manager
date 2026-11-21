@@ -5,6 +5,7 @@ import com.manager.coomanager.personModule.dto.agent.AgentUpdateDto;
 import com.manager.coomanager.personModule.services.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class AgentResources {
     private AgentService service;
 
     @PatchMapping(value = "/{agentId}")
+    @PreAuthorize("hasAuthority('CONTRACT_WRITE')")
     public ResponseEntity<AgentDto> updateAgent(
             @PathVariable Long unitId,
             @PathVariable Long agentId,
@@ -24,6 +26,7 @@ public class AgentResources {
     }
 
     @DeleteMapping("/{agentId}")
+    @PreAuthorize("hasAuthority('CONTRACT_WRITE')")
     public ResponseEntity<Void> delete(
             @PathVariable Long unitId,
             @PathVariable Long agentId) {

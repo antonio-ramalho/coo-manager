@@ -3,8 +3,10 @@ package com.manager.coomanager.personModule.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.manager.coomanager.contractModule.entities.Contract;
 import com.manager.coomanager.contractModule.entities.FarmerContract;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
 import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,10 +20,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_farmer")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Farmer implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Farmer extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -53,9 +56,13 @@ public class Farmer implements Serializable {
     private List<FarmerContract> farmerContracts = new ArrayList<>();
 
     public Farmer(NaturalPerson person) {
+        super();
         this.person = Objects.requireNonNull(person);
         this.status = Status.ACTIVE;
         this.uuid = UUID.randomUUID();
+        if (this.getCooperativeId() == null && person.getCooperativeId() != null) {
+            this.setCooperativeId(person.getCooperativeId());
+        }
     }
 
     public void deactivate() {

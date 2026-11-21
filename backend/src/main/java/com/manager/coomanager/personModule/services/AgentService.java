@@ -2,11 +2,11 @@ package com.manager.coomanager.personModule.services;
 
 import com.manager.coomanager.personModule.entities.Agent;
 import com.manager.coomanager.personModule.entities.ConsumerUnit;
-import com.manager.coomanager.infrastructure.valueObjects.Email;
-import com.manager.coomanager.infrastructure.valueObjects.Phone;
+import com.manager.coomanager.shared.domain.valueobjects.Email;
+import com.manager.coomanager.shared.domain.valueobjects.Phone;
 import com.manager.coomanager.personModule.dto.agent.AgentDto;
 import com.manager.coomanager.personModule.dto.agent.AgentUpdateDto;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.personModule.enums.Status;
 import com.manager.coomanager.personModule.repositories.ConsumerUnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;

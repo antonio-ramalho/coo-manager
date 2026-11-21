@@ -1,17 +1,17 @@
 package com.manager.coomanager.personModule.services;
 
-import com.manager.coomanager.produtcModule.entities.AgriculturalProduct;
-import com.manager.coomanager.infrastructure.valueObjects.Ncm;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
+import com.manager.coomanager.productModule.entities.AgriculturalProduct;
+import com.manager.coomanager.shared.domain.valueobjects.Ncm;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
 import com.manager.coomanager.personModule.dto.agriculturalProduct.AgriculturalProductDto;
 import com.manager.coomanager.personModule.dto.agriculturalProduct.AgriculturalProductInsertDto;
 import com.manager.coomanager.personModule.dto.agriculturalProduct.AgriculturalProductMinDto;
 import com.manager.coomanager.personModule.dto.agriculturalProduct.AgriculturalProductUpdateDto;
-import com.manager.coomanager.produtcModule.enums.CultivationType;
-import com.manager.coomanager.produtcModule.enums.MeasureUnit;
-import com.manager.coomanager.produtcModule.enums.ProductCatalogStatus;
-import com.manager.coomanager.produtcModule.enums.ProductGroup;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.productModule.enums.CultivationType;
+import com.manager.coomanager.productModule.enums.MeasureUnit;
+import com.manager.coomanager.productModule.enums.ProductCatalogStatus;
+import com.manager.coomanager.productModule.enums.ProductGroup;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.personModule.repositories.AgriculturalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.manager.coomanager.purchaseModule.entities;
 
-import com.manager.coomanager.baseModule.BaseReceipt;
+import com.manager.coomanager.shared.domain.entities.BaseReceipt;
 import com.manager.coomanager.personModule.entities.Person;
 import com.manager.coomanager.purchaseModule.enums.PaymentStatus;
 import jakarta.persistence.*;

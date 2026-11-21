@@ -1,6 +1,6 @@
 package com.manager.coomanager.cooperativeModule.entities;
 
-import com.manager.coomanager.infrastructure.valueObjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.*;
 import com.manager.coomanager.personModule.enums.Status;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

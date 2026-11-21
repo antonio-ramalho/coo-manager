@@ -1,6 +1,6 @@
 package com.manager.coomanager.purchaseModule.services.impl;
 
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.purchaseModule.entities.InputBatch;
 import com.manager.coomanager.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coomanager.purchaseModule.services.validator.PurchaseItemValidationStrategy;

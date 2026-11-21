@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.farmer;
 
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 
 import java.time.LocalDate;
 

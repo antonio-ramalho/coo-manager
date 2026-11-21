@@ -8,10 +8,10 @@ import com.manager.coomanager.cooperativeModule.repositories.CooperativeReposito
 import com.manager.coomanager.cooperativeModule.services.validators.CooperativeCnpjUniqueValidator;
 import com.manager.coomanager.cooperativeModule.services.validators.CooperativeEmailUniqueValidator;
 import com.manager.coomanager.cooperativeModule.services.validators.CooperativeValidator;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.infrastructure.valueObjects.*;
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.shared.domain.valueobjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 import com.manager.coomanager.personModule.enums.BrazilianState;
 import com.manager.coomanager.personModule.enums.Status;
 import org.junit.jupiter.api.BeforeEach;

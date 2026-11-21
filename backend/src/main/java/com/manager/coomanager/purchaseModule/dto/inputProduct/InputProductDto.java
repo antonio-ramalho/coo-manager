@@ -1,7 +1,7 @@
 package com.manager.coomanager.purchaseModule.dto.inputProduct;
 
 import com.manager.coomanager.purchaseModule.entities.InputProduct;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
 import com.manager.coomanager.purchaseModule.enums.ProductInventoryStatus;
 import java.util.List;
 

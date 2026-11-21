@@ -2,8 +2,8 @@ package com.manager.coomanager.cooperativeModule.services.validators;
 
 import com.manager.coomanager.cooperativeModule.dto.CooperativeRequestDto;
 import com.manager.coomanager.cooperativeModule.repositories.CooperativeRepository;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.valueObjects.Email;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.valueobjects.Email;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;

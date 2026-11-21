@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.agriculturalProduct;
 
-import com.manager.coomanager.produtcModule.entities.AgriculturalProduct;
+import com.manager.coomanager.productModule.entities.AgriculturalProduct;
 
 public record AgriculturalProductDto(
         Long id,

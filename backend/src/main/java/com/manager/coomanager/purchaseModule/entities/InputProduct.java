@@ -1,10 +1,10 @@
 package com.manager.coomanager.purchaseModule.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.manager.coomanager.infrastructure.valueObjects.Ncm;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.produtcModule.entities.Product;
-import com.manager.coomanager.produtcModule.enums.MeasureUnit;
+import com.manager.coomanager.shared.domain.valueobjects.Ncm;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.productModule.entities.Product;
+import com.manager.coomanager.productModule.enums.MeasureUnit;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

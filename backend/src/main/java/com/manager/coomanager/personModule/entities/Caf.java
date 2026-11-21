@@ -1,11 +1,13 @@
 package com.manager.coomanager.personModule.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.manager.coomanager.infrastructure.valueObjects.CafNumber;
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.CafNumber;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
 import com.manager.coomanager.personModule.enums.DocumentStatus;
 import com.manager.coomanager.personModule.enums.SettlementType;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,10 +20,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_caf")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Caf implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Caf extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -49,6 +52,7 @@ public class Caf implements Serializable {
     private List<Farmer> farmers = new ArrayList<>();
 
     public Caf(CafNumber cafNumber, ExpirationDate expirationDate, SettlementType settlementType) {
+        super();
         this.cafNumber = cafNumber;
         this.expirationDate = expirationDate;
         this.settlementType = settlementType;

@@ -1,8 +1,8 @@
 package com.manager.coomanager.cooperativeModule.repositories;
 
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
-import com.manager.coomanager.infrastructure.valueObjects.Cnpj;
-import com.manager.coomanager.infrastructure.valueObjects.Email;
+import com.manager.coomanager.shared.domain.valueobjects.Cnpj;
+import com.manager.coomanager.shared.domain.valueobjects.Email;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

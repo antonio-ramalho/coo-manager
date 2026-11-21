@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.dto.consumerunit;
 
-import com.manager.coomanager.infrastructure.valueObjectsDto.AddressDto;
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
 
 public record ConsumerUnitUpdateDto(
         String legalName,

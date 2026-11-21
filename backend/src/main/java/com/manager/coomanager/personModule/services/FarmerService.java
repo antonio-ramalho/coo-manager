@@ -1,6 +1,6 @@
 package com.manager.coomanager.personModule.services;
 
-import com.manager.coomanager.infrastructure.valueObjects.*;
+import com.manager.coomanager.shared.domain.valueobjects.*;
 import com.manager.coomanager.personModule.entities.Caf;
 import com.manager.coomanager.personModule.entities.Farmer;
 import com.manager.coomanager.personModule.entities.NaturalPerson;
@@ -12,7 +12,7 @@ import com.manager.coomanager.personModule.dto.farmer.FarmerUpdateDto;
 import com.manager.coomanager.personModule.enums.BrazilianState;
 import com.manager.coomanager.personModule.enums.DocumentStatus;
 import com.manager.coomanager.personModule.enums.Gender;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.personModule.enums.Status;
 import com.manager.coomanager.personModule.repositories.CafRepository;
 import com.manager.coomanager.personModule.repositories.FarmerRepository;

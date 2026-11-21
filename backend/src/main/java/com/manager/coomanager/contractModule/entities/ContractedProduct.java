@@ -1,8 +1,8 @@
 package com.manager.coomanager.contractModule.entities;
 
-import com.manager.coomanager.produtcModule.entities.AgriculturalProduct;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.productModule.entities.AgriculturalProduct;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

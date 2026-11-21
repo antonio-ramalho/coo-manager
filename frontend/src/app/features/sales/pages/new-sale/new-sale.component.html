@@ -1,9 +1,14 @@
+@if (!isDesktop()) {
+<div class="p-4 sm:p-6 w-full">
+  <app-desktop-only-notice featureName="Nova Venda"></app-desktop-only-notice>
+</div>
+} @else {
 <div class="flex flex-col w-full h-full min-h-0 overflow-y-auto px-3 sm:px-4 md:px-6 custom-scrollbar">
   <app-page-title title="Nova venda" [showBackButton]="true" (back)="cancel()" class="shrink-0 pt-3 md:pt-4 mb-3">
   </app-page-title>
 
   <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()"
-    class="flex flex-col w-full min-h-0 pb-10 sm:pb-12">
+    class="flex flex-col w-full min-h-0 h-full">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="isSubmitDisabled" [isSubmitting]="isSubmitting()" [fluidHeight]="true" [horizontalLayout]="true"
       (next)="nextPage()" (back)="backPage()" (cancel)="cancel()">
@@ -39,7 +44,8 @@
       }
       @case (2) {
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+        <div
+          class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
           <span class="txt-label">Itens no Carrinho</span>
           <span class="text-xl font-bold text-[var(--text-main)]">
             {{ salesForm.controls.items.length }}
@@ -49,7 +55,8 @@
           </span>
         </div>
 
-        <div class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+        <div
+          class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
           <span class="txt-label">Valor Total da Venda</span>
           <span class="text-xl font-extrabold text-[var(--primary-base)]">
             {{ totalSaleValue() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
@@ -66,3 +73,4 @@
   [clientDocument]="confirmationClientDoc" [items]="confirmationItems" [totalValue]="totalSaleValue()"
   [isSubmitting]="isSubmitting()" (confirm)="executeSaleSubmission()"
   (cancel)="closeConfirmationDialog()"></app-sale-confirmation-dialog>
+}

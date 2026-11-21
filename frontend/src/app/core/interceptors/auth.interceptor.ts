@@ -1,17 +1,39 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/toast.service';
 
-const ACCESS_TOKEN_KEY = 'access_token';
-
-/**
- * Anexa o token JWT às requisições.
- * Ainda não registrado em `app.config.ts`: será ativado junto com o fluxo de autenticação.
- */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+  const authService = inject(AuthService);
+  const toastService = inject(ToastService);
+  const router = inject(Router);
 
-  if (!token) {
-    return next(req);
+  const token = authService.accessToken();
+
+  let authReq = req;
+  if (token) {
+    authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
-  return next(req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }));
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        if (!req.url.includes('/auth/login') && !req.url.includes('/auth/2fa/verify')) {
+          authService.logout();
+          toastService.showWarning('Sua sessão expirou. Faça login novamente.');
+        }
+      } else if (error.status === 403) {
+        toastService.showError('Acesso negado. Você não possui permissão para executar esta ação.');
+      }
+
+      return throwError(() => error);
+    }),
+  );
 };

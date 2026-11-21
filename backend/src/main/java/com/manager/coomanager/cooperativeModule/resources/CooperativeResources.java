@@ -9,9 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 
 @RestController
@@ -25,6 +25,7 @@ public class CooperativeResources {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('COOPERATIVE_READ')")
     public ResponseEntity<Page<CooperativeMinDto>> findAllPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -36,11 +37,13 @@ public class CooperativeResources {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('COOPERATIVE_READ')")
     public ResponseEntity<CooperativeResponseDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('COOPERATIVE_WRITE')")
     public ResponseEntity<CooperativeResponseDto> insert(@RequestBody CooperativeRequestDto dto) {
         CooperativeResponseDto created = service.insert(dto);
 
@@ -51,6 +54,7 @@ public class CooperativeResources {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('COOPERATIVE_WRITE')")
     public ResponseEntity<CooperativeResponseDto> update(@PathVariable Long id,
             @RequestBody CooperativeRequestDto dto) {
         CooperativeResponseDto updated = service.update(id, dto);
@@ -58,12 +62,14 @@ public class CooperativeResources {
     }
 
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasAuthority('COOPERATIVE_WRITE')")
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
         service.deactivate(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/activate")
+    @PreAuthorize("hasAuthority('COOPERATIVE_WRITE')")
     public ResponseEntity<Void> activate(@PathVariable Long id) {
         service.activate(id);
         return ResponseEntity.noContent().build();

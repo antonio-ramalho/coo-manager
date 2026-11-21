@@ -1,0 +1,261 @@
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Equipe e Permissões"></app-desktop-only-notice>
+} @else {
+<div class="content-interface employees-container">
+  <header class="header-container">
+    <h1 class="txt-h1">Equipe</h1>
+    <div class="header-actions">
+      @if (canManageUsers()) {
+      <button type="button" appButton variant="outline" (click)="openRolesModal()">
+        <span>Cargos & Permissões</span>
+      </button>
+      <button type="button" appButton variant="primary" (click)="openNewEmployeeModal()">
+        <span>Novo funcionário</span>
+      </button>
+      }
+    </div>
+  </header>
+
+  <div class="card table-wrapper">
+    <div class="table-actions-header">
+      <app-search-bar-component class="search-bar-container" placeholder="Buscar funcionário por nome ou e-mail..."
+        (modifiedSearch)="onSearch($event)"></app-search-bar-component>
+    </div>
+
+    <div class="table-body-container custom-scrollbar">
+      <app-generic-table [columns]="columns" [data]="employees()" [loading]="isLoading()"
+        emptyMessage="Nenhum funcionário cadastrado ou localizado."></app-generic-table>
+    </div>
+
+    <app-pagination-component class="pagination-container" [currentPage]="currentPage()" [totalItens]="totalItems()"
+      [itensPerPage]="pageSize" (swappedPage)="onPageChange($event)"></app-pagination-component>
+  </div>
+</div>
+}
+
+<ng-template #rolesTpl let-row>
+  <div class="flex flex-wrap gap-1">
+    @if (row.roleNames && row.roleNames.length > 0) {
+    @for (roleName of row.roleNames; track roleName) {
+    <span class="role-badge">{{ roleName }}</span>
+    }
+    } @else {
+    <span class="text-xs text-[var(--text-aux)] italic">Sem cargo atribuído</span>
+    }
+  </div>
+</ng-template>
+
+<ng-template #statusTpl let-row>
+  <span class="status-badge" [class.status-active]="row.status === 'ACTIVE'"
+    [class.status-inactive]="row.status !== 'ACTIVE'">
+    {{ row.status === 'ACTIVE' ? 'Ativo' : 'Inativo' }}
+  </span>
+</ng-template>
+
+<ng-template #actionsTpl let-row>
+  <div class="relative flex items-center justify-center">
+    <button
+      class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none p-1.5 rounded transition-colors inline-flex items-center justify-center cursor-pointer"
+      (click)="toggleMenu(row.id, $event)" cdkOverlayOrigin #trigger="cdkOverlayOrigin" title="Ações do funcionário"
+      type="button">
+      <svg lucideEllipsis class="w-5 h-5"></svg>
+    </button>
+
+    @if (openMenuRowId === row.id) {
+    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="openMenuRowId === row.id" (overlayOutsideClick)="closeMenu()"
+      [cdkConnectedOverlayPositions]="overlayPositions">
+      <div
+        class="bg-white shadow-lg rounded border border-gray-200 flex flex-col z-50 min-w-[150px] overflow-hidden py-1 text-left">
+        <button type="button"
+          class="px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors text-(--text-main) cursor-pointer"
+          (click)="onEditEmployeeAction(row, $event)">
+          Editar
+        </button>
+
+        @if (canManageUsers() && !isCurrentLoggedInUser(row.id)) {
+        @if (row.status === 'ACTIVE') {
+        <button type="button"
+          class="px-4 py-2 text-sm text-left text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors border-t border-gray-100 cursor-pointer"
+          (click)="onToggleEmployeeStatusAction(row, $event)">
+          Desativar
+        </button>
+        } @else {
+        <button type="button"
+          class="px-4 py-2 text-sm text-left text-[var(--primary-base)] hover:bg-[var(--primary-light)] transition-colors border-t border-gray-100 cursor-pointer"
+          (click)="onToggleEmployeeStatusAction(row, $event)">
+          Ativar
+        </button>
+        }
+        }
+      </div>
+    </ng-template>
+    }
+  </div>
+</ng-template>
+
+@if (isEmployeeModalOpen()) {
+<div class="modal-backdrop">
+  <div class="modal-dialog modal-md">
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ editingEmployeeId() ? 'Editar Funcionário' : 'Novo Funcionário' }}
+      </h2>
+      <button type="button" class="close-btn" (click)="closeEmployeeModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSaveEmployee()" class="modal-body">
+      <div class="form-group">
+        <label class="form-label" for="fullName">Nome Completo *</label>
+        <input id="fullName" type="text" formControlName="fullName" class="form-input"
+          placeholder="Ex: Maria dos Santos" />
+        <app-input-error [control]="employeeForm.get('fullName')"></app-input-error>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">E-mail Institucional *</label>
+        <input id="email" type="email" formControlName="email" class="form-input"
+          placeholder="Ex: maria.santos@cooperativa.agr.br" />
+        <app-input-error [control]="employeeForm.get('email')"></app-input-error>
+      </div>
+
+      @if (!editingEmployeeId()) {
+      <div class="form-group">
+        <label class="form-label" for="password">Senha Inicial *</label>
+        <input id="password" type="password" formControlName="password" class="form-input"
+          placeholder="Mínimo de 6 caracteres" />
+        <app-input-error [control]="employeeForm.get('password')"></app-input-error>
+      </div>
+      }
+
+      <div class="form-group">
+        <label class="form-label">Cargos e Perfis de Acesso *</label>
+        @if (isCurrentLoggedInUser(editingEmployeeId())) {
+        <div class="p-2.5 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs mb-2">
+          Por segurança, não é permitido alterar seus próprios cargos de acesso.
+        </div>
+        }
+        <div class="roles-grid" [class.opacity-60]="isCurrentLoggedInUser(editingEmployeeId())" [class.pointer-events-none]="isCurrentLoggedInUser(editingEmployeeId())">
+          @for (role of roles(); track role.id) {
+          <label class="role-checkbox-card" [class.selected]="isRoleSelected(role.id)">
+            <input type="checkbox" [checked]="isRoleSelected(role.id)" (change)="toggleRoleSelection(role.id)"
+              [disabled]="isCurrentLoggedInUser(editingEmployeeId())"
+              class="sr-only" />
+            <span class="role-card-name">{{ role.name }}</span>
+            <span class="role-card-desc">{{ role.description || 'Perfil personalizado' }}</span>
+          </label>
+          }
+        </div>
+        <app-input-error [control]="employeeForm.get('roleIds')"></app-input-error>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" appButton variant="outline" (click)="closeEmployeeModal()" [disabled]="isSaving()">
+          Cancelar
+        </button>
+        <button type="submit" appButton variant="primary" [loading]="isSaving()">
+          {{ editingEmployeeId() ? 'Salvar Alterações' : 'Cadastrar Funcionário' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+
+@if (isRolesModalOpen()) {
+<div class="modal-backdrop">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">Gestão de Cargos e Permissões</h2>
+        <p class="modal-subtitle">Defina permissões por módulo e atribua aos funcionários da cooperativa</p>
+      </div>
+      <button type="button" class="close-btn" (click)="closeRolesModal()">&times;</button>
+    </div>
+
+    <div class="roles-manager-container">
+      <aside class="roles-sidebar">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="sidebar-title">Cargos Existentes</h3>
+          <button appButton variant="outline" (click)="resetRoleForm()">
+            + Novo Cargo
+          </button>
+        </div>
+
+        <div class="roles-list custom-scrollbar">
+          @for (role of roles(); track role.id) {
+          <div class="role-list-item" [class.active]="editingRole()?.id === role.id" (click)="editRole(role)">
+            <div class="role-item-info">
+              <span class="role-item-name">{{ role.name }}</span>
+              <span class="role-item-badges">
+                @if (role.systemRole) {
+                <span class="badge-sys">Sistema</span>
+                }
+                <span class="badge-count">{{ role.permissions.length }} permissões</span>
+              </span>
+            </div>
+            @if (!role.systemRole) {
+            <button type="button" class="role-delete-btn" title="Excluir Cargo"
+              (click)="deleteRole(role); $event.stopPropagation()">
+              &times;
+            </button>
+            }
+          </div>
+          }
+        </div>
+      </aside>
+
+      <main class="roles-editor custom-scrollbar">
+        <form [formGroup]="roleForm" (ngSubmit)="onSaveRole()">
+          <div class="editor-header">
+            <h3 class="text-base font-semibold text-[var(--text-main)]">
+              {{ editingRole() ? 'Editar Cargo: ' + editingRole()?.name : 'Criar Novo Cargo' }}
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+            <div class="form-group">
+              <label class="form-label" for="roleName">Nome do Cargo *</label>
+              <input id="roleName" type="text" formControlName="name" class="form-input"
+                placeholder="Ex: Gestor de Vendas" />
+              <app-input-error [control]="roleForm.get('name')"></app-input-error>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="roleDesc">Descrição</label>
+              <input id="roleDesc" type="text" formControlName="description" class="form-input"
+                placeholder="Ex: Acesso a emissão de vendas e contratos" />
+            </div>
+          </div>
+
+          <div class="permissions-matrix mt-4">
+            <h4 class="matrix-title">Permissões de Acesso por Módulo</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+              @for (group of permissionGroups; track group.module) {
+              <div class="permission-group-card">
+                <h5 class="group-header">{{ group.name }}</h5>
+                <div class="group-body">
+                  @for (perm of group.permissions; track perm.key) {
+                  <label class="permission-item">
+                    <input type="checkbox" [checked]="isPermissionChecked(perm.key)"
+                      (change)="togglePermission(perm.key)" class="perm-checkbox" />
+                    <span class="perm-label">{{ perm.label }}</span>
+                  </label>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="editor-footer mt-6">
+            <button type="submit" appButton variant="primary">
+              {{ editingRole() ? 'Atualizar Cargo' : 'Salvar Novo Cargo' }}
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</div>
+}

@@ -1,9 +1,12 @@
+@if (!isDesktop()) {
+<app-desktop-only-notice featureName="Cadastro de Clientes"></app-desktop-only-notice>
+} @else {
 <div class="flex flex-col w-full h-full min-h-0 overflow-y-auto p-3 sm:p-4 md:py-3 md:px-6 custom-scrollbar">
   <app-page-title [title]="isEditing ? 'Edição de cliente' : 'Cadastro de cliente'" [showBackButton]="true"
     (back)="cancel()">
   </app-page-title>
 
-  <form [formGroup]="masterForm" (ngSubmit)="save()" (submit)="$event.preventDefault()" class="flex flex-col w-full min-h-0">
+  <form [formGroup]="masterForm" (ngSubmit)="save()" (submit)="$event.preventDefault()" class="flex flex-col flex-1 w-full h-full min-h-0">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="masterForm.invalid" [isSubmitting]="isSubmitting" (next)="nextPage()" (back)="backPage()"
       (cancel)="cancel()">
@@ -28,3 +31,4 @@
     </app-stepper-layout>
   </form>
 </div>
+}

@@ -87,7 +87,7 @@
 
 .client-summary-card {
   padding: 0.875rem 1rem;
-  background-color: var(--primary-light);
+  background-color: var(--bg-surface-hover);
   border: 1px solid var(--border-neutral);
   border-radius: var(--radius-card);
 }
@@ -109,7 +109,7 @@
     font-size: 0.8125rem;
 
     thead {
-      background-color: var(--primary-light);
+      background-color: var(--bg-surface-hover);
       position: sticky;
       top: 0;
       z-index: 1;
@@ -152,8 +152,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  background-color: var(--primary-light);
-  border: 1px solid var(--primary-base);
+  background-color: var(--bg-surface-hover);
+  border: 1px solid var(--border-neutral);
   border-radius: var(--radius-card);
 }
 
@@ -166,4 +166,3 @@
   border-top: 1px solid var(--border-neutral);
   background-color: var(--bg-app);
 }
-

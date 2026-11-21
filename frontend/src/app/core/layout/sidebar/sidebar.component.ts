@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   LucideBarcode,
+  LucideBuilding,
   LucideChevronLeft,
   LucideChevronRight,
   LucideDollarSign,
   LucideLayoutDashboard,
   LucideShoppingCart,
   LucideTruck,
+  LucideUserCheck,
   LucideUsers,
   LucideX,
 } from '@lucide/angular';
@@ -30,6 +32,8 @@ import { NavSection } from '../../models/nav-item.model';
     LucideUsers,
     LucideShoppingCart,
     LucideBarcode,
+    LucideBuilding,
+    LucideUserCheck,
     LucideX,
   ],
   templateUrl: './sidebar.component.html',

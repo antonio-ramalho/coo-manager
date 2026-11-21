@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SalesShellComponent } from './pages/sales-shell/sales-shell.component';
+import { permissionGuard } from '../../core/guards/permission.guard';
 
 export const SALES_ROUTES: Routes = [
   {
@@ -10,12 +11,15 @@ export const SALES_ROUTES: Routes = [
         path: '',
         loadComponent: () =>
           import('./pages/sales-page/sales-page.component').then((m) => m.SalesPageComponent),
+        canActivate: [permissionGuard],
+        data: { permission: 'SALES_READ' },
       },
       {
         path: 'cadastro',
         loadComponent: () =>
           import('./pages/new-sale/new-sale.component').then((m) => m.NewSaleComponent),
-        data: { hideSubNav: true },
+        canActivate: [permissionGuard],
+        data: { permission: 'SALES_WRITE', hideSubNav: true },
       },
       {
         path: 'estatisticas',
@@ -23,6 +27,8 @@ export const SALES_ROUTES: Routes = [
           import('./pages/sales-dashboard/sales-dashboard.component').then(
             (m) => m.SalesDashboardComponent,
           ),
+        canActivate: [permissionGuard],
+        data: { permission: 'SALES_READ' },
       },
     ],
   },

@@ -13,6 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
         Optional<User> findByEmail(Email email);
 
+        @Query("SELECT u FROM User u JOIN FETCH u.cooperative WHERE u.email = :email")
+        Optional<User> findByEmailWithCooperative(@Param("email") Email email);
+
         boolean existsByEmail(Email email);
 
         Page<User> findAllByCooperativeId(Long cooperativeId, Pageable pageable);

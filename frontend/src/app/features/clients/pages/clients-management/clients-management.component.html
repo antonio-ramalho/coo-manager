@@ -1,8 +1,6 @@
 <!-- Bloqueio no mobile via diretiva @if: não executa subscrições nem chamadas HTTP -->
 @if (!isDesktop()) {
-<app-desktop-only-notice featureName="Gestão de Clientes">
-  <a appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</a>
-</app-desktop-only-notice>
+<app-desktop-only-notice featureName="Gestão de Clientes"></app-desktop-only-notice>
 } @else {
 <div class="content-interface management-client-container">
   <header class="header-container">

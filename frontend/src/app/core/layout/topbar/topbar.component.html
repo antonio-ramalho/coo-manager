@@ -1,17 +1,14 @@
-<header class="flex justify-between items-center w-full h-18 px-4 md:px-8 bg-white border-b border-(--border-neutral) shrink-0">
+<header
+  class="flex justify-between items-center w-full h-18 px-4 md:px-8 bg-white border-b border-(--border-neutral) shrink-0">
   <div class="flex items-center gap-4 h-full">
-    <!-- Botão Hambúrguer Mobile -->
-    <button
-      type="button"
-      (click)="menuClick.emit()"
+    <button type="button" (click)="menuClick.emit()"
       class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-lg md:hidden focus:outline-none"
-      aria-label="Abrir menu"
-    >
+      aria-label="Abrir menu">
       <svg lucideMenu class="w-6 h-6"></svg>
     </button>
 
     @if (isDesktop && subNavTabs(); as tabs) {
-      <app-sub-nav [tabs]="tabs" class="h-full"></app-sub-nav>
+    <app-sub-nav [tabs]="tabs" class="h-full"></app-sub-nav>
     }
 
     <div class="h-full flex items-center">
@@ -21,18 +18,14 @@
 
   <div class="flex items-center gap-3 sm:gap-6">
     <div class="flex items-center gap-1 sm:gap-2">
-      <button
-        type="button"
+      <button type="button"
         class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none"
-        aria-label="Buscar"
-      >
+        aria-label="Buscar">
         <svg lucideSearch class="w-5 h-5"></svg>
       </button>
-      <button
-        type="button"
+      <button type="button"
         class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none relative"
-        aria-label="Notificações"
-      >
+        aria-label="Notificações">
         <svg lucideBell class="w-5 h-5"></svg>
         <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full"></span>
       </button>
@@ -40,18 +33,66 @@
 
     <div class="w-px h-8 bg-(--border-neutral)"></div>
 
-    <div class="flex items-center gap-3 cursor-pointer group">
-      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-(--bg-surface-hover) border border-(--border-neutral) flex items-center justify-center overflow-hidden">
-        <svg lucideUser class="w-5 h-5 sm:w-6 sm:h-6 text-(--text-aux) mt-0.5 group-hover:text-(--text-main) transition-colors"></svg>
+    <div class="relative">
+      <div
+        class="flex items-center gap-2.5 sm:gap-3 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-all select-none border border-transparent hover:border-[var(--border-neutral)]"
+        (click)="toggleUserMenu()" cdkOverlayOrigin #userMenuTrigger="cdkOverlayOrigin" role="button" tabindex="0"
+        aria-label="Abrir menu do usuário">
+        <div
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex items-center justify-center overflow-hidden shrink-0">
+          <svg lucideUser class="w-5 h-5 text-[var(--text-aux)]"></svg>
+        </div>
+        <div class="hidden sm:flex flex-col text-left">
+          <span class="text-sm font-semibold text-[var(--text-main)] leading-tight">
+            {{ getUserName() }}
+          </span>
+          <span class="text-xs text-[var(--text-aux)] truncate max-w-[130px] leading-tight mt-0.5">
+            {{ getUserRole() }}
+          </span>
+        </div>
+        <svg lucideChevronDown class="w-4 h-4 text-[var(--text-aux)] transition-transform duration-200"
+          [class.rotate-180]="isUserMenuOpen"></svg>
       </div>
-      <div class="hidden sm:flex flex-col">
-        <span class="text-sm font-semibold text-(--text-main) group-hover:text-black transition-colors">
-          {{ user.name }}
-        </span>
-        <span class="text-xs text-(--text-aux)">
-          {{ user.role }}
-        </span>
-      </div>
+
+      @if (isUserMenuOpen) {
+      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="userMenuTrigger"
+        [cdkConnectedOverlayOpen]="isUserMenuOpen" (overlayOutsideClick)="closeUserMenu()"
+        [cdkConnectedOverlayPositions]="overlayPositions">
+        <div
+          class="bg-white shadow-xl rounded-xl border border-[var(--border-neutral)] flex flex-col z-50 min-w-[220px] overflow-hidden py-1.5 text-left">
+
+          <div class="px-4 py-2.5 border-b border-[var(--border-neutral)] bg-[var(--bg-surface-hover)]">
+            <span class="text-[11px] font-medium text-[var(--text-aux)] block uppercase tracking-wider">Conectado
+              como</span>
+            <span class="text-sm font-semibold text-[var(--text-main)] block truncate mt-0.5">{{ getUserName() }}</span>
+            <span class="text-xs text-[var(--text-aux)] block truncate">{{ currentUser()?.email }}</span>
+          </div>
+
+          <button type="button"
+            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer w-full text-left"
+            (click)="navigateTo('/home/funcionarios')">
+            <svg lucideUser class="w-4 h-4 text-[var(--text-aux)] shrink-0"></svg>
+            <span>Meu Perfil</span>
+          </button>
+
+          <button type="button"
+            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer w-full text-left"
+            (click)="navigateTo('/home/cooperativa')">
+            <svg lucideSettings class="w-4 h-4 text-[var(--text-aux)] shrink-0"></svg>
+            <span>Configurações</span>
+          </button>
+
+          <div class="h-px bg-[var(--border-neutral)] my-1"></div>
+
+          <button type="button"
+            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors cursor-pointer w-full text-left"
+            (click)="logout()">
+            <svg lucideLogOut class="w-4 h-4 text-[var(--red-alert)] shrink-0"></svg>
+            <span class="font-medium">Sair da Conta</span>
+          </button>
+        </div>
+      </ng-template>
+      }
     </div>
   </div>
 </header>

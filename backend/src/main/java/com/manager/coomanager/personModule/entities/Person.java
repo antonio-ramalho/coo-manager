@@ -10,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 import com.manager.coomanager.infrastructure.multitenancy.TenantEntity;
 import org.hibernate.annotations.Filter;
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public abstract class Person extends TenantEntity implements Serializable {
+public abstract class Person extends TenantEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;

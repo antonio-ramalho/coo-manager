@@ -8,6 +8,7 @@ import com.manager.coomanager.purchaseModule.dto.inputPurchase.RecentSaleDto;
 import com.manager.coomanager.purchaseModule.services.interfaces.InputPurchaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.net.URI;
@@ -24,12 +25,14 @@ public class InputPurchaseResource {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('SALES_READ')")
     public ResponseEntity<List<InputPurchaseMinDto>> findAllByStatus() {
         List<InputPurchaseMinDto> list = service.findAllByStatus();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/paged")
+    @PreAuthorize("hasAuthority('SALES_READ')")
     public ResponseEntity<Page<InputPurchaseTableDto>> findPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -39,18 +42,21 @@ public class InputPurchaseResource {
     }
 
     @GetMapping(value = "/recent")
+    @PreAuthorize("hasAuthority('SALES_READ')")
     public ResponseEntity<List<RecentSaleDto>> findRecent() {
         List<RecentSaleDto> list = service.findRecentPurchases();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('SALES_READ')")
     public ResponseEntity<InputPurchaseDto> findById(@PathVariable Long id) {
         InputPurchaseDto obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('SALES_WRITE')")
     public ResponseEntity<InputPurchaseDto> insert(@RequestBody InputPurchaseInsertDto dto) {
         InputPurchaseDto newPurchase = service.processPurchase(dto);
         URI uri = ServletUriComponentsBuilder
@@ -60,11 +66,13 @@ public class InputPurchaseResource {
     }
 
     @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('SALES_WRITE')")
     public ResponseEntity<InputPurchaseDto> registerPayment(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.registerPayment(id));
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('SALES_WRITE')")
     public ResponseEntity<Void> cancelPurchase(@PathVariable Long id) {
         service.cancelPurchase(id);
         return ResponseEntity.noContent().build();

@@ -1,8 +1,5 @@
-<!-- Bloqueio no mobile via diretiva @if: não executa subscrições pesadas em telas menores -->
 @if (!isDesktop()) {
-<app-desktop-only-notice featureName="Estoque e Inventário">
-  <a appButton variant="primary" routerLink="/home/insumos/lotes/cadastro">Novo lote</a>
-</app-desktop-only-notice>
+<app-desktop-only-notice featureName="Estoque e Inventário"></app-desktop-only-notice>
 } @else {
 <div class="content-interface inventory-container">
   <header class="header-container">
@@ -31,10 +28,10 @@
 
     <aside class="sidebar-column custom-scrollbar">
       <app-stock-sidebar-widgets [expiringBatches]="(expiringBatches$ | async) ?? []"
-      [expiredBatches]="(expiredBatches$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
-      [selectedExpiredDays]="(expiredDays$ | async) ?? 3" [loadingExpiring]="loadingExpiring"
-      [loadingExpired]="loadingExpired" (expiringDaysChange)="onExpiringDaysChange($event)"
-      (expiredDaysChange)="onExpiredDaysChange($event)"></app-stock-sidebar-widgets>
+        [expiredBatches]="(expiredBatches$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
+        [selectedExpiredDays]="(expiredDays$ | async) ?? 3" [loadingExpiring]="loadingExpiring"
+        [loadingExpired]="loadingExpired" (expiringDaysChange)="onExpiringDaysChange($event)"
+        (expiredDaysChange)="onExpiredDaysChange($event)"></app-stock-sidebar-widgets>
     </aside>
   </div>
 </div>

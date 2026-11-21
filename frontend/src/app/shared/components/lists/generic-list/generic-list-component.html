@@ -1,5 +1,5 @@
-<div class="flex flex-col h-full">
-  <app-search-bar-component class="mb-4 block" [placeholder]="searchPlaceholder"
+<div class="flex flex-col h-full flex-1 min-h-0">
+  <app-search-bar-component class="mb-4 block shrink-0" [placeholder]="searchPlaceholder"
     (modifiedSearch)="searchChanged.emit($event)">
   </app-search-bar-component>
 
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <app-pagination-component [currentPage]="currentPage" [totalItens]="totalItems" [itensPerPage]="10"
-    (swappedPage)="pageChanged.emit($event)">
+  <app-pagination-component class="mt-auto shrink-0" [currentPage]="currentPage" [totalItens]="totalItems"
+    [itensPerPage]="10" (swappedPage)="pageChanged.emit($event)">
   </app-pagination-component>
 </div>

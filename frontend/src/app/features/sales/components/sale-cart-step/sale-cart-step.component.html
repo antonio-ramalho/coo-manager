@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup"
-  class="flex flex-col w-full bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-xs overflow-visible">
+  class="flex flex-col w-full bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-xs overflow-visible min-h-[400px]">
   <div
     class="p-4 border-b border-[var(--border-neutral)] rounded-t-[var(--radius-card)] flex items-center justify-between gap-3 bg-[var(--bg-surface)]">
     <div class="flex items-center gap-2">
@@ -11,13 +11,12 @@
 
     <button type="button" appButton variant="primary" (click)="startAddingItem()" [disabled]="isAddingItem()"
       class="gap-1.5">
-      <svg lucidePlus class="w-4 h-4"></svg>
       <span>Novo item</span>
     </button>
   </div>
 
   @if (itemsArray.length === 0 && !isAddingItem()) {
-  <div class="flex-1 p-10 flex flex-col items-center justify-center text-center">
+  <div class="flex-1 p-10 flex flex-col items-center justify-center text-center min-h-[220px]">
     <div
       class="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)] mb-3">
       <svg lucideShoppingCart class="w-6 h-6"></svg>

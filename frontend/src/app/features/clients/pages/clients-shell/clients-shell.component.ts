@@ -13,6 +13,7 @@ import { SubNavService } from '../../../../core/services/sub-nav.service';
   selector: 'app-clients-shell',
   imports: [RouterOutlet],
   templateUrl: './clients-shell.component.html',
+  styleUrl: './clients-shell.component.scss',
 })
 export class ClientsShellComponent {
   private readonly router = inject(Router);

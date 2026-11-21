@@ -5,6 +5,7 @@ import com.manager.coomanager.userModule.dto.RoleResponseDto;
 import com.manager.coomanager.userModule.services.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/roles")
+@PreAuthorize("hasAuthority('USER_MANAGE')")
 public class RoleResources {
 
     private final RoleService roleService;

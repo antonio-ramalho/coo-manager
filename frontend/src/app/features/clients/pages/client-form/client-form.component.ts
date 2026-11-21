@@ -2,7 +2,9 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map } from 'rxjs';
 
 import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
@@ -10,6 +12,7 @@ import { PersonForm } from '../../../../shared/components/forms/person-form/pers
 import { NaturalPersonFormComponent } from '../../../../shared/components/forms/natural-person-form/natural-person-form-component';
 import { JuridicPersonFormComponent } from '../../../../shared/components/forms/juridic-person-form/juridic-person-form-component';
 import { AddressFormComponent } from '../../../../shared/components/forms/address-form/address-form-component';
+import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedback/desktop-only-notice/desktop-only-notice.component';
 
 import { PersonType } from '../../../../shared/enums/person-type';
 import { ClientApiService } from '../../data/client-api.service';
@@ -32,8 +35,10 @@ import { Client, ClientPayload } from '../../models/client.model';
     NaturalPersonFormComponent,
     JuridicPersonFormComponent,
     AddressFormComponent,
+    DesktopOnlyNoticeComponent,
   ],
   templateUrl: './client-form.component.html',
+  styleUrl: './client-form.component.scss',
 })
 export class ClientFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -42,6 +47,12 @@ export class ClientFormComponent implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isDesktop = toSignal(
+    this.breakpointObserver.observe('(min-width: 768px)').pipe(map((result) => result.matches)),
+    { initialValue: true },
+  );
 
   readonly PersonType = PersonType;
   readonly masterForm: FormGroup = buildClientForm(this.fb);

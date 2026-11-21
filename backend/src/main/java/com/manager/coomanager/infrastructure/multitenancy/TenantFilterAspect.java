@@ -7,11 +7,6 @@ import org.aspectj.lang.annotation.Before;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
-/**
- * Aspecto AOP que ativa automaticamente o filtro 'tenantFilter' do Hibernate
- * para a transação atual sempre que um método de serviço é invocado,
- * utilizando o identificador armazenado no TenantContextHolder.
- */
 @Aspect
 @Component
 public class TenantFilterAspect {
@@ -28,4 +23,3 @@ public class TenantFilterAspect {
         }
     }
 }
-

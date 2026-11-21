@@ -16,7 +16,13 @@ import com.manager.coomanager.userModule.repositories.RoleRepository;
 import com.manager.coomanager.userModule.repositories.UserRepository;
 import com.manager.coomanager.userModule.services.validators.UserCooperativeActiveValidator;
 import com.manager.coomanager.userModule.services.validators.UserEmailUniqueValidator;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.manager.coomanager.infrastructure.security.UserPrincipal;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.*;
@@ -155,6 +161,76 @@ class UserServiceTest {
         assertThat(user.getStatus()).isEqualTo(Status.ACTIVE);
     }
 
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    @DisplayName("Deve impedir que usuário sem USER_MANAGE atualize outro usuário quando autenticado")
+    void shouldPreventNonAdminFromUpdatingOtherUserWhenAuthenticated() {
+        UserRequestDto dto = new UserRequestDto("Outro Usuario", "outro@coop.com", "senhaForte123", 1L, Set.of());
+        UserResponseDto created = service.insert(dto);
+
+        UserPrincipal sellerPrincipal = new UserPrincipal(
+                999L, "Vendedor", "vendedor@coop.com", "senha", 1L, "Coop", Status.ACTIVE,
+                List.of(new SimpleGrantedAuthority("SALES_WRITE"), new SimpleGrantedAuthority("SALES_READ")));
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(sellerPrincipal, null, sellerPrincipal.getAuthorities()));
+
+        UserUpdateDto updateDto = new UserUpdateDto("Tentativa de invasão", "outro@coop.com", null);
+        assertThatThrownBy(() -> service.update(created.id(), updateDto))
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessageContaining("Acesso negado");
+    }
+
+    @Test
+    @DisplayName("Deve impedir que o próprio usuário altere seus cargos (prevenção de auto-escalonamento)")
+    void shouldPreventUserFromChangingOwnRolesWhenAuthenticated() {
+        UserRequestDto dto = new UserRequestDto("Vendedor User", "vendedor@coop.com", "senhaForte123", 1L, Set.of());
+        UserResponseDto created = service.insert(dto);
+
+        // Caso 1: Vendedor comum tenta passar cargos
+        UserPrincipal sellerPrincipal = new UserPrincipal(
+                created.id(), "Vendedor User", "vendedor@coop.com", "senha", 1L, "Coop", Status.ACTIVE,
+                List.of(new SimpleGrantedAuthority("SALES_WRITE")));
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(sellerPrincipal, null, sellerPrincipal.getAuthorities()));
+
+        UserUpdateDto updateDto = new UserUpdateDto("Vendedor User", "vendedor@coop.com", Set.of(10L));
+        assertThatThrownBy(() -> service.update(created.id(), updateDto))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Você não possui permissão para alterar cargos");
+
+        // Caso 2: Usuário com USER_MANAGE tenta alterar seus próprios cargos
+        UserPrincipal adminPrincipal = new UserPrincipal(
+                created.id(), "Admin User", "vendedor@coop.com", "senha", 1L, "Coop", Status.ACTIVE,
+                List.of(new SimpleGrantedAuthority("USER_MANAGE")));
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(adminPrincipal, null, adminPrincipal.getAuthorities()));
+
+        assertThatThrownBy(() -> service.update(created.id(), updateDto))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Não é permitido alterar o próprio cargo");
+    }
+
+    @Test
+    @DisplayName("Deve impedir que o usuário autenticado inative a própria conta")
+    void shouldPreventUserFromDeactivatingOwnAccountWhenAuthenticated() {
+        UserRequestDto dto = new UserRequestDto("Admin User", "admin@coop.com", "senhaForte123", 1L, Set.of());
+        UserResponseDto created = service.insert(dto);
+
+        UserPrincipal adminPrincipal = new UserPrincipal(
+                created.id(), "Admin User", "admin@coop.com", "senha", 1L, "Coop", Status.ACTIVE,
+                List.of(new SimpleGrantedAuthority("USER_MANAGE")));
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(adminPrincipal, null, adminPrincipal.getAuthorities()));
+
+        assertThatThrownBy(() -> service.deactivate(created.id()))
+                .isInstanceOf(DomainException.class)
+                .hasMessageContaining("Não é permitido inativar a própria conta");
+    }
+
     private static class InMemoryUserRepository implements UserRepository {
         private final Map<Long, User> database = new HashMap<>();
         private long seq = 1L;
@@ -164,6 +240,11 @@ class UserServiceTest {
             return database.values().stream()
                     .filter(u -> u.getEmail() != null && u.getEmail().equals(email))
                     .findFirst();
+        }
+
+        @Override
+        public Optional<User> findByEmailWithCooperative(Email email) {
+            return findByEmail(email);
         }
 
         @Override

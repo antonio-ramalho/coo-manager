@@ -2,7 +2,9 @@ package com.manager.coomanager.userModule.services;
 
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.cooperativeModule.repositories.CooperativeRepository;
+import com.manager.coomanager.infrastructure.exceptions.DomainException;
 import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.infrastructure.security.UserPrincipal;
 import com.manager.coomanager.infrastructure.valueObjects.Email;
 import com.manager.coomanager.infrastructure.valueObjects.PasswordHash;
 import com.manager.coomanager.userModule.dto.UserMinDto;
@@ -11,16 +13,21 @@ import com.manager.coomanager.userModule.dto.UserResponseDto;
 import com.manager.coomanager.userModule.dto.UserUpdateDto;
 import com.manager.coomanager.userModule.entities.Role;
 import com.manager.coomanager.userModule.entities.User;
+import com.manager.coomanager.userModule.enums.Permission;
 import com.manager.coomanager.userModule.repositories.RoleRepository;
 import com.manager.coomanager.userModule.repositories.UserRepository;
 import com.manager.coomanager.userModule.services.validators.UserValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -85,6 +92,29 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            boolean hasUserManage = auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals(Permission.USER_MANAGE.name()));
+            Long currentUserId = (auth.getPrincipal() instanceof UserPrincipal p) ? p.getId() : null;
+            boolean isSelfUpdate = Objects.equals(id, currentUserId);
+
+            if (!hasUserManage && !isSelfUpdate) {
+                throw new AccessDeniedException(
+                        "Acesso negado: você não possui permissão para atualizar dados de outro usuário.");
+            }
+
+            if (dto.roleIds() != null) {
+                if (!hasUserManage) {
+                    throw new DomainException("Você não possui permissão para alterar cargos.");
+                }
+                if (isSelfUpdate) {
+                    throw new DomainException(
+                            "Não é permitido alterar o próprio cargo para prevenir auto-escalonamento ou bloqueio acidental.");
+                }
+            }
+        }
+
         if (dto.email() != null && !dto.email().isBlank()) {
             UserRequestDto mockRequest = new UserRequestDto(
                     dto.fullName(),
@@ -113,6 +143,7 @@ public class UserService {
     public void deactivate(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
+        validateNotSelfOperation(id, "inativar");
         user.deactivate();
         userRepository.save(user);
     }
@@ -129,8 +160,18 @@ public class UserService {
     public void suspend(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
+        validateNotSelfOperation(id, "suspender");
         user.suspend();
         userRepository.save(user);
+    }
+
+    private void validateNotSelfOperation(Long targetId, String action) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof UserPrincipal p) {
+            if (Objects.equals(targetId, p.getId())) {
+                throw new DomainException("Não é permitido " + action + " a própria conta.");
+            }
+        }
     }
 
     private void runValidators(UserRequestDto dto, Long targetId) {

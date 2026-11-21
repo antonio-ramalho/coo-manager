@@ -158,6 +158,11 @@ class AuthServiceTest {
         }
 
         @Override
+        public Optional<User> findByEmailWithCooperative(Email email) {
+            return findByEmail(email);
+        }
+
+        @Override
         public boolean existsByEmail(Email email) {
             return findByEmail(email).isPresent();
         }

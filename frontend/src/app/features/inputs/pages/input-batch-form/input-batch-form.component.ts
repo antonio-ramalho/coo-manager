@@ -2,10 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { map, Observable } from 'rxjs';
 import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { BatchFormComponent } from '../../../../shared/components/forms/batch-form/batch-form.component';
+import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedback/desktop-only-notice/desktop-only-notice.component';
 import { InputBatchApiService } from '../../data/input-batch-api.service';
 import { InputProductApiService } from '../../data/input-product-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -25,6 +28,7 @@ import { InputBatch } from '../../models/input-batch.model';
     PageTitleComponent,
     StepperComponent,
     BatchFormComponent,
+    DesktopOnlyNoticeComponent,
   ],
   templateUrl: './input-batch-form.component.html',
   styleUrl: './input-batch-form.component.scss',
@@ -36,6 +40,12 @@ export class InputBatchFormComponent implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isDesktop = toSignal(
+    this.breakpointObserver.observe('(min-width: 768px)').pipe(map((result) => result.matches)),
+    { initialValue: true },
+  );
 
   readonly batchGroup: FormGroup = buildBatchForm(this.fb, true);
   readonly products = signal<InputProductSummary[]>([]);

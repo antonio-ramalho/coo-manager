@@ -1,8 +1,6 @@
 <!-- Bloqueio no mobile via diretiva @if: previne requisições desnecessárias em telas menores -->
 @if (!isDesktop()) {
-<app-desktop-only-notice featureName="Catálogo de Insumos">
-  <a appButton variant="primary" routerLink="/home/insumos/cadastro">Novo insumo</a>
-</app-desktop-only-notice>
+<app-desktop-only-notice featureName="Catálogo de Insumos"></app-desktop-only-notice>
 } @else {
 <div class="content-interface catalog-container">
   <header class="header-container">

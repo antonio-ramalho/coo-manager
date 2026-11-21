@@ -3,7 +3,7 @@
   <app-loading-spinner size="md" message="Carregando dados cadastrais do cliente..."></app-loading-spinner>
 </div>
 } @else if (clientPreview) {
-<div class="flex flex-col gap-5 w-full">
+<div class="flex flex-col gap-5 w-full flex-1">
   <div class="flex items-center justify-between border-b border-[var(--border-neutral)] pb-3">
     <div>
       <span class="text-xs uppercase font-semibold text-[var(--primary-base)] tracking-wider">Cliente Selecionado</span>
@@ -48,7 +48,8 @@
 </div>
 } @else {
 <div class="flex-1 flex flex-col items-center justify-center text-center py-10">
-  <div class="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)] mb-3">
+  <div
+    class="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)] mb-3">
     <svg lucideUserCheck class="w-6 h-6"></svg>
   </div>
   <p class="text-sm font-medium text-[var(--text-main)]">Nenhum cliente selecionado</p>

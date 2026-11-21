@@ -123,6 +123,7 @@ class OAuth2AuthenticationSuccessHandlerTest {
                     .filter(u -> u.getEmail() != null && u.getEmail().equals(email))
                     .findFirst();
         }
+        @Override public Optional<User> findByEmailWithCooperative(Email email) { return findByEmail(email); }
         @Override public boolean existsByEmail(Email email) { return findByEmail(email).isPresent(); }
         @Override public Page<User> findAllByCooperativeId(Long cooperativeId, Pageable pageable) { return Page.empty(); }
         @Override public Optional<User> findByIdAndCooperativeId(Long id, Long cooperativeId) { return Optional.empty(); }

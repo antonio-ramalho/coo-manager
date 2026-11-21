@@ -2,11 +2,14 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map, switchMap } from 'rxjs';
 import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { ProductFormComponent } from '../../../../shared/components/forms/product-form/product-form.component';
 import { BatchFormComponent } from '../../../../shared/components/forms/batch-form/batch-form.component';
+import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedback/desktop-only-notice/desktop-only-notice.component';
 import { InputProductApiService } from '../../data/input-product-api.service';
 import { InputBatchApiService } from '../../data/input-batch-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -27,6 +30,7 @@ import { InputProduct } from '../../models/input-product.model';
     StepperComponent,
     ProductFormComponent,
     BatchFormComponent,
+    DesktopOnlyNoticeComponent,
   ],
   templateUrl: './input-product-form.component.html',
   styleUrl: './input-product-form.component.scss',
@@ -38,6 +42,12 @@ export class InputProductFormComponent implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isDesktop = toSignal(
+    this.breakpointObserver.observe('(min-width: 768px)').pipe(map((result) => result.matches)),
+    { initialValue: true },
+  );
 
   readonly productGroup: FormGroup = buildProductForm(this.fb);
   readonly batchGroup: FormGroup = buildBatchForm(this.fb, false);

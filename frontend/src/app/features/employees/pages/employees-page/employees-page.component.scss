@@ -1,0 +1,446 @@
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+}
+
+.employees-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  gap: var(--space-layout);
+  box-sizing: border-box;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+
+  .header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+  background-color: var(--bg-surface);
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.table-actions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+
+  .search-bar-container {
+    flex: 1;
+    min-width: 240px;
+    max-width: 420px;
+  }
+}
+
+.table-body-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  app-generic-table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+  }
+}
+
+.pagination-container {
+  display: block;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Badges e Status */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--primary-light);
+  color: var(--primary-hover);
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+
+  &.status-active {
+    background-color: #dcfce7;
+    color: #15803d;
+  }
+
+  &.status-inactive {
+    background-color: var(--primary-red-alert);
+    color: var(--red-alert);
+  }
+}
+
+/* Modais de Cadastro e de Cargos */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.modal-dialog {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &.modal-md {
+    max-width: 540px;
+  }
+
+  &.modal-xl {
+    max-width: 980px;
+  }
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-neutral);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.modal-subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-aux);
+  margin-top: 0.125rem;
+}
+
+.close-btn {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-aux);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius-btn);
+
+  &:hover {
+    color: var(--text-main);
+    background-color: var(--bg-surface-hover);
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-neutral);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  transition: border-color 0.15s ease-in-out;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-base);
+  }
+
+  &::placeholder {
+    color: var(--text-aux);
+  }
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+
+.role-checkbox-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  background-color: var(--bg-surface);
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary-base);
+    background-color: var(--bg-surface-hover);
+  }
+
+  &.selected {
+    border-color: var(--primary-base);
+    background-color: var(--primary-light);
+
+    .role-card-name {
+      color: var(--primary-hover);
+      font-weight: 600;
+    }
+  }
+}
+
+.role-card-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.role-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-aux);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roles-manager-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 600px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+.roles-sidebar {
+  border-right: 1px solid var(--border-neutral);
+  padding: 1.25rem;
+  background-color: var(--bg-surface-hover);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.role-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-neutral);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--border-hover);
+  }
+
+  &.active {
+    border-color: var(--primary-base);
+    background-color: var(--primary-light);
+
+    .role-item-name {
+      color: var(--primary-hover);
+      font-weight: 600;
+    }
+  }
+}
+
+.role-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.role-item-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.role-item-badges {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.badge-sys {
+  font-size: 0.6875rem;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-count {
+  font-size: 0.6875rem;
+  color: var(--text-aux);
+}
+
+.role-delete-btn {
+  font-size: 1.25rem;
+  color: var(--text-aux);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--red-alert);
+    background-color: var(--primary-red-alert);
+  }
+}
+
+.roles-editor {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.permission-group-card {
+  border: 1px solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  background-color: var(--bg-surface);
+}
+
+.group-header {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background-color: var(--bg-surface-hover);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border-neutral);
+}
+
+.group-body {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.perm-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--primary-base);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.perm-label {
+  font-size: 0.8125rem;
+  color: var(--text-main);
+}
+
+.matrix-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: flex-end;
+}

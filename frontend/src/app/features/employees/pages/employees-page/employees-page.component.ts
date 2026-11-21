@@ -28,6 +28,7 @@ import { InputErrorComponent } from '../../../../shared/components/forms/input-e
 
 import { ActionMenuComponent } from '../../../../shared/components/ui/action-menu/action-menu.component';
 import { ActionMenuItem } from '../../../../shared/components/ui/action-menu/action-menu-item.model';
+import { BaseModalComponent } from '../../../../shared/components/feedback/base-modal/base-modal.component';
 
 export interface PermissionGroup {
   module: string;
@@ -47,6 +48,7 @@ export interface PermissionGroup {
     ButtonComponent,
     InputErrorComponent,
     ActionMenuComponent,
+    BaseModalComponent,
     DesktopOnlyNoticeComponent,
   ],
   templateUrl: './employees-page.component.html',

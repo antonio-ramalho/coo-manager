@@ -1,6 +1,6 @@
 <div [formGroup]="group" class="grid gap-3.5 md:gap-4 grid-cols-1 md:grid-cols-2">
   <div class="flex flex-col gap-1 md:col-span-2">
-    <label class="txt-label" for="legalName">Nome completo</label>
+    <label class="txt-label" for="legalName">Nome completo <span class="txt-required">*</span></label>
     <input id="legalName" type="text"
       [class.input-error]="group.get('legalName')?.invalid && group.get('legalName')?.touched"
       formControlName="legalName" class="input-base txt-body" placeholder="Nome completo...">
@@ -8,21 +8,21 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-2">
-    <label class="txt-label" for="email">E-mail</label>
+    <label class="txt-label" for="email">E-mail <span class="txt-required">*</span></label>
     <input id="email" type="email" [class.input-error]="group.get('email')?.invalid && group.get('email')?.touched"
       formControlName="email" class="input-base txt-body" placeholder="exemplo@email.com">
     <app-input-error [control]="group.get('email')"></app-input-error>
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-1">
-    <label class="txt-label" for="phone">Nº celular</label>
+    <label class="txt-label" for="phone">Nº celular <span class="txt-required">*</span></label>
     <input id="phone" type="text" [class.input-error]="group.get('phone')?.invalid && group.get('phone')?.touched"
       mask="(00) 00000-0000" formControlName="phone" class="input-base txt-body" placeholder="42987442675">
     <app-input-error [control]="group.get('phone')"></app-input-error>
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-1">
-    <label class="txt-label">Tipo de Cliente</label>
+    <label class="txt-label">Tipo de Cliente <span class="txt-required">*</span></label>
     <div class="flex items-center gap-3 mt-0.5">
       <label
         class="flex items-center gap-2 cursor-pointer py-2 px-3.5 rounded-[var(--radius-btn)] border border-[var(--border-neutral)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] transition-all select-none"

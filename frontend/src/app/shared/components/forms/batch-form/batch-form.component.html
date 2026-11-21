@@ -2,7 +2,7 @@
 
   @if (showProductSelect) {
   <div class="flex flex-col gap-1 md:col-span-12">
-    <label class="txt-label" for="inputProductId">Nome do produto</label>
+    <label class="txt-label" for="inputProductId">Nome do produto <span class="txt-required">*</span></label>
     <app-searchable-select id="inputProductId" formControlName="inputProductId" [options]="products"
       [searchFn]="searchProductsFn" valueKey="id" [labelFormatter]="productLabelFormatter"
       [searchFunction]="productSearchFunction"
@@ -14,7 +14,7 @@
   }
 
   <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
-    <label class="txt-label" for="batchCode">Código do Lote</label>
+    <label class="txt-label" for="batchCode">Código do Lote <span class="txt-required">*</span></label>
     <input class="input-base txt-body" id="batchCode" name="batchCode" type="text" formControlName="batchCode"
       [class.input-error]="group.get('batchCode')?.invalid && group.get('batchCode')?.touched"
       placeholder="Código do lote">
@@ -22,7 +22,7 @@
   </div>
 
   <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
-    <label class="txt-label" for="quantityValue">Quantidade Inicial</label>
+    <label class="txt-label" for="quantityValue">Quantidade Inicial <span class="txt-required">*</span></label>
     <input
       class="input-base txt-body [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       id="quantityValue" name="quantityValue" type="number" step="0.01" min="0" formControlName="quantityValue"
@@ -32,7 +32,7 @@
   </div>
 
   <div class="flex flex-col gap-1" [class.md:col-span-4]="true" [class.col-span-12]="true">
-    <label class="txt-label" for="expirationDate">Data de Validade</label>
+    <label class="txt-label" for="expirationDate">Data de Validade <span class="txt-required">*</span></label>
     <app-date-input
       inputId="expirationDate"
       formControlName="expirationDate"

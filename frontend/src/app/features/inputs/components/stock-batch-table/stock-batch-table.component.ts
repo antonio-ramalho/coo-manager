@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { SearchBarComponent } from '../../../../shared/components/lists/search-bar/search-bar-component';
 import { PaginationComponent } from '../../../../shared/components/lists/generic-pagination/pagination-component';
@@ -21,7 +20,6 @@ import { BatchStatus } from '../../../../shared/enums/batch-status';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     ButtonComponent,
     SearchBarComponent,
     PaginationComponent,
@@ -44,6 +42,7 @@ export class StockBatchTableComponent implements OnInit {
   @Output() edit = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();
   @Output() activate = new EventEmitter<number>();
+  @Output() newBatch = new EventEmitter<void>();
 
   @ViewChild('actionsTemplate', { static: true }) actionsTemplate!: TemplateRef<any>;
 

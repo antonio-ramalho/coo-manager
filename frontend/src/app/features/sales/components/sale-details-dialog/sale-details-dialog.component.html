@@ -1,46 +1,43 @@
-@if (isOpen) {
-<div class="modal-backdrop" (click)="onClose()" role="dialog" aria-modal="true" aria-label="Detalhes da venda">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-    <header class="modal-header">
-      <div class="flex items-center gap-2.5">
-        <div
-          class="w-8 h-8 rounded-full bg-[var(--primary-light)] text-[var(--primary-base)] flex items-center justify-center shrink-0">
-          <svg lucideReceiptText class="w-5 h-5"></svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h3 class="txt-h2 text-lg">
-              @if (sale) {
-              Venda {{ sale.uuid | receiptCode }}
-              } @else {
-              Detalhes da Venda
-              }
-            </h3>
-            @if (sale) {
-            <span class="status-pill" [ngClass]="getStatusBadgeClass(sale.paymentStatus)">
-              {{ sale.paymentStatus | paymentStatus }}
-            </span>
-            }
-          </div>
-          @if (sale) {
-          <p class="text-xs text-[var(--text-aux)] mt-0.5">
-            Registrada em {{ sale.purchaseDate | date:'dd/MM/yyyy' }} • Visualização somente leitura
-          </p>
-          }
-        </div>
-      </div>
+<app-base-modal
+  [isOpen]="isOpen"
+  size="lg"
+  (close)="onClose()"
+  ariaLabel="Detalhes da venda"
+>
+  <div modal-header-icon class="w-8 h-8 rounded-full bg-[var(--primary-light)] text-[var(--primary-base)] flex items-center justify-center shrink-0">
+    <svg lucideReceiptText class="w-5 h-5"></svg>
+  </div>
 
-      <button type="button" class="close-btn" (click)="onClose()" title="Fechar">
-        <svg lucideX class="w-5 h-5"></svg>
-      </button>
-    </header>
+  <div modal-title class="flex items-center gap-2 flex-wrap">
+    <h3 class="txt-h2 text-lg">
+      @if (sale) {
+        Venda {{ sale.uuid | receiptCode }}
+      } @else {
+        Detalhes da Venda
+      }
+    </h3>
+  </div>
 
-    <div class="modal-body custom-scrollbar">
-      @if (loading) {
+  <div modal-header-extra>
+    @if (sale) {
+      <span class="status-pill" [ngClass]="getStatusBadgeClass(sale.paymentStatus)">
+        {{ sale.paymentStatus | paymentStatus }}
+      </span>
+    }
+  </div>
+
+  <div modal-body>
+    @if (sale) {
+      <p class="text-xs text-[var(--text-aux)] -mt-2 mb-4">
+        Registrada em {{ sale.purchaseDate | date:'dd/MM/yyyy' }} • Visualização somente leitura
+      </p>
+    }
+
+    @if (loading) {
       <div class="py-12 flex items-center justify-center">
         <app-loading-spinner size="md" message="Carregando detalhes da venda..."></app-loading-spinner>
       </div>
-      } @else if (sale) {
+    } @else if (sale) {
       <!-- Dados do Cliente -->
       <div class="client-summary-card">
         <div class="flex items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-[var(--border-neutral)]">
@@ -133,18 +130,16 @@
           {{ sale.totalValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
         </span>
       </div>
-      } @else {
+    } @else {
       <div class="py-8 text-center text-sm text-[var(--text-aux)]">
         Não foi possível carregar os detalhes desta venda.
       </div>
-      }
-    </div>
-
-    <footer class="modal-footer">
-      <button type="button" appButton variant="surface" (click)="onClose()">
-        Fechar
-      </button>
-    </footer>
+    }
   </div>
-</div>
-}
+
+  <div modal-footer>
+    <button type="button" appButton variant="surface" (click)="onClose()">
+      Fechar
+    </button>
+  </div>
+</app-base-modal>

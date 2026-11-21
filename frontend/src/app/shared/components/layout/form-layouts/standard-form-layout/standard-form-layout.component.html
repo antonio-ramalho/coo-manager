@@ -1,0 +1,19 @@
+@if (!isDesktop()) {
+  <div class="p-4 sm:p-6 w-full">
+    <app-desktop-only-notice [featureName]="featureName || title"></app-desktop-only-notice>
+  </div>
+} @else {
+  <div class="standard-form-container custom-scrollbar">
+    <app-page-title
+      [title]="title"
+      [showBackButton]="showBackButton"
+      (back)="cancel.emit()"
+    >
+      <ng-content select="[header-actions]"></ng-content>
+    </app-page-title>
+
+    <div class="standard-form-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+}

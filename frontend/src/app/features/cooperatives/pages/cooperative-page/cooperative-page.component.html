@@ -122,13 +122,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="form-group">
-            <label class="form-label">Razão Social</label>
+            <label class="form-label">Razão Social <span class="txt-required">*</span></label>
             <input type="text" formControlName="legalName" class="form-input" />
             <app-input-error [control]="cooperativeForm.get('legalName')" />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Nome Fantasia</label>
+            <label class="form-label">Nome Fantasia <span class="txt-required">*</span></label>
             <input type="text" formControlName="tradeName" class="form-input" />
             <app-input-error [control]="cooperativeForm.get('tradeName')" />
           </div>
@@ -139,19 +139,19 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Inscrição Estadual</label>
+            <label class="form-label">Inscrição Estadual <span class="txt-required">*</span></label>
             <input type="text" formControlName="stateRegistration" class="form-input" placeholder="Dígitos ou ISENTO" />
             <app-input-error [control]="cooperativeForm.get('stateRegistration')" />
           </div>
 
           <div class="form-group">
-            <label class="form-label">E-mail Institucional</label>
+            <label class="form-label">E-mail Institucional <span class="txt-required">*</span></label>
             <input type="email" formControlName="email" class="form-input" />
             <app-input-error [control]="cooperativeForm.get('email')" />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Telefone</label>
+            <label class="form-label">Telefone <span class="txt-required">*</span></label>
             <input type="text" formControlName="phone" class="form-input" />
             <app-input-error [control]="cooperativeForm.get('phone')" />
           </div>
@@ -160,23 +160,23 @@
         <h3 class="card-subtitle mt-6 mb-3">Endereço</h3>
         <div formGroupName="address" class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="form-group md:col-span-2">
-            <label class="form-label">Rua / Logradouro</label>
+            <label class="form-label">Rua / Logradouro <span class="txt-required">*</span></label>
             <input type="text" formControlName="street" class="form-input" />
           </div>
           <div class="form-group">
-            <label class="form-label">Número</label>
+            <label class="form-label">Número <span class="txt-required">*</span></label>
             <input type="text" formControlName="number" class="form-input" />
           </div>
           <div class="form-group">
-            <label class="form-label">Bairro</label>
+            <label class="form-label">Bairro <span class="txt-required">*</span></label>
             <input type="text" formControlName="neighborhood" class="form-input" />
           </div>
           <div class="form-group">
-            <label class="form-label">Cidade</label>
+            <label class="form-label">Cidade <span class="txt-required">*</span></label>
             <input type="text" formControlName="city" class="form-input" />
           </div>
           <div class="form-group">
-            <label class="form-label">Estado (UF)</label>
+            <label class="form-label">Estado (UF) <span class="txt-required">*</span></label>
             <input type="text" formControlName="state" class="form-input" />
           </div>
         </div>

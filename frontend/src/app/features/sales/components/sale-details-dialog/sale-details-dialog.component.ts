@@ -5,10 +5,10 @@ import {
   LucideFileText,
   LucideReceiptText,
   LucideUser,
-  LucideX,
 } from '@lucide/angular';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
+import { BaseModalComponent } from '../../../../shared/components/feedback/base-modal/base-modal.component';
 import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
 import { CpfCnpjPipe } from '../../../../shared/pipes/cpf-cnpj-pipe';
@@ -29,6 +29,7 @@ import { SalesDto } from '../../models/sales-transaction.model';
     DatePipe,
     ButtonComponent,
     LoadingSpinnerComponent,
+    BaseModalComponent,
     MeasureUnitAbbrPipe,
     ReceiptCodePipe,
     CpfCnpjPipe,
@@ -37,7 +38,6 @@ import { SalesDto } from '../../models/sales-transaction.model';
     LucideUser,
     LucideFileText,
     LucideCalendar,
-    LucideX,
   ],
   templateUrl: './sale-details-dialog.component.html',
   styleUrls: ['./sale-details-dialog.component.scss'],

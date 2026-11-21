@@ -22,7 +22,7 @@
         [loading]="loadingBatches" [currentPage]="batchPage.pageable.pageNumber + 1"
         [totalElements]="batchPage.totalElements" (searchChange)="onSearchChange($event)"
         (pageChange)="onPageChange($event)" (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)"
-        (activate)="onActivateBatch($event)"></app-stock-batch-table>
+        (activate)="onActivateBatch($event)" (newBatch)="openNewBatchModal()"></app-stock-batch-table>
       }
     </section>
 
@@ -35,4 +35,31 @@
     </aside>
   </div>
 </div>
+
+<app-base-modal
+  [isOpen]="isBatchModalOpen()"
+  [title]="editingBatchId() ? 'Editar Lote' : 'Cadastrar Novo Lote'"
+  [subtitle]="editingBatchId() ? 'Atualize as informações do lote selecionado' : 'Preencha os dados do lote para dar entrada no inventário de insumos'"
+  size="lg"
+  minHeight="580px"
+  (close)="closeBatchModal()"
+>
+  <div modal-body>
+    <app-batch-form
+      [group]="batchForm"
+      [showProductSelect]="!editingBatchId()"
+      [products]="products()"
+      [searchProductsFn]="searchProductsFn"
+    ></app-batch-form>
+  </div>
+
+  <div modal-footer class="flex items-center justify-end gap-3 w-full">
+    <button type="button" appButton variant="outline" (click)="closeBatchModal()" [disabled]="isSavingBatch()">
+      Cancelar
+    </button>
+    <button type="button" appButton variant="primary" (click)="onSaveBatch()" [loading]="isSavingBatch()">
+      {{ editingBatchId() ? 'Salvar Alterações' : 'Cadastrar Lote' }}
+    </button>
+  </div>
+</app-base-modal>
 }

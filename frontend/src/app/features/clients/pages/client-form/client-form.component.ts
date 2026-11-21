@@ -6,13 +6,12 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs';
 
-import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
+import { StandardFormLayoutComponent } from '../../../../shared/components/layout/form-layouts/standard-form-layout/standard-form-layout.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { PersonForm } from '../../../../shared/components/forms/person-form/person-form-component';
 import { NaturalPersonFormComponent } from '../../../../shared/components/forms/natural-person-form/natural-person-form-component';
 import { JuridicPersonFormComponent } from '../../../../shared/components/forms/juridic-person-form/juridic-person-form-component';
 import { AddressFormComponent } from '../../../../shared/components/forms/address-form/address-form-component';
-import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedback/desktop-only-notice/desktop-only-notice.component';
 
 import { PersonType } from '../../../../shared/enums/person-type';
 import { ClientApiService } from '../../data/client-api.service';
@@ -29,13 +28,12 @@ import { Client, ClientPayload } from '../../models/client.model';
   selector: 'app-client-form',
   imports: [
     ReactiveFormsModule,
-    PageTitleComponent,
+    StandardFormLayoutComponent,
     StepperComponent,
     PersonForm,
     NaturalPersonFormComponent,
     JuridicPersonFormComponent,
     AddressFormComponent,
-    DesktopOnlyNoticeComponent,
   ],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.scss',

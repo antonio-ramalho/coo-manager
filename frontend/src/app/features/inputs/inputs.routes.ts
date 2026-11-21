@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 import { InputsShellComponent } from './pages/inputs-shell/inputs-shell.component';
 import { InputStockComponent } from './pages/input-stock/input-stock.component';
 import { InputCatalogComponent } from './pages/input-catalog/input-catalog.component';
-import { InputProductFormComponent } from './pages/input-product-form/input-product-form.component';
-import { InputBatchFormComponent } from './pages/input-batch-form/input-batch-form.component';
 import { permissionGuard } from '../../core/guards/permission.guard';
 import { Permission } from '../../shared/enums/permission.enum';
 
@@ -25,30 +23,6 @@ export const INPUTS_ROUTES: Routes = [
         component: InputCatalogComponent,
         canActivate: [permissionGuard],
         data: { permission: Permission.INPUT_READ },
-      },
-      {
-        path: 'cadastro',
-        component: InputProductFormComponent,
-        canActivate: [permissionGuard],
-        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
-      },
-      {
-        path: 'editar/:id',
-        component: InputProductFormComponent,
-        canActivate: [permissionGuard],
-        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
-      },
-      {
-        path: 'lotes/cadastro',
-        component: InputBatchFormComponent,
-        canActivate: [permissionGuard],
-        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
-      },
-      {
-        path: 'lotes/editar/:id',
-        component: InputBatchFormComponent,
-        canActivate: [permissionGuard],
-        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
       },
     ],
   },

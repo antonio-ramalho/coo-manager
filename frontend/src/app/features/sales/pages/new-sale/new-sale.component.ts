@@ -12,11 +12,10 @@ import { InputBatchTableItem } from '../../../inputs/models/input-batch.model';
 import { Status } from '../../../../shared/enums/status';
 import { MeasureUnit } from '../../../../shared/enums/measure-unit';
 import { ToastService } from '../../../../core/services/toast.service';
-import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
+import { TransactionalFormLayoutComponent } from '../../../../shared/components/layout/form-layouts/transactional-form-layout/transactional-form-layout.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { SearchableSelectComponent } from '../../../../shared/components/forms/searchable-select/searchable-select.component';
 import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
-import { DesktopOnlyNoticeComponent } from '../../../../shared/components/feedback/desktop-only-notice/desktop-only-notice.component';
 import { formatDocument } from '../../../../shared/utils/document-format';
 import { buildSalesForm, buildSalesItemForm, SalesForm } from '../../forms/sales-form.builder';
 import { SaleClientStepComponent } from '../../components/sale-client-step/sale-client-step.component';
@@ -30,7 +29,7 @@ import { SaleClientPreview, SalesInsertDto } from '../../models/sales-transactio
 
 /**
  * Smart Component para o fluxo transacional de Nova Venda.
- * Segue o padrão de formulários do sistema com PageTitleComponent, StepperComponent
+ * Segue o padrão de formulários do sistema com TransactionalFormLayoutComponent
  * e Dialog de confirmação antes de persistir no backend.
  */
 @Component({
@@ -39,14 +38,13 @@ import { SaleClientPreview, SalesInsertDto } from '../../models/sales-transactio
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    PageTitleComponent,
+    TransactionalFormLayoutComponent,
     StepperComponent,
     SearchableSelectComponent,
     InputErrorComponent,
     SaleClientStepComponent,
     SaleCartStepComponent,
     SaleConfirmationDialogComponent,
-    DesktopOnlyNoticeComponent,
   ],
   templateUrl: './new-sale.component.html',
   styleUrl: './new-sale.component.scss',

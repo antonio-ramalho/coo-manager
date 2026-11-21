@@ -1,0 +1,53 @@
+@if (isOpen) {
+<div class="modal-backdrop" (click)="onBackdropClick()" role="dialog" aria-modal="true"
+  [attr.aria-label]="ariaLabel || title">
+  <div
+    class="modal-card"
+    [ngClass]="getSizeClass()"
+    [style.min-height]="minHeight"
+    [style.height]="height"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="modal-header">
+      <div class="header-content">
+        <ng-content select="[modal-header-icon]">
+          @if (icon) {
+          <div class="default-icon-badge">
+            <ng-container *ngComponentOutlet="icon"></ng-container>
+          </div>
+          }
+        </ng-content>
+
+        <div class="title-container">
+          <div class="title-row">
+            <ng-content select="[modal-title]">
+              <h3 class="modal-title">{{ title }}</h3>
+            </ng-content>
+
+            <ng-content select="[modal-header-extra]"></ng-content>
+          </div>
+
+          @if (subtitle) {
+          <p class="modal-subtitle">{{ subtitle }}</p>
+          }
+        </div>
+      </div>
+
+      @if (showCloseButton) {
+      <button type="button" class="close-btn" (click)="onClose()" title="Fechar" aria-label="Fechar janela">
+        <svg lucideX class="w-5 h-5"></svg>
+      </button>
+      }
+    </header>
+
+    <div class="modal-body custom-scrollbar" [class.no-padding]="noPadding">
+      <ng-content select="[modal-body]"></ng-content>
+      <ng-content></ng-content>
+    </div>
+
+    <div class="modal-footer-wrapper">
+      <ng-content select="[modal-footer]"></ng-content>
+    </div>
+  </div>
+</div>
+}

@@ -5,7 +5,7 @@
 <div class="content-interface catalog-container">
   <header class="header-container">
     <h1 class="txt-h1">Catálogo</h1>
-    <button type="button" appButton variant="primary" routerLink="/home/insumos/cadastro">Novo insumo</button>
+    <button type="button" appButton variant="primary" (click)="openProductModal()">Novo insumo</button>
   </header>
 
   <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
@@ -38,4 +38,26 @@
     </main>
   </div>
 </div>
+
+<app-base-modal
+  [isOpen]="isProductModalOpen()"
+  [title]="editingProductId() ? 'Editar Insumo' : 'Cadastrar Novo Insumo'"
+  [subtitle]="editingProductId() ? 'Atualize as informações do produto no catálogo' : 'Preencha as informações básicas para adicionar um produto ao catálogo'"
+  size="lg"
+  minHeight="580px"
+  (close)="closeProductModal()"
+>
+  <div modal-body>
+    <app-product-form [group]="productForm"></app-product-form>
+  </div>
+
+  <div modal-footer class="flex items-center justify-end gap-3 w-full">
+    <button type="button" appButton variant="outline" (click)="closeProductModal()" [disabled]="isSavingProduct()">
+      Cancelar
+    </button>
+    <button type="button" appButton variant="primary" (click)="onSaveProduct()" [loading]="isSavingProduct()">
+      {{ editingProductId() ? 'Salvar Alterações' : 'Cadastrar Insumo' }}
+    </button>
+  </div>
+</app-base-modal>
 }

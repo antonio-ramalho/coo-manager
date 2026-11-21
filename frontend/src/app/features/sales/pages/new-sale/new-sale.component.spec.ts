@@ -1,10 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+
+registerLocaleData(localePt);
 import { NewSaleComponent } from './new-sale.component';
 import { ClientApiService } from '../../../clients/data/client-api.service';
 import { InputBatchApiService } from '../../../inputs/data/input-batch-api.service';

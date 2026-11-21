@@ -70,6 +70,12 @@ body {
   color: var(--text-aux);
 }
 
+.txt-required {
+  color: var(--red-alert);
+  font-weight: 700;
+  margin-left: 0.125rem;
+}
+
 .txt-aux {
   @apply text-sm font-normal;
   color: var(--text-aux);

@@ -34,65 +34,38 @@
     <div class="w-px h-8 bg-(--border-neutral)"></div>
 
     <div class="relative">
-      <div
-        class="flex items-center gap-2.5 sm:gap-3 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-all select-none border border-transparent hover:border-[var(--border-neutral)]"
-        (click)="toggleUserMenu()" cdkOverlayOrigin #userMenuTrigger="cdkOverlayOrigin" role="button" tabindex="0"
-        aria-label="Abrir menu do usuário">
+      <app-action-menu
+        [items]="getUserMenuItems()"
+        minWidth="220px"
+        placement="bottom-right"
+        triggerAriaLabel="Abrir menu do usuário"
+      >
         <div
-          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex items-center justify-center overflow-hidden shrink-0">
-          <svg lucideUser class="w-5 h-5 text-[var(--text-aux)]"></svg>
-        </div>
-        <div class="hidden sm:flex flex-col text-left">
-          <span class="text-sm font-semibold text-[var(--text-main)] leading-tight">
-            {{ getUserName() }}
-          </span>
-          <span class="text-xs text-[var(--text-aux)] truncate max-w-[130px] leading-tight mt-0.5">
-            {{ getUserRole() }}
-          </span>
-        </div>
-        <svg lucideChevronDown class="w-4 h-4 text-[var(--text-aux)] transition-transform duration-200"
-          [class.rotate-180]="isUserMenuOpen"></svg>
-      </div>
-
-      @if (isUserMenuOpen) {
-      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="userMenuTrigger"
-        [cdkConnectedOverlayOpen]="isUserMenuOpen" (overlayOutsideClick)="closeUserMenu()"
-        [cdkConnectedOverlayPositions]="overlayPositions">
-        <div
-          class="bg-white shadow-xl rounded-xl border border-[var(--border-neutral)] flex flex-col z-50 min-w-[220px] overflow-hidden py-1.5 text-left">
-
-          <div class="px-4 py-2.5 border-b border-[var(--border-neutral)] bg-[var(--bg-surface-hover)]">
-            <span class="text-[11px] font-medium text-[var(--text-aux)] block uppercase tracking-wider">Conectado
-              como</span>
-            <span class="text-sm font-semibold text-[var(--text-main)] block truncate mt-0.5">{{ getUserName() }}</span>
-            <span class="text-xs text-[var(--text-aux)] block truncate">{{ currentUser()?.email }}</span>
+          menu-trigger
+          class="flex items-center gap-2.5 sm:gap-3 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-all select-none border border-transparent hover:border-[var(--border-neutral)]"
+        >
+          <div
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex items-center justify-center overflow-hidden shrink-0"
+          >
+            <svg lucideUser class="w-5 h-5 text-[var(--text-aux)]"></svg>
           </div>
-
-          <button type="button"
-            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer w-full text-left"
-            (click)="navigateTo('/home/funcionarios')">
-            <svg lucideUser class="w-4 h-4 text-[var(--text-aux)] shrink-0"></svg>
-            <span>Meu Perfil</span>
-          </button>
-
-          <button type="button"
-            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer w-full text-left"
-            (click)="navigateTo('/home/cooperativa')">
-            <svg lucideSettings class="w-4 h-4 text-[var(--text-aux)] shrink-0"></svg>
-            <span>Configurações</span>
-          </button>
-
-          <div class="h-px bg-[var(--border-neutral)] my-1"></div>
-
-          <button type="button"
-            class="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors cursor-pointer w-full text-left"
-            (click)="logout()">
-            <svg lucideLogOut class="w-4 h-4 text-[var(--red-alert)] shrink-0"></svg>
-            <span class="font-medium">Sair da Conta</span>
-          </button>
+          <div class="hidden sm:flex flex-col text-left">
+            <span class="text-sm font-semibold text-[var(--text-main)] leading-tight">
+              {{ getUserName() }}
+            </span>
+            <span class="text-xs text-[var(--text-aux)] truncate max-w-[130px] leading-tight mt-0.5">
+              {{ getUserRole() }}
+            </span>
+          </div>
+          <svg lucideChevronDown class="w-4 h-4 text-[var(--text-aux)] transition-transform duration-200"></svg>
         </div>
-      </ng-template>
-      }
+
+        <div menu-header class="px-4 py-2.5 border-b border-[var(--border-neutral)] bg-[var(--bg-surface-hover)]">
+          <span class="text-[11px] font-medium text-[var(--text-aux)] block uppercase tracking-wider">Conectado como</span>
+          <span class="text-sm font-semibold text-[var(--text-main)] block truncate mt-0.5">{{ getUserName() }}</span>
+          <span class="text-xs text-[var(--text-aux)] block truncate">{{ currentUser()?.email }}</span>
+        </div>
+      </app-action-menu>
     </div>
   </div>
 </header>

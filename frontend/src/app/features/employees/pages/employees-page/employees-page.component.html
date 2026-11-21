@@ -53,45 +53,11 @@
 </ng-template>
 
 <ng-template #actionsTpl let-row>
-  <div class="relative flex items-center justify-center">
-    <button
-      class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none p-1.5 rounded transition-colors inline-flex items-center justify-center cursor-pointer"
-      (click)="toggleMenu(row.id, $event)" cdkOverlayOrigin #trigger="cdkOverlayOrigin" title="Ações do funcionário"
-      type="button">
-      <svg lucideEllipsis class="w-5 h-5"></svg>
-    </button>
-
-    @if (openMenuRowId === row.id) {
-    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="openMenuRowId === row.id" (overlayOutsideClick)="closeMenu()"
-      [cdkConnectedOverlayPositions]="overlayPositions">
-      <div
-        class="bg-white shadow-lg rounded border border-gray-200 flex flex-col z-50 min-w-[150px] overflow-hidden py-1 text-left">
-        <button type="button"
-          class="px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors text-(--text-main) cursor-pointer"
-          (click)="onEditEmployeeAction(row, $event)">
-          Editar
-        </button>
-
-        @if (canManageUsers() && !isCurrentLoggedInUser(row.id)) {
-        @if (row.status === 'ACTIVE') {
-        <button type="button"
-          class="px-4 py-2 text-sm text-left text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors border-t border-gray-100 cursor-pointer"
-          (click)="onToggleEmployeeStatusAction(row, $event)">
-          Desativar
-        </button>
-        } @else {
-        <button type="button"
-          class="px-4 py-2 text-sm text-left text-[var(--primary-base)] hover:bg-[var(--primary-light)] transition-colors border-t border-gray-100 cursor-pointer"
-          (click)="onToggleEmployeeStatusAction(row, $event)">
-          Ativar
-        </button>
-        }
-        }
-      </div>
-    </ng-template>
-    }
-  </div>
+  <app-action-menu
+    [items]="getEmployeeActions(row)"
+    triggerTitle="Ações do funcionário"
+    triggerAriaLabel="Abrir opções do funcionário"
+  ></app-action-menu>
 </ng-template>
 
 @if (isEmployeeModalOpen()) {

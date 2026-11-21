@@ -1,3 +1,5 @@
+import { Permission } from '../../shared/enums/permission.enum';
+
 export interface NavItem {
   label: string;
   route: string;
@@ -10,8 +12,8 @@ export interface NavItem {
   | 'inputs'
   | 'cooperative'
   | 'employees';
-  permission?: string;
-  permissions?: string[];
+  permission?: Permission | string;
+  permissions?: (Permission | string)[];
 }
 
 export interface NavSection {

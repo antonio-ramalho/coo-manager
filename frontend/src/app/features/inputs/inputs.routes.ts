@@ -5,6 +5,7 @@ import { InputCatalogComponent } from './pages/input-catalog/input-catalog.compo
 import { InputProductFormComponent } from './pages/input-product-form/input-product-form.component';
 import { InputBatchFormComponent } from './pages/input-batch-form/input-batch-form.component';
 import { permissionGuard } from '../../core/guards/permission.guard';
+import { Permission } from '../../shared/enums/permission.enum';
 
 export const INPUTS_ROUTES: Routes = [
   {
@@ -16,38 +17,38 @@ export const INPUTS_ROUTES: Routes = [
         path: 'estoque',
         component: InputStockComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_READ' },
+        data: { permission: Permission.INPUT_READ },
       },
       { path: 'insumos-estoque', redirectTo: 'estoque', pathMatch: 'full' },
       {
         path: 'catalogo',
         component: InputCatalogComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_READ' },
+        data: { permission: Permission.INPUT_READ },
       },
       {
         path: 'cadastro',
         component: InputProductFormComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_WRITE', hideSubNav: true },
+        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
       },
       {
         path: 'editar/:id',
         component: InputProductFormComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_WRITE', hideSubNav: true },
+        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
       },
       {
         path: 'lotes/cadastro',
         component: InputBatchFormComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_WRITE', hideSubNav: true },
+        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
       },
       {
         path: 'lotes/editar/:id',
         component: InputBatchFormComponent,
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_WRITE', hideSubNav: true },
+        data: { permission: Permission.INPUT_WRITE, hideSubNav: true },
       },
     ],
   },

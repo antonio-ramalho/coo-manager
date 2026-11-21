@@ -1,16 +1,15 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import {
   LucideBell,
   LucideChevronDown,
-  LucideLogOut,
   LucideMenu,
   LucideSearch,
-  LucideSettings,
   LucideUser,
 } from '@lucide/angular';
 import { SubNavComponent } from '../../../shared/components/layout/sub-nav/sub-nav.component';
+import { ActionMenuComponent } from '../../../shared/components/ui/action-menu/action-menu.component';
+import { ActionMenuItem } from '../../../shared/components/ui/action-menu/action-menu-item.model';
 import { SubNavService } from '../../services/sub-nav.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -26,16 +25,15 @@ export interface CurrentUser {
  */
 @Component({
   selector: 'app-topbar',
+  standalone: true,
   imports: [
     LucideMenu,
     LucideSearch,
     LucideBell,
     LucideUser,
-    LucideSettings,
     LucideChevronDown,
-    LucideLogOut,
-    OverlayModule,
     SubNavComponent,
+    ActionMenuComponent,
   ],
   templateUrl: './topbar.component.html',
 })
@@ -56,35 +54,26 @@ export class TopbarComponent {
 
   @Output() menuClick = new EventEmitter<void>();
 
-  isUserMenuOpen = false;
-
-  readonly overlayPositions: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetY: 8,
-    },
-    {
-      originX: 'start',
-      originY: 'bottom',
-      overlayX: 'start',
-      overlayY: 'top',
-      offsetY: 8,
-    },
-  ];
-
-  toggleUserMenu(): void {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
-
-  closeUserMenu(): void {
-    this.isUserMenuOpen = false;
+  getUserMenuItems(): ActionMenuItem[] {
+    return [
+      {
+        label: 'Meu Perfil',
+        action: () => this.navigateTo('/home/funcionarios'),
+      },
+      {
+        label: 'Configurações',
+        action: () => this.navigateTo('/home/cooperativa'),
+      },
+      {
+        label: 'Sair da Conta',
+        danger: true,
+        dividerAbove: true,
+        action: () => this.logout(),
+      },
+    ];
   }
 
   navigateTo(route: string): void {
-    this.closeUserMenu();
     this.router.navigate([route]);
   }
 
@@ -101,7 +90,6 @@ export class TopbarComponent {
   }
 
   logout(): void {
-    this.closeUserMenu();
     this.authService.logout();
     this.router.navigate(['/login']);
   }

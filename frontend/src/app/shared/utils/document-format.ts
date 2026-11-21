@@ -1,10 +1,6 @@
 const CPF_LENGTH = 11;
 const CNPJ_LENGTH = 14;
 
-/**
- * Formata um CPF (000.000.000-00) ou CNPJ (00.000.000/0000-00) conforme a quantidade de dígitos.
- * Valores com tamanho inesperado são devolvidos sem alteração.
- */
 export function formatDocument(value: string | null | undefined): string {
   if (!value) return '';
 

@@ -26,6 +26,9 @@ import { SearchBarComponent } from '../../../../shared/components/lists/search-b
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
 
+import { ActionMenuComponent } from '../../../../shared/components/ui/action-menu/action-menu.component';
+import { ActionMenuItem } from '../../../../shared/components/ui/action-menu/action-menu-item.model';
+
 export interface PermissionGroup {
   module: string;
   name: string;
@@ -43,8 +46,7 @@ export interface PermissionGroup {
     SearchBarComponent,
     ButtonComponent,
     InputErrorComponent,
-    OverlayModule,
-    LucideEllipsis,
+    ActionMenuComponent,
     DesktopOnlyNoticeComponent,
   ],
   templateUrl: './employees-page.component.html',
@@ -87,23 +89,34 @@ export class EmployeesPageComponent implements OnInit {
   readonly pageSize = 10;
   readonly searchTerm = signal<string>('');
 
-  openMenuRowId: number | null = null;
-  readonly overlayPositions: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetY: 4,
-    },
-    {
-      originX: 'end',
-      originY: 'top',
-      overlayX: 'end',
-      overlayY: 'bottom',
-      offsetY: -4,
-    },
-  ];
+  getEmployeeActions(emp: EmployeeMin): ActionMenuItem[] {
+    const actions: ActionMenuItem[] = [
+      {
+        label: 'Editar',
+        action: () => this.openEditEmployeeModal(emp),
+      },
+    ];
+
+    if (this.canManageUsers() && !this.isCurrentLoggedInUser(emp.id)) {
+      if (emp.status === 'ACTIVE') {
+        actions.push({
+          label: 'Desativar',
+          danger: true,
+          dividerAbove: true,
+          action: () => this.toggleEmployeeStatus(emp),
+        });
+      } else {
+        actions.push({
+          label: 'Ativar',
+          success: true,
+          dividerAbove: true,
+          action: () => this.toggleEmployeeStatus(emp),
+        });
+      }
+    }
+
+    return actions;
+  }
 
   constructor() {
     this.subNavService.setTabs(this.tabs);
@@ -461,26 +474,5 @@ export class EmployeesPageComponent implements OnInit {
         },
       });
     }
-  }
-
-  toggleMenu(rowId: number, event: MouseEvent): void {
-    event.stopPropagation();
-    this.openMenuRowId = this.openMenuRowId === rowId ? null : rowId;
-  }
-
-  closeMenu(): void {
-    this.openMenuRowId = null;
-  }
-
-  onEditEmployeeAction(emp: EmployeeMin, event: MouseEvent): void {
-    event.stopPropagation();
-    this.closeMenu();
-    this.openEditEmployeeModal(emp);
-  }
-
-  onToggleEmployeeStatusAction(emp: EmployeeMin, event: MouseEvent): void {
-    event.stopPropagation();
-    this.closeMenu();
-    this.toggleEmployeeStatus(emp);
   }
 }

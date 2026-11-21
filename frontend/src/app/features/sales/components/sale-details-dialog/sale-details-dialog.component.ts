@@ -11,7 +11,9 @@ import { ButtonComponent } from '../../../../shared/components/ui/button/button-
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
 import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
-import { formatDocument } from '../../../../shared/utils/document-format';
+import { CpfCnpjPipe } from '../../../../shared/pipes/cpf-cnpj-pipe';
+import { PaymentStatusPipe } from '../../../../shared/pipes/payment-status.pipe';
+import { PaymentStatus, PAYMENT_STATUS_CLASSES } from '../../../../shared/enums/payment-status.enum';
 import { SalesDto } from '../../models/sales-transaction.model';
 
 /**
@@ -29,6 +31,8 @@ import { SalesDto } from '../../models/sales-transaction.model';
     LoadingSpinnerComponent,
     MeasureUnitAbbrPipe,
     ReceiptCodePipe,
+    CpfCnpjPipe,
+    PaymentStatusPipe,
     LucideReceiptText,
     LucideUser,
     LucideFileText,
@@ -45,21 +49,9 @@ export class SaleDetailsDialogComponent {
 
   @Output() close = new EventEmitter<void>();
 
-  formatDoc(doc: string | null | undefined): string {
-    return doc ? formatDocument(doc) : 'Não informado';
-  }
-
-  getStatusBadgeClass(status: string): string {
-    switch (status) {
-      case 'PAID':
-        return 'status-paid';
-      case 'PENDING':
-        return 'status-pending';
-      case 'CANCELED':
-        return 'status-canceled';
-      default:
-        return 'status-neutral';
-    }
+  getStatusBadgeClass(status: PaymentStatus | string): string {
+    const normalized = (typeof status === 'string' ? status.toUpperCase() : status) as PaymentStatus;
+    return PAYMENT_STATUS_CLASSES[normalized] || 'status-neutral';
   }
 
   onClose(): void {

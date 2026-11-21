@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './core/layout/admin-layout/admin-layout.component';
 import { authGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
+import { Permission } from './shared/enums/permission.enum';
 
 export const routes: Routes = [
   {
@@ -31,14 +32,14 @@ export const routes: Routes = [
             (m) => m.LogisticsPageComponent,
           ),
         canActivate: [permissionGuard],
-        data: { permission: 'LOGISTICS_READ' },
+        data: { permission: Permission.LOGISTICS_READ },
       },
       {
         path: 'vendas',
         loadChildren: () =>
           import('./features/sales/sales.routes').then((m) => m.SALES_ROUTES),
         canActivate: [permissionGuard],
-        data: { permission: 'SALES_READ' },
+        data: { permission: Permission.SALES_READ },
       },
       {
         path: 'financeiro',
@@ -47,21 +48,21 @@ export const routes: Routes = [
             (m) => m.FinancialPageComponent,
           ),
         canActivate: [permissionGuard],
-        data: { permission: 'FINANCIAL_READ' },
+        data: { permission: Permission.FINANCIAL_READ },
       },
       {
         path: 'clientes',
         loadChildren: () =>
           import('./features/clients/clients.routes').then((m) => m.CLIENTS_ROUTES),
         canActivate: [permissionGuard],
-        data: { permission: 'CLIENT_READ' },
+        data: { permission: Permission.CLIENT_READ },
       },
       {
         path: 'insumos',
         loadChildren: () =>
           import('./features/inputs/inputs.routes').then((m) => m.INPUTS_ROUTES),
         canActivate: [permissionGuard],
-        data: { permission: 'INPUT_READ' },
+        data: { permission: Permission.INPUT_READ },
       },
       {
         path: 'cooperativa',
@@ -70,7 +71,7 @@ export const routes: Routes = [
             './features/cooperatives/pages/cooperative-page/cooperative-page.component'
           ).then((m) => m.CooperativePageComponent),
         canActivate: [permissionGuard],
-        data: { permission: 'COOPERATIVE_READ' },
+        data: { permission: Permission.COOPERATIVE_READ },
       },
       {
         path: 'funcionarios',
@@ -79,7 +80,7 @@ export const routes: Routes = [
             './features/employees/pages/employees-page/employees-page.component'
           ).then((m) => m.EmployeesPageComponent),
         canActivate: [permissionGuard],
-        data: { permission: 'USER_MANAGE' },
+        data: { permission: Permission.USER_MANAGE },
       },
     ],
   },

@@ -18,7 +18,7 @@
             </h3>
             @if (sale) {
             <span class="status-pill" [ngClass]="getStatusBadgeClass(sale.paymentStatus)">
-              {{ sale.paymentStatusDescription }}
+              {{ sale.paymentStatus | paymentStatus }}
             </span>
             }
           </div>
@@ -70,7 +70,7 @@
               <svg lucideFileText class="w-3 h-3"></svg> CPF / CNPJ
             </span>
             <span class="text-sm font-semibold text-[var(--text-main)] font-mono">
-              {{ formatDoc(sale.clientDocument) }}
+              {{ (sale.clientDocument | cpfCnpj) || 'Não informado' }}
             </span>
           </div>
 

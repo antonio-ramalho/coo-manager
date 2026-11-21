@@ -12,52 +12,13 @@
     </div>
 
     <div class="flex flex-col items-center justify-between">
-      <button
-        class="text-(--text-aux) hover:text-(--primary-base) focus:outline-none text-2xl mb-1"
-        (click)="toggleMenu($event)"
-        cdkOverlayOrigin
-        #trigger="cdkOverlayOrigin"
-      >
-        <svg lucideEllipsis class="w-7 h-7"></svg>
-      </button>
-
-      @if (isMenuOpen) {
-        <ng-template
-          cdkConnectedOverlay
-          [cdkConnectedOverlayOrigin]="trigger"
-          [cdkConnectedOverlayOpen]="isMenuOpen"
-          (overlayOutsideClick)="isMenuOpen = false"
-          [cdkConnectedOverlayOffsetY]="8"
-        >
-          <div
-            class="bg-white shadow-lg rounded border border-gray-200 flex flex-col z-10 min-w-[120px] overflow-hidden"
-          >
-            <button
-              class="px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors"
-              (click)="onEdit($event)"
-            >
-              Editar
-            </button>
-
-            @if (status) {
-              <button
-                class="px-4 py-2 text-sm text-left text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors border-t border-gray-100"
-                (click)="onDeactivate($event)"
-              >
-                Desativar
-              </button>
-            }
-            @else {
-              <button
-                class="px-4 py-2 text-sm text-left text-[var(--primary-base)] hover:bg-[var(--primary-light)] transition-colors border-t border-gray-100"
-                (click)="onActivate($event)"
-              >
-                Ativar
-              </button>
-            }
-          </div>
-        </ng-template>
-      }
+      <div (click)="$event.stopPropagation()">
+        <app-action-menu
+          [items]="getMenuItems()"
+          triggerTitle="Opções"
+          triggerAriaLabel="Abrir opções do item"
+        ></app-action-menu>
+      </div>
 
       <button
         appButton

@@ -1,6 +1,6 @@
 <div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-6">
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="zipCode">CEP</label>
+    <label class="txt-label" for="zipCode">CEP <span class="txt-required">*</span></label>
     <input
       id="zipCode"
       type="text"
@@ -13,7 +13,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-8">
-    <label class="txt-label" for="city">Cidade</label>
+    <label class="txt-label" for="city">Cidade <span class="txt-required">*</span></label>
     <input
       id="city"
       type="text"
@@ -25,7 +25,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="neighborhood">Bairro</label>
+    <label class="txt-label" for="neighborhood">Bairro <span class="txt-required">*</span></label>
     <input
       id="neighborhood"
       type="text"
@@ -37,7 +37,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-8">
-    <label class="txt-label" for="street">Logradouro</label>
+    <label class="txt-label" for="street">Logradouro <span class="txt-required">*</span></label>
     <input
       id="street"
       type="text"
@@ -49,7 +49,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-8">
-    <label class="txt-label" for="state">Estado</label>
+    <label class="txt-label" for="state">Estado <span class="txt-required">*</span></label>
     <select
       id="state"
       formControlName="state"

@@ -20,17 +20,17 @@
   }
 
   <!-- Header da Logo -->
-  <div class="h-18 flex items-center justify-between pl-6 pr-4 shrink-0 whitespace-nowrap overflow-hidden">
-    <div class="flex items-center">
-      <div class="w-8 h-8 bg-(--primary-hover) rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0">
+  <div class="sidebar-logo-header">
+    <div class="logo-wrapper">
+      <div class="logo-badge">
         Lg
       </div>
       <span
-        class="text-xl font-bold text-(--text-main) ml-4 transition-opacity duration-300"
+        class="logo-name"
         [class.opacity-0]="collapsed && !isMobile"
         [class.opacity-100]="!collapsed || isMobile"
       >
-        CooManager
+        {{ appConfig.name }}
       </span>
     </div>
 
@@ -38,10 +38,10 @@
       <button
         type="button"
         (click)="closeMobile.emit()"
-        class="p-2 text-(--text-aux) hover:text-(--text-main) rounded-lg"
+        class="btn-close-mobile"
         aria-label="Fechar menu"
       >
-        <svg lucideX class="h-5 w-5"></svg>
+        <svg lucideX class="close-icon"></svg>
       </button>
     }
   </div>
@@ -80,6 +80,8 @@
                     @case ('clients') { <svg lucideUsers class="w-5 h-5"></svg> }
                     @case ('sales') { <svg lucideShoppingCart class="w-5 h-5"></svg> }
                     @case ('inputs') { <svg lucideBarcode class="w-5 h-5"></svg> }
+                    @case ('cooperative') { <svg lucideBuilding class="w-5 h-5"></svg> }
+                    @case ('employees') { <svg lucideUserCheck class="w-5 h-5"></svg> }
                   }
                 </div>
                 <span

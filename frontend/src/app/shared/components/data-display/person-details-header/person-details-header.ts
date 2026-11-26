@@ -4,12 +4,17 @@ import { CpfCnpjPipe } from '../../../pipes/cpf-cnpj-pipe';
 import { ButtonComponent } from '../../ui/button/button-component';
 import { LucideMessageCircle, LucideSquarePen } from '@lucide/angular';
 
+import { Status } from '../../../enums/status';
+
 @Component({
   selector: 'app-person-details-header',
   imports: [StatusPipe, CpfCnpjPipe, ButtonComponent, LucideMessageCircle, LucideSquarePen],
   templateUrl: './person-details-header.html',
+  styleUrl: './person-details-header.scss',
 })
 export class PersonDetailsHeaderComponent {
+  readonly Status = Status;
+
   @Input() id!: number;
   @Input() name!: string;
   @Input() documentNumber!: string;

@@ -1,0 +1,20 @@
+@if (!isDesktop()) {
+  <div class="p-4 sm:p-6 w-full">
+    <app-desktop-only-notice [featureName]="featureName || title"></app-desktop-only-notice>
+  </div>
+} @else {
+  <div class="transactional-form-container custom-scrollbar">
+    <div class="transactional-header-sticky">
+      <app-page-title
+        [title]="title"
+        [showBackButton]="true"
+        (back)="cancel.emit()"
+        class="shrink-0 pt-3 md:pt-4 mb-2 block"
+      ></app-page-title>
+    </div>
+
+    <div class="transactional-form-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+}

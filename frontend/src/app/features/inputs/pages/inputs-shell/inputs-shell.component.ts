@@ -13,6 +13,7 @@ import { SubNavService } from '../../../../core/services/sub-nav.service';
   selector: 'app-inputs-shell',
   imports: [RouterOutlet],
   templateUrl: './inputs-shell.component.html',
+  styleUrl: './inputs-shell.component.scss',
 })
 export class InputsShellComponent {
   private readonly router = inject(Router);

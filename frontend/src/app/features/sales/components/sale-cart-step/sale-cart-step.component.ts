@@ -4,7 +4,6 @@ import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {
   LucidePackage,
-  LucidePlus,
   LucideShoppingCart,
   LucideTrash2,
   LucideX,
@@ -31,7 +30,6 @@ import { SalesForm, SalesItemForm } from '../../forms/sales-form.builder';
     MeasureUnitAbbrPipe,
     LucideShoppingCart,
     LucidePackage,
-    LucidePlus,
     LucideTrash2,
     LucideX,
   ],

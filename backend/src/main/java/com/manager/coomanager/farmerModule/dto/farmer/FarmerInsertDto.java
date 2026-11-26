@@ -1,0 +1,17 @@
+package com.manager.coomanager.farmerModule.dto.farmer;
+
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
+
+import java.time.LocalDate;
+
+public record FarmerInsertDto(
+        String name,
+        String cpfNumber,
+        LocalDate birthDate,
+        String phoneNumber,
+        String addressEmail,
+        AddressDto address,
+        Long cafId,
+        Long certificateId,
+        String gender
+) {}

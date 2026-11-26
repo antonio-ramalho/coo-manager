@@ -1,6 +1,6 @@
 package com.manager.coomanager.purchaseModule.services.validator;
 
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.purchaseModule.dto.inputBatch.InputBatchInsertDto;
 import org.springframework.stereotype.Component;
 

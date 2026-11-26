@@ -18,8 +18,8 @@
   background-color: var(--bg-surface);
   border: var(--border-width) solid var(--border-neutral);
   border-radius: var(--radius-btn);
-  box-shadow: var(--shadow-card);
-  max-height: 240px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  max-height: 280px;
   overflow-y: auto;
   margin-top: 4px;
 }

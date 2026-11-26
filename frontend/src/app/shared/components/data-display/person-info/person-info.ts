@@ -18,6 +18,7 @@ import { GenderPipe } from '../../../pipes/gender-pipe';
     GenderPipe,
   ],
   templateUrl: './person-info.html',
+  styleUrl: './person-info.scss',
 })
 export class PersonBasicInfoCardComponent {
   @Input() gender?: string | null;

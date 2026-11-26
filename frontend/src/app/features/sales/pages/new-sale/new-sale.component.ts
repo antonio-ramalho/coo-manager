@@ -2,7 +2,8 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { map, Observable } from 'rxjs';
 import { ClientApiService } from '../../../clients/data/client-api.service';
 import { InputBatchApiService } from '../../../inputs/data/input-batch-api.service';
@@ -11,7 +12,7 @@ import { InputBatchTableItem } from '../../../inputs/models/input-batch.model';
 import { Status } from '../../../../shared/enums/status';
 import { MeasureUnit } from '../../../../shared/enums/measure-unit';
 import { ToastService } from '../../../../core/services/toast.service';
-import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
+import { TransactionalFormLayoutComponent } from '../../../../shared/components/layout/form-layouts/transactional-form-layout/transactional-form-layout.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { SearchableSelectComponent } from '../../../../shared/components/forms/searchable-select/searchable-select.component';
 import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
@@ -28,7 +29,7 @@ import { SaleClientPreview, SalesInsertDto } from '../../models/sales-transactio
 
 /**
  * Smart Component para o fluxo transacional de Nova Venda.
- * Segue o padrão de formulários do sistema com PageTitleComponent, StepperComponent
+ * Segue o padrão de formulários do sistema com TransactionalFormLayoutComponent
  * e Dialog de confirmação antes de persistir no backend.
  */
 @Component({
@@ -37,7 +38,7 @@ import { SaleClientPreview, SalesInsertDto } from '../../models/sales-transactio
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    PageTitleComponent,
+    TransactionalFormLayoutComponent,
     StepperComponent,
     SearchableSelectComponent,
     InputErrorComponent,
@@ -56,6 +57,12 @@ export class NewSaleComponent implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isDesktop = toSignal(
+    this.breakpointObserver.observe('(min-width: 768px)').pipe(map((result) => result.matches)),
+    { initialValue: true },
+  );
 
   readonly salesForm: FormGroup<SalesForm> = buildSalesForm(this.fb);
   readonly currentStep = signal<'client' | 'cart'>('client');

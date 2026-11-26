@@ -1,7 +1,7 @@
 package com.manager.coomanager.contractModule.entities;
 
-import com.manager.coomanager.personModule.entities.ConsumerUnit;
-import com.manager.coomanager.personModule.enums.DocumentStatus;
+import com.manager.coomanager.contractModule.entities.ConsumerUnit;
+import com.manager.coomanager.farmerModule.enums.DocumentStatus;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

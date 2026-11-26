@@ -1,124 +1,115 @@
-<div [formGroup]="formGroup"
-  class="flex flex-col w-full bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] shadow-xs overflow-visible">
-  <div
-    class="p-4 border-b border-[var(--border-neutral)] rounded-t-[var(--radius-card)] flex items-center justify-between gap-3 bg-[var(--bg-surface)]">
-    <div class="flex items-center gap-2">
-      <svg lucidePackage class="w-5 h-5 text-[var(--text-aux)]"></svg>
-      <h3 class="font-bold text-base text-[var(--text-main)]">
+<div [formGroup]="formGroup" class="cart-container">
+  <div class="cart-header">
+    <div class="header-title-group">
+      <svg lucidePackage class="package-icon"></svg>
+      <h3 class="header-title">
         Itens da Venda ({{ itemsArray.length }})
       </h3>
     </div>
 
     <button type="button" appButton variant="primary" (click)="startAddingItem()" [disabled]="isAddingItem()"
-      class="gap-1.5">
-      <svg lucidePlus class="w-4 h-4"></svg>
+      class="btn-new-item">
       <span>Novo item</span>
     </button>
   </div>
 
   @if (itemsArray.length === 0 && !isAddingItem()) {
-  <div class="flex-1 p-10 flex flex-col items-center justify-center text-center">
-    <div
-      class="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary-base)] mb-3">
-      <svg lucideShoppingCart class="w-6 h-6"></svg>
+  <div class="empty-cart-state">
+    <div class="empty-cart-icon">
+      <svg lucideShoppingCart class="cart-icon"></svg>
     </div>
-    <p class="text-sm font-medium text-[var(--text-main)]">O carrinho está vazio</p>
-    <p class="text-xs text-[var(--text-aux)] mt-1 max-w-sm">
+    <p class="empty-cart-title">O carrinho está vazio</p>
+    <p class="empty-cart-desc">
       Clique em <strong>Novo item</strong> para pesquisar e adicionar lotes à venda.
     </p>
   </div>
   } @else {
-  <div class="overflow-x-auto lg:overflow-visible" formArrayName="items">
-    <table class="w-full text-left text-sm border-collapse">
+  <div class="table-scroll-container" formArrayName="items">
+    <table class="cart-table">
       <thead>
-        <tr
-          class="bg-[var(--primary-light)] text-[var(--text-aux)] text-xs uppercase tracking-wider border-b border-[var(--border-neutral)]">
-          <th class="py-3 px-4 font-semibold text-left">Produto / Lote</th>
-          <th class="py-3 px-4 font-semibold text-left">Estoque Disp.</th>
-          <th class="py-3 px-4 font-semibold text-left">Preço Unitário</th>
-          <th class="py-3 px-4 font-semibold text-left w-32">Quantidade</th>
-          <th class="py-3 px-4 font-semibold text-left">Subtotal</th>
-          <th class="py-3 px-4 font-semibold text-center w-20">Remover</th>
+        <tr class="table-head-row">
+          <th class="col-head text-left">Produto / Lote</th>
+          <th class="col-head text-left">Estoque Disp.</th>
+          <th class="col-head text-left">Preço Unitário</th>
+          <th class="col-head text-left w-32">Quantidade</th>
+          <th class="col-head text-left">Subtotal</th>
+          <th class="col-head text-center w-20">Remover</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-[var(--border-neutral)]">
+      <tbody class="table-body">
         @for (itemGroup of itemsArray.controls; track $index; let i = $index) {
-        <tr [formGroupName]="i" class="hover:bg-[var(--bg-surface-hover)] transition-colors">
-          <td class="py-3 px-4 text-left align-middle">
-            <div class="flex flex-col">
-              <span class="font-medium text-[var(--text-main)]">
+        <tr [formGroupName]="i" class="table-row-item">
+          <td class="col-cell text-left">
+            <div class="product-info-cell">
+              <span class="product-name">
                 {{ itemGroup.get('productName')?.value }}
               </span>
-              <span class="text-xs text-[var(--text-aux)] flex items-center gap-1 mt-0.5">
-                <span
-                  class="px-1.5 py-0.5 rounded bg-[var(--primary-light)] border border-[var(--border-neutral)] font-mono text-[11px]">
+              <span class="batch-badge-wrapper">
+                <span class="batch-code-badge">
                   {{ itemGroup.get('batchCode')?.value }}
                 </span>
               </span>
             </div>
           </td>
 
-          <td class="py-3 px-4 text-left align-middle">
-            <span
-              class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--primary-light)] text-[var(--primary-hover)]">
+          <td class="col-cell text-left">
+            <span class="stock-badge">
               {{ itemGroup.get('availableStock')?.value }} {{ itemGroup.get('measureUnit')?.value | measureUnitAbbr }}
             </span>
           </td>
 
-          <td class="py-3 px-4 text-left align-middle font-medium text-[var(--text-main)]">
+          <td class="col-cell col-price">
             {{ (itemGroup.get('unitPrice')?.value ?? 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
           </td>
 
-          <td class="py-3 px-4 text-left align-middle">
-            <div class="flex flex-col items-start">
-              <div class="flex items-center gap-1.5">
+          <td class="col-cell text-left">
+            <div class="quantity-cell-wrapper">
+              <div class="quantity-input-group">
                 <input type="number" formControlName="quantity" step="any" min="0.001"
                   [max]="itemGroup.get('availableStock')?.value ?? 999999"
-                  class="w-12 text-center py-1 px-1.5 text-sm border rounded-[var(--radius-btn)] bg-[var(--bg-surface)] text-[var(--text-main)] border-[var(--border-neutral)] focus:border-[var(--primary-base)] focus:ring-1 focus:ring-[var(--primary-base)] transition-colors"
-                  [class.border-[var(--red-alert)]]="itemGroup.get('quantity')?.invalid && itemGroup.get('quantity')?.touched" />
-                <span class="text-xs text-[var(--text-aux)] font-medium">
+                  class="quantity-input"
+                  [class.input-invalid]="itemGroup.get('quantity')?.invalid && itemGroup.get('quantity')?.touched" />
+                <span class="unit-label">
                   {{ itemGroup.get('measureUnit')?.value | measureUnitAbbr }}
                 </span>
               </div>
               @if (itemGroup.get('quantity')?.hasError('max')) {
-              <span class="text-[11px] text-[var(--red-alert)] mt-1">Excede estoque!</span>
+              <span class="qty-error-msg">Excede estoque!</span>
               } @else if (itemGroup.get('quantity')?.hasError('min') ||
               itemGroup.get('quantity')?.hasError('required')) {
-              <span class="text-[11px] text-[var(--red-alert)] mt-1">Qtd. inválida</span>
+              <span class="qty-error-msg">Qtd. inválida</span>
               }
             </div>
           </td>
 
-          <td class="py-3 px-4 text-left align-middle font-bold text-[var(--text-main)]">
+          <td class="col-cell col-total">
             {{ (itemGroup.get('totalPrice')?.value ?? 0) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
           </td>
 
-          <td class="py-3 px-4 text-center align-middle">
-            <button type="button" (click)="onRemove(i)" title="Remover item do carrinho"
-              class="p-1.5 rounded-[var(--radius-btn)] text-[var(--text-aux)] hover:text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors cursor-pointer">
-              <svg lucideTrash2 class="w-4 h-4"></svg>
+          <td class="col-cell text-center">
+            <button type="button" (click)="onRemove(i)" title="Remover item do carrinho" class="btn-action-icon">
+              <svg lucideTrash2 class="action-icon"></svg>
             </button>
           </td>
         </tr>
         }
 
         @if (isAddingItem()) {
-        <tr class="bg-[var(--bg-surface-hover)] relative z-30">
-          <td class="py-3 px-4 min-w-[260px] text-left align-middle">
+        <tr class="table-row-add">
+          <td class="col-cell col-search">
             <app-searchable-select id="batchSearchInline" [searchFn]="searchBatchesFn"
               [labelFormatter]="batchLabelFormatter" (selectedOptionChange)="onBatchChosen($event)"
               placeholder="Pesquisar produto ou código..."
               notFoundText="Nenhum lote com estoque disponível encontrado.">
             </app-searchable-select>
           </td>
-          <td class="py-3 px-4 text-left align-middle text-xs text-[var(--text-aux)]">—</td>
-          <td class="py-3 px-4 text-left align-middle text-xs text-[var(--text-aux)]">—</td>
-          <td class="py-3 px-4 text-left align-middle text-xs text-[var(--text-aux)]">—</td>
-          <td class="py-3 px-4 text-left align-middle text-xs text-[var(--text-aux)]">—</td>
-          <td class="py-3 px-4 text-center align-middle">
-            <button type="button" (click)="cancelAddingItem()" title="Cancelar adição de item"
-              class="p-1.5 rounded-[var(--radius-btn)] text-[var(--text-aux)] hover:text-[var(--red-alert)] hover:bg-[var(--primary-red-alert)] transition-colors cursor-pointer">
-              <svg lucideX class="w-4 h-4"></svg>
+          <td class="col-cell col-empty-dash">—</td>
+          <td class="col-cell col-empty-dash">—</td>
+          <td class="col-cell col-empty-dash">—</td>
+          <td class="col-cell col-empty-dash">—</td>
+          <td class="col-cell text-center">
+            <button type="button" (click)="cancelAddingItem()" title="Cancelar adição de item" class="btn-action-icon">
+              <svg lucideX class="action-icon"></svg>
             </button>
           </td>
         </tr>

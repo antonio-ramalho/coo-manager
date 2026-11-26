@@ -1,0 +1,60 @@
+<div class="profile-card">
+  <div class="card-header">
+    <div class="avatar-container">
+      <span class="avatar-initials">{{ userInitials() }}</span>
+    </div>
+    <div class="header-details">
+      <h2 class="user-fullname">{{ user.fullName }}</h2>
+      <p class="user-email-text">
+        <svg lucideMail class="info-icon"></svg>
+        {{ user.email }}
+      </p>
+      <div class="status-badge-container">
+        <span class="status-badge" [class.badge-active]="user.status === 'ACTIVE'">
+          {{ user.status === 'ACTIVE' ? 'Conta Ativa' : user.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-divider"></div>
+
+  <div class="card-body">
+    <div class="info-section">
+      <h3 class="section-title">
+        <svg lucideBuilding class="section-icon"></svg>
+        Cooperativa Vinculada
+      </h3>
+      <div class="info-box">
+        <span class="info-label">Cooperativa:</span>
+        <span class="info-value">{{ user.cooperativeName || 'Cooperativa Central / Matriz' }}</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3 class="section-title">
+        <svg lucideShield class="section-icon"></svg>
+        Cargos e Perfis de Acesso
+      </h3>
+
+      <div class="roles-grid">
+        @for (role of user.roles; track role.id) {
+          <div class="role-badge-card">
+            <span class="role-name">{{ role.name }}</span>
+            @if (role.description) {
+              <span class="role-desc">{{ role.description }}</span>
+            }
+          </div>
+        } @empty {
+          <p class="empty-roles">Nenhum cargo específico atribuído.</p>
+        }
+      </div>
+
+      <div class="security-notice">
+        <p class="notice-text">
+          Por razões de conformidade e integridade institucional, a alteração de cargos ou cooperativa vinculada deve ser realizada por um administrador do sistema.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

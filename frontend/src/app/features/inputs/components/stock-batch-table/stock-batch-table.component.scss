@@ -50,12 +50,23 @@
   flex: 1;
   min-height: 0;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  app-generic-table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+  }
 }
 
 .pagination-container {
   display: block;
   flex-shrink: 0;
   margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 :host ::ng-deep {

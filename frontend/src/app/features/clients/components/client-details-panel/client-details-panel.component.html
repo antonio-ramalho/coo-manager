@@ -1,4 +1,4 @@
-<app-details-layout-component class="h-full">
+<app-details-layout-component class="details-layout">
   <app-person-details-header
     details-header
     [id]="details.id"
@@ -8,8 +8,8 @@
     (editClient)="edit.emit($event)">
   </app-person-details-header>
 
-  <div details-body class="flex flex-col gap-4">
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+  <div details-body class="details-body-container">
+    <div class="cards-grid">
       <app-person-basic-info-card
         [gender]="details.gender"
         [phone]="details.phone"

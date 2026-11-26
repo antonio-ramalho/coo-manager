@@ -11,6 +11,7 @@ const MAX_VISIBLE_TOASTS = 3;
   standalone: true,
   imports: [],
   templateUrl: './toast.component.html',
+  styleUrl: './toast.component.scss',
 })
 export class ToastComponent implements OnInit {
   private readonly toastService = inject(ToastService);

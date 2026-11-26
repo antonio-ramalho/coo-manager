@@ -1,3 +1,6 @@
+import { PaymentStatus } from '../../../shared/enums/payment-status.enum';
+import { Status } from '../../../shared/enums/status';
+
 export interface SalesItemInsertDto {
   batchId: number;
   quantity: number;
@@ -23,10 +26,10 @@ export interface SalesDto {
   clientName: string;
   clientDocument?: string | null;
   clientBirthDate?: string | null;
-  clientStatus: string;
+  clientStatus: Status | string;
   totalValue: number;
   purchaseDate: string;
-  paymentStatus: string;
+  paymentStatus: PaymentStatus | string;
   paymentStatusDescription: string;
   items: SalesItemDto[];
 }
@@ -37,7 +40,7 @@ export interface SalesTableItem {
   clientName: string;
   purchaseDate: string;
   totalValue: number;
-  paymentStatus: string;
+  paymentStatus: PaymentStatus | string;
   paymentStatusDescription: string;
 }
 
@@ -53,7 +56,7 @@ export interface SaleClientPreview {
   legalName: string;
   documentNumber: string;
   birthDate?: string;
-  status: string;
+  status: Status | string;
 }
 
 export interface SaleCartItem {

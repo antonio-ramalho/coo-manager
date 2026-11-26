@@ -1,7 +1,92 @@
+@use "tailwind-ref";
+
 :host {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
+  @apply flex flex-col flex-1 w-full;
+  min-height: 380px;
+}
+
+.loading-container {
+  @apply flex-1 flex items-center justify-center py-10;
+}
+
+.client-preview-container {
+  @apply flex flex-col gap-5 w-full flex-1;
+}
+
+.client-header {
+  @apply flex items-center justify-between border-b pb-3;
+  border-color: var(--border-neutral);
+
+  .client-tag {
+    @apply text-xs uppercase font-semibold tracking-wider;
+    color: var(--primary-base);
+  }
+
+  .client-name {
+    @apply text-lg font-bold mt-0.5;
+    color: var(--text-main);
+  }
+
+  .status-pill {
+    @apply px-2.5 py-1 text-xs font-semibold rounded-full;
+
+    &.status-active {
+      background-color: var(--primary-light);
+      color: var(--primary-hover);
+    }
+
+    &.status-inactive {
+      background-color: var(--primary-red-alert);
+      color: var(--red-alert);
+    }
+  }
+}
+
+.info-cards-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1;
+}
+
+.info-card {
+  @apply p-3.5 rounded-lg border flex flex-col gap-1;
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-neutral);
+
+  .info-card-label {
+    @apply text-xs font-medium flex items-center gap-1.5;
+    color: var(--text-aux);
+
+    .info-icon {
+      @apply w-3.5 h-3.5;
+    }
+  }
+
+  .info-card-value {
+    @apply text-sm font-semibold truncate;
+    color: var(--text-main);
+  }
+}
+
+.empty-client-state {
+  @apply flex-1 flex flex-col items-center justify-center text-center py-10;
+
+  .empty-icon-wrapper {
+    @apply w-12 h-12 rounded-full border flex items-center justify-center mb-3;
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-neutral);
+    color: var(--text-aux);
+
+    .empty-icon {
+      @apply w-6 h-6;
+    }
+  }
+
+  .empty-title {
+    @apply text-sm font-medium;
+    color: var(--text-main);
+  }
+
+  .empty-desc {
+    @apply text-xs mt-1 max-w-sm;
+    color: var(--text-aux);
+  }
 }

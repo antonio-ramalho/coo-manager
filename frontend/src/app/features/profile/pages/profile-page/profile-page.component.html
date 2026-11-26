@@ -1,0 +1,98 @@
+<div class="profile-layout">
+  <!-- Header Exclusivo e Dedicado da Tela de Perfil -->
+  <header class="profile-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <button type="button" (click)="goBack()" class="btn-back" aria-label="Voltar para a área principal do sistema">
+          <svg lucideArrowLeft class="back-icon"></svg>
+          <span>Voltar</span>
+        </button>
+        <div class="brand-divider"></div>
+        <div class="brand-info">
+          <span class="brand-title">CooManager</span>
+          <span class="brand-subtitle">Meu Perfil & Segurança</span>
+        </div>
+      </div>
+
+      @if (user(); as u) {
+      <div class="topbar-user">
+        <div class="user-chip">
+          <span class="chip-name">{{ u.fullName }}</span>
+          <span class="chip-coop">{{ u.cooperativeName || 'Matriz' }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </header>
+
+  <!-- Corpo Principal -->
+  <main class="profile-main">
+    @if (isLoading()) {
+    <div class="loading-state">
+      <app-loading-spinner text="Carregando perfil e credenciais..." />
+    </div>
+    } @else if (user(); as currentUser) {
+    <div class="profile-grid">
+      <!-- Submenu Lateral de Navegação (Tabs) -->
+      <aside class="submenu-container">
+        <nav class="submenu-nav" aria-label="Navegação do Perfil">
+          <button type="button" (click)="setTab('INFO')" class="submenu-item" [class.active]="activeTab() === 'INFO'">
+            <svg lucideUser class="nav-icon"></svg>
+            <div class="nav-text-group">
+              <span class="nav-label">Dados Pessoais</span>
+              <span class="nav-sub">Informações e cargos</span>
+            </div>
+          </button>
+
+          <button type="button" (click)="setTab('PASSWORD')" class="submenu-item"
+            [class.active]="activeTab() === 'PASSWORD'">
+            <svg lucideKeyRound class="nav-icon"></svg>
+            <div class="nav-text-group">
+              <span class="nav-label">Segurança & Senha</span>
+              <span class="nav-sub">Alteração de senha</span>
+            </div>
+          </button>
+
+          <button type="button" (click)="setTab('TWO_FACTOR')" class="submenu-item"
+            [class.active]="activeTab() === 'TWO_FACTOR'">
+            <svg lucideSmartphone class="nav-icon"></svg>
+            <div class="nav-text-group">
+              <div class="label-badge-row">
+                <span class="nav-label">Segundo Fator</span>
+                <span class="tab-pill" [class.pill-active]="currentUser.twoFactorEnabled"
+                  [class.pill-inactive]="!currentUser.twoFactorEnabled">
+                  {{ currentUser.twoFactorEnabled ? 'Ativo' : 'Inativo' }}
+                </span>
+              </div>
+              <span class="nav-sub">Proteção via app</span>
+            </div>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Área de Conteúdo da Tab Ativa -->
+      <section class="tab-content-area">
+        @switch (activeTab()) {
+        @case ('INFO') {
+        <app-profile-info-card [user]="currentUser" />
+        }
+        @case ('PASSWORD') {
+        <app-change-password-card [loading]="isChangingPassword()" (passwordChange)="onPasswordChange($event)" />
+        }
+        @case ('TWO_FACTOR') {
+        <app-two-factor-card [twoFactorEnabled]="currentUser.twoFactorEnabled" (startSetup)="onStartSetup()"
+          (startDisable)="onStartDisable()" />
+        }
+        }
+      </section>
+    </div>
+    }
+  </main>
+
+  <!-- Modais de 2FA -->
+  <app-two-factor-setup-modal [isOpen]="isSetupModalOpen" [secret]="setupSecret" [qrCodeUri]="setupQrUri"
+    [loading]="is2faSubmitting()" (confirm)="onConfirm2fa($event)" (close)="isSetupModalOpen = false" />
+
+  <app-two-factor-disable-modal [isOpen]="isDisableModalOpen" [loading]="is2faSubmitting()"
+    (disable)="onDisable2fa($event)" (close)="isDisableModalOpen = false" />
+</div>

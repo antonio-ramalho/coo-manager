@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 w-full max-w-7xl mx-auto mt-0" [class.lg:flex-row]="!horizontalLayout"
+<div class="flex flex-col gap-4 w-full max-w-7xl mx-auto mt-0 h-full" [class.lg:flex-row]="!horizontalLayout"
   [class.lg:gap-6]="!horizontalLayout" [class.items-stretch]="!fluidHeight && !horizontalLayout"
   [class.items-start]="fluidHeight && !horizontalLayout" [class.lg:h-full]="!fluidHeight"
   [class.lg:min-h-0]="!fluidHeight">
@@ -41,12 +41,12 @@
     </nav>
   </aside>
 
-  <div class="w-full flex-1 flex flex-col gap-4" [class.lg:h-full]="!fluidHeight" [class.lg:min-h-0]="!fluidHeight">
+  <div class="w-full flex-1 flex flex-col gap-4 min-h-0 h-full" [class.lg:h-full]="!fluidHeight"
+    [class.lg:min-h-0]="!fluidHeight">
     <ng-content select="[stepperTopCard]"></ng-content>
 
-    <main
-      class="mb-8 w-full bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] flex flex-col shadow-xs justify-between"
-      [class.flex-1]="!fluidHeight" [class.lg:min-h-0]="!fluidHeight" [class.overflow-hidden]="!fluidHeight">
+    <main class="mb-8 w-full bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)]
+        flex flex-col shadow-xs justify-between flex-1 h-full" [class.overflow-hidden]="!fluidHeight">
       <div class="flex-1 flex flex-col p-4 sm:p-5 lg:p-6 custom-scrollbar" [class.lg:overflow-y-auto]="!fluidHeight"
         [class.lg:min-h-0]="!fluidHeight">
         <ng-content></ng-content>

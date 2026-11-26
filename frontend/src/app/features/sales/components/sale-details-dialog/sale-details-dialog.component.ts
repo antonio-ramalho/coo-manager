@@ -5,13 +5,16 @@ import {
   LucideFileText,
   LucideReceiptText,
   LucideUser,
-  LucideX,
 } from '@lucide/angular';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
+import { BaseModalComponent } from '../../../../shared/components/feedback/base-modal/base-modal.component';
 import { MeasureUnitAbbrPipe } from '../../../../shared/pipes/measure-unit-abbr.pipe';
 import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
-import { formatDocument } from '../../../../shared/utils/document-format';
+import { CpfCnpjPipe } from '../../../../shared/pipes/cpf-cnpj-pipe';
+import { PaymentStatusPipe } from '../../../../shared/pipes/payment-status.pipe';
+import { PaymentStatus, PAYMENT_STATUS_CLASSES } from '../../../../shared/enums/payment-status.enum';
+import { Status } from '../../../../shared/enums/status';
 import { SalesDto } from '../../models/sales-transaction.model';
 
 /**
@@ -27,13 +30,15 @@ import { SalesDto } from '../../models/sales-transaction.model';
     DatePipe,
     ButtonComponent,
     LoadingSpinnerComponent,
+    BaseModalComponent,
     MeasureUnitAbbrPipe,
     ReceiptCodePipe,
+    CpfCnpjPipe,
+    PaymentStatusPipe,
     LucideReceiptText,
     LucideUser,
     LucideFileText,
     LucideCalendar,
-    LucideX,
   ],
   templateUrl: './sale-details-dialog.component.html',
   styleUrls: ['./sale-details-dialog.component.scss'],
@@ -45,21 +50,11 @@ export class SaleDetailsDialogComponent {
 
   @Output() close = new EventEmitter<void>();
 
-  formatDoc(doc: string | null | undefined): string {
-    return doc ? formatDocument(doc) : 'Não informado';
-  }
+  readonly Status = Status;
 
-  getStatusBadgeClass(status: string): string {
-    switch (status) {
-      case 'PAID':
-        return 'status-paid';
-      case 'PENDING':
-        return 'status-pending';
-      case 'CANCELED':
-        return 'status-canceled';
-      default:
-        return 'status-neutral';
-    }
+  getStatusBadgeClass(status: PaymentStatus | string): string {
+    const normalized = (typeof status === 'string' ? status.toUpperCase() : status) as PaymentStatus;
+    return PAYMENT_STATUS_CLASSES[normalized] || 'status-neutral';
   }
 
   onClose(): void {

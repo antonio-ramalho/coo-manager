@@ -9,18 +9,32 @@
   gap: var(--space-layout);
 }
 
-.card-details-container {
-  @apply h-full w-full flex flex-col gap-6 p-6 overflow-hidden justify-center items-center;
+.header-container {
+  @apply flex justify-between items-center shrink-0;
 }
 
-.main-container {
-  @apply flex-1 min-w-0 flex flex-col overflow-hidden relative h-full;
+.content-body {
+  @apply flex-1 flex min-h-0;
+  gap: var(--space-layout);
 }
 
 .aside-container {
   @apply shrink-0 flex flex-col h-full min-h-0 overflow-auto w-80 lg:w-96;
 }
 
-.header-container {
-  @apply flex justify-between items-center shrink-0;
+.client-list {
+  @apply flex-1 flex flex-col min-h-0;
+}
+
+.main-container {
+  @apply flex-1 min-w-0 flex flex-col overflow-hidden relative h-full;
+}
+
+.card-details-container {
+  @apply h-full w-full flex flex-col gap-6 p-6 overflow-hidden justify-center items-center;
+}
+
+.empty-state-message {
+  @apply text-sm;
+  color: var(--text-aux);
 }

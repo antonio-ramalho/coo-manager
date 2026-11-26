@@ -1,7 +1,7 @@
 <div [formGroup]="group" class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
   <div class="flex flex-col gap-1 md:col-span-12">
-    <label class="txt-label" for="cpf">Cpf</label>
+    <label class="txt-label" for="cpf">CPF <span class="txt-required">*</span></label>
     <input
       class="input-base txt-body"
       id="cpf"
@@ -15,7 +15,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-6">
-    <label class="txt-label" for="birthDate">Data de nascimento</label>
+    <label class="txt-label" for="birthDate">Data de nascimento <span class="txt-required">*</span></label>
     <app-date-input
       inputId="birthDate"
       formControlName="birthDate"
@@ -26,7 +26,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-6">
-    <label class="txt-label" for="gender">Gênero</label>
+    <label class="txt-label" for="gender">Gênero <span class="txt-required">*</span></label>
     <select
       class="appearance-none input-base txt-body"
       id="gender"

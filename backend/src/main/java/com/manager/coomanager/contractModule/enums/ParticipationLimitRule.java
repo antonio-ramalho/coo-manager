@@ -1,10 +1,10 @@
 package com.manager.coomanager.contractModule.enums;
 
 import com.manager.coomanager.contractModule.entities.Contract;
-import com.manager.coomanager.personModule.entities.Farmer;
+import com.manager.coomanager.farmerModule.entities.Farmer;
 import com.manager.coomanager.contractModule.entities.FarmerContract;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.math.BigDecimal;

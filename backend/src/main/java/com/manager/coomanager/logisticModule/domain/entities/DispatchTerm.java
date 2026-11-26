@@ -1,7 +1,7 @@
 package com.manager.coomanager.logisticModule.domain.entities;
 
-import com.manager.coomanager.baseModule.BaseReceipt;
-import com.manager.coomanager.personModule.entities.ConsumerUnit;
+import com.manager.coomanager.shared.domain.entities.BaseReceipt;
+import com.manager.coomanager.contractModule.entities.ConsumerUnit;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

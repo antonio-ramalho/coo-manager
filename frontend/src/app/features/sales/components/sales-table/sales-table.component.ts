@@ -1,28 +1,28 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
-import { LucideEllipsis } from '@lucide/angular';
 import { SearchBarComponent } from '../../../../shared/components/lists/search-bar/search-bar-component';
 import { PaginationComponent } from '../../../../shared/components/lists/generic-pagination/pagination-component';
 import { GenericTableComponent } from '../../../../shared/components/tables/generic-table/generic-table.component';
 import { TableColumn } from '../../../../shared/components/tables/generic-table/table-column.model';
+import { ActionMenuComponent } from '../../../../shared/components/ui/action-menu/action-menu.component';
+import { ActionMenuItem } from '../../../../shared/components/ui/action-menu/action-menu-item.model';
 import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
 import { SalesTableItem } from '../../models/sales-transaction.model';
+import { PaymentStatus } from '../../../../shared/enums/payment-status.enum';
 
 /**
  * Dumb Component que empacota a visualização da tabela densa de vendas/saídas,
- * com busca multi-critério, paginação e menu de ações (incluindo visualização de detalhes).
+ * com busca multi-critério, paginação e menu de ações padronizado (ActionMenuComponent).
  */
 @Component({
   selector: 'app-sales-table',
   standalone: true,
   imports: [
     CommonModule,
-    OverlayModule,
-    LucideEllipsis,
     SearchBarComponent,
     PaginationComponent,
     GenericTableComponent,
+    ActionMenuComponent,
   ],
   templateUrl: './sales-table.component.html',
   styleUrls: ['./sales-table.component.scss'],
@@ -45,24 +45,6 @@ export class SalesTableComponent implements OnInit {
   @ViewChild('actionsTemplate', { static: true }) actionsTemplate!: TemplateRef<any>;
 
   columns: TableColumn<SalesTableItem>[] = [];
-  openMenuRowId: number | null = null;
-
-  readonly overlayPositions: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetY: 4,
-    },
-    {
-      originX: 'end',
-      originY: 'top',
-      overlayX: 'end',
-      overlayY: 'bottom',
-      offsetY: -4,
-    },
-  ];
 
   ngOnInit(): void {
     this.columns = [
@@ -96,36 +78,41 @@ export class SalesTableComponent implements OnInit {
     ];
   }
 
-  toggleMenu(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = this.openMenuRowId === id ? null : id;
+  getRowActions(row: SalesTableItem): ActionMenuItem[] {
+    const actions: ActionMenuItem[] = [
+      {
+        label: 'Ver Detalhes',
+        action: () => this.viewDetails.emit(row.id),
+      },
+    ];
+
+    if (row.paymentStatus === PaymentStatus.PENDING) {
+      actions.push({
+        label: 'Registrar Pagamento',
+        action: () => this.registerPayment.emit(row.id),
+      });
+    }
+
+    if (row.paymentStatus !== PaymentStatus.CANCELED) {
+      actions.push({
+        label: 'Cancelar Venda',
+        danger: true,
+        dividerAbove: true,
+        action: () => this.cancelSale.emit(row.id),
+      });
+    }
+
+    return actions;
   }
 
-  onViewDetails(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.viewDetails.emit(id);
-  }
-
-  onPay(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.registerPayment.emit(id);
-  }
-
-  onCancel(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.cancelSale.emit(id);
-  }
-
-  private getStatusClass(status: string): string {
+  private getStatusClass(status: PaymentStatus | string): string {
     switch (status) {
-      case 'PAID':
+      case PaymentStatus.PAID:
         return 'badge-success';
-      case 'PENDING':
+      case PaymentStatus.PENDING:
         return 'badge-pending';
-      case 'CANCELED':
+      case PaymentStatus.CANCELED:
+      case PaymentStatus.COMPLETED:
         return 'badge-danger';
       default:
         return 'badge-neutral';

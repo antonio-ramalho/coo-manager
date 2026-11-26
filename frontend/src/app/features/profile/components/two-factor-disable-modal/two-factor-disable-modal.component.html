@@ -1,0 +1,58 @@
+<app-base-modal
+  [isOpen]="isOpen"
+  [title]="'Desativar Autenticação em Duas Etapas'"
+  size="sm"
+  (close)="onClose()"
+>
+  <div class="modal-body">
+    <div class="warning-alert">
+      <svg lucideAlertTriangle class="warning-icon"></svg>
+      <div class="warning-content">
+        <h4 class="warning-title">Atenção: Redução de Segurança</h4>
+        <p class="warning-text">
+          Ao desativar o 2FA, sua conta voltará a depender exclusivamente de senha para acesso.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label for="disableCode" class="field-label">
+        Digite o código de 6 dígitos do seu autenticador para confirmar:
+      </label>
+      <div class="code-wrapper">
+        <input
+          id="disableCode"
+          type="text"
+          [formControl]="codeControl"
+          placeholder="000000"
+          maxlength="6"
+          class="code-input"
+          [class.input-error]="codeControl.touched && codeControl.invalid"
+        />
+      </div>
+      @if (codeControl.touched && codeControl.invalid) {
+        <span class="error-text">O código deve conter exatamente 6 dígitos numéricos.</span>
+      }
+    </div>
+  </div>
+
+  <div slot="footer" class="modal-footer">
+    <button
+      appButton
+      variant="outline"
+      (click)="onClose()"
+      [disabled]="loading"
+    >
+      Cancelar
+    </button>
+    <button
+      appButton
+      variant="primary"
+      (click)="onSubmit()"
+      [disabled]="codeControl.invalid || loading"
+      [loading]="loading"
+    >
+      Confirmar Desativação
+    </button>
+  </div>
+</app-base-modal>

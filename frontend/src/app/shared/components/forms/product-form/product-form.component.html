@@ -2,7 +2,7 @@
 
   <div class="flex flex-col gap-1 md:col-span-8 relative">
     <div class="flex items-center justify-between">
-      <label class="txt-label" for="productName">Nome do produto</label>
+      <label class="txt-label" for="productName">Nome do produto <span class="txt-required">*</span></label>
       @if (isSearchingNcm()) {
       <span class="txt-aux text-[var(--primary-base)] text-xs flex items-center gap-1">
         <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="productCode">Código Interno</label>
+    <label class="txt-label" for="productCode">Código Interno <span class="txt-required">*</span></label>
     <input class="input-base txt-body" id="productCode" name="productCode" type="text" formControlName="productCode"
       [class.input-error]="group.get('productCode')?.invalid && group.get('productCode')?.touched"
       placeholder="Código interno">
@@ -50,7 +50,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="measureUnit">Unidade de Medida</label>
+    <label class="txt-label" for="measureUnit">Unidade de Medida <span class="txt-required">*</span></label>
     <select class="appearance-none input-base txt-body" id="measureUnit" name="measureUnit"
       formControlName="measureUnit"
       [class.input-error]="group.get('measureUnit')?.invalid && group.get('measureUnit')?.touched">
@@ -65,7 +65,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="price">Preço Unitário</label>
+    <label class="txt-label" for="price">Preço Unitário <span class="txt-required">*</span></label>
     <div class="relative flex items-center">
       <span class="absolute left-3 text-sm font-medium text-[var(--text-aux)] pointer-events-none select-none"></span>
       <input
@@ -77,7 +77,7 @@
   </div>
 
   <div class="flex flex-col gap-1 md:col-span-4">
-    <label class="txt-label" for="ncm">NCM</label>
+    <label class="txt-label" for="ncm">NCM <span class="txt-required">*</span></label>
     <input class="input-base txt-body" id="ncm" name="ncm" type="text" mask="0000.00.00" formControlName="ncm"
       [class.input-error]="group.get('ncm')?.invalid && group.get('ncm')?.touched" placeholder="0000.00.00">
     <app-input-error [control]="group.get('ncm')"></app-input-error>

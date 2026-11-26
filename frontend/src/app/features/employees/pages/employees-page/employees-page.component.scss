@@ -1,0 +1,305 @@
+@use "tailwind-ref";
+
+:host {
+  @apply flex flex-col flex-1 min-h-0 h-full;
+}
+
+.employees-container {
+  @apply flex flex-col flex-1 min-h-0 h-full box-border;
+  gap: var(--space-layout);
+}
+
+.header-container {
+  @apply flex justify-between items-center shrink-0;
+
+  .header-actions {
+    @apply flex items-center flex-wrap;
+    gap: 0.75rem;
+  }
+}
+
+.table-wrapper {
+  @apply flex flex-col flex-1 min-h-0 overflow-hidden;
+  padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+}
+
+.table-actions-header {
+  @apply flex items-center justify-between flex-wrap shrink-0;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  .search-bar-container {
+    @apply flex-1;
+    min-width: 240px;
+    max-width: 420px;
+  }
+}
+
+.table-body-container {
+  @apply flex-1 min-h-0 overflow-auto flex flex-col;
+
+  app-generic-table {
+    @apply flex flex-col flex-1 min-h-0 w-full;
+  }
+}
+
+.pagination-container {
+  @apply block shrink-0;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Badges e Status */
+.roles-tags-wrapper {
+  @apply flex flex-wrap;
+  gap: 0.25rem;
+}
+
+.no-role-text {
+  @apply text-xs italic;
+  color: var(--text-aux);
+}
+
+.role-badge {
+  @apply inline-flex items-center text-xs font-medium rounded-full;
+  background-color: var(--primary-light);
+  color: var(--primary-hover);
+  padding: 0.125rem 0.5rem;
+}
+
+.status-badge {
+  @apply inline-flex items-center text-xs font-semibold rounded-full;
+  padding: 0.25rem 0.625rem;
+
+  &.status-active {
+    background-color: var(--primary-light);
+    color: var(--primary-hover);
+  }
+
+  &.status-inactive {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+}
+
+/* Modal de Funcionário */
+.employee-form-layout {
+  @apply flex flex-col;
+  gap: 1rem;
+}
+
+.self-lock-alert {
+  @apply p-2.5 rounded text-xs mb-2;
+  background-color: #fffbeb;
+  border: var(--border-width) solid #fde68a;
+  color: #92400e;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+
+  &.roles-locked {
+    @apply opacity-60 pointer-events-none;
+  }
+}
+
+.role-checkbox-card {
+  @apply flex flex-col p-3 rounded-lg cursor-pointer transition-colors duration-200;
+  border: var(--border-width) solid var(--border-neutral);
+  background-color: var(--bg-surface);
+
+  &:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-hover);
+  }
+
+  &.selected {
+    border-color: var(--primary-base);
+    background-color: var(--primary-light);
+
+    .role-card-name {
+      color: var(--primary-hover);
+      font-weight: 600;
+    }
+  }
+
+  .role-card-name {
+    @apply text-sm font-medium mb-1;
+    color: var(--text-main);
+  }
+
+  .role-card-desc {
+    @apply text-xs leading-normal;
+    color: var(--text-aux);
+  }
+}
+
+.modal-footer-actions {
+  @apply flex items-center justify-end gap-3 w-full;
+}
+
+/* Modal de Gestão de Cargos */
+.roles-modal-body {
+  @apply p-0;
+}
+
+.roles-manager-container {
+  display: flex;
+  height: 580px;
+}
+
+.roles-sidebar {
+  width: 280px;
+  border-right: var(--border-width) solid var(--border-neutral);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background-color: var(--bg-surface-hover);
+  flex-shrink: 0;
+
+  .sidebar-header {
+    @apply mb-3;
+
+    .sidebar-title {
+      @apply text-xs font-bold uppercase tracking-wider;
+      color: var(--text-aux);
+    }
+  }
+
+  .roles-list {
+    @apply flex flex-col flex-1 overflow-y-auto;
+    gap: 0.5rem;
+  }
+
+  .role-list-item {
+    @apply flex items-center justify-between p-2.5 rounded-lg cursor-pointer transition-colors duration-200;
+    border: var(--border-width) solid transparent;
+
+    &:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--border-neutral);
+    }
+
+    &.active {
+      background-color: var(--primary-light);
+      border-color: var(--primary-base);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      .role-item-name {
+        color: var(--primary-base);
+        font-weight: 600;
+      }
+    }
+
+    .role-item-info {
+      @apply flex flex-col min-w-0;
+
+      .role-item-name {
+        @apply text-sm font-medium truncate;
+        color: var(--text-main);
+      }
+
+      .role-item-badges {
+        @apply flex items-center gap-1.5 mt-0.5;
+
+        .badge-sys {
+          @apply text-xs font-semibold px-1.5 py-0.5 rounded;
+          background-color: #f3f4f6;
+          color: #4b5563;
+        }
+
+        .badge-count {
+          @apply text-xs;
+          color: var(--text-aux);
+        }
+      }
+    }
+
+    .role-delete-btn {
+      @apply text-lg leading-none p-1 rounded transition-colors;
+      color: var(--text-aux);
+
+      &:hover {
+        color: #ef4444;
+        background-color: #fee2e2;
+      }
+    }
+  }
+}
+
+.roles-editor {
+  @apply flex-1 flex flex-col p-6 overflow-hidden;
+
+  .editor-header {
+    @apply shrink-0;
+
+    .editor-title {
+      @apply text-base font-semibold;
+      color: var(--text-main);
+    }
+  }
+
+  .role-fields-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 shrink-0;
+  }
+
+  .permissions-matrix {
+    @apply flex flex-col flex-1 min-h-0 mt-5;
+
+    .matrix-title {
+      @apply text-xs font-bold uppercase tracking-wider mb-2 shrink-0;
+      color: var(--text-aux);
+    }
+
+    .permissions-scroll-container {
+      @apply flex-1 overflow-y-auto pr-1;
+    }
+
+    .permissions-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+    }
+  }
+
+  .permission-group-card {
+    @apply rounded-lg p-3;
+    border: var(--border-width) solid var(--border-neutral);
+    background-color: var(--bg-surface);
+
+    .group-header {
+      @apply text-xs font-bold uppercase tracking-wider pb-2 mb-2;
+      color: var(--text-aux);
+      border-bottom: var(--border-width) solid var(--border-neutral);
+    }
+
+    .group-body {
+      @apply flex flex-col;
+      gap: 0.5rem;
+    }
+
+    .permission-item {
+      @apply flex items-center text-xs cursor-pointer;
+      color: var(--text-main);
+
+      .perm-checkbox {
+        @apply rounded;
+        margin-right: 0.5rem;
+        border-color: var(--border-neutral);
+        accent-color: var(--primary-base);
+      }
+
+      .perm-label {
+        @apply select-none;
+      }
+    }
+  }
+}
+
+.roles-footer-actions {
+  @apply flex items-center justify-between w-full;
+}
+
+.roles-footer-buttons {
+  @apply flex items-center gap-3;
+}

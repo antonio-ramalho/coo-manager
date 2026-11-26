@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -24,6 +25,7 @@ public class InputProductResources {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('INPUT_READ')")
     public ResponseEntity<Page<InputProductMinDto>> findAllByStatus(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -34,12 +36,14 @@ public class InputProductResources {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('INPUT_READ')")
     public ResponseEntity<InputProductDto> findByStatusAndId(@PathVariable Long id) {
         InputProductDto obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('INPUT_WRITE')")
     public ResponseEntity<InputProductDto> insert(@RequestBody InputProductInsertDto dto) {
         InputProductDto newProduct = service.insert(dto);
 
@@ -50,17 +54,20 @@ public class InputProductResources {
     }
 
     @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('INPUT_WRITE')")
     public ResponseEntity<InputProductDto> update(@PathVariable Long id, @RequestBody InputProductUpdateDto dto) {
         return ResponseEntity.ok().body(service.update(id, dto));
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('INPUT_WRITE')")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}/activate")
+    @PreAuthorize("hasAuthority('INPUT_WRITE')")
     public ResponseEntity<Void> activate(@PathVariable Long id) {
         service.activate(id);
         return ResponseEntity.noContent().build();

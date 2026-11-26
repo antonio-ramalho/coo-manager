@@ -1,0 +1,66 @@
+<div class="relative inline-flex items-center justify-center" (keydown)="onKeyDown($event)">
+  <div
+    class="trigger-container"
+    (click)="toggle($event)"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+    role="button"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-label]="triggerAriaLabel"
+    [attr.title]="triggerTitle"
+    tabindex="0"
+  >
+    <ng-content select="[menu-trigger]">
+      <button
+        type="button"
+        class="default-trigger-btn"
+        [disabled]="disabled"
+        [attr.title]="triggerTitle"
+        [attr.aria-label]="triggerAriaLabel"
+      >
+        <svg lucideEllipsis class="w-5 h-5"></svg>
+      </button>
+    </ng-content>
+  </div>
+
+  @if (isOpen() && visibleItems().length > 0) {
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isOpen()"
+      (overlayOutsideClick)="close()"
+      [cdkConnectedOverlayPositions]="overlayPositions"
+    >
+      <div
+        class="action-menu-dropdown custom-scrollbar"
+        [style.minWidth]="minWidth"
+        role="menu"
+      >
+        <ng-content select="[menu-header]"></ng-content>
+
+        @for (item of visibleItems(); track item.label) {
+          @if (item.dividerAbove) {
+            <div class="menu-divider" role="separator"></div>
+          }
+
+          <button
+            type="button"
+            class="menu-item-btn"
+            [class.danger]="item.danger"
+            [class.success]="item.success"
+            [disabled]="item.disabled"
+            (click)="onItemClick(item, $event)"
+            role="menuitem"
+          >
+            @if (item.icon) {
+              <span class="item-icon">
+                <ng-container *ngComponentOutlet="item.icon"></ng-container>
+              </span>
+            }
+            <span class="item-label">{{ item.label }}</span>
+          </button>
+        }
+      </div>
+    </ng-template>
+  }
+</div>

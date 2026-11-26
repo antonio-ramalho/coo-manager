@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonComponent } from '../../ui/button/button-component';
-import { LucideArrowRight, LucideEllipsis } from '@lucide/angular';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { LucideArrowRight } from '@lucide/angular';
+import { ActionMenuComponent } from '../../ui/action-menu/action-menu.component';
+import { ActionMenuItem } from '../../ui/action-menu/action-menu-item.model';
 
 @Component({
   selector: 'app-generic-card-list-component',
-  imports: [ButtonComponent, LucideArrowRight, LucideEllipsis, OverlayModule],
+  imports: [ButtonComponent, LucideArrowRight, ActionMenuComponent],
   standalone: true,
   templateUrl: './generic-card-list-component.html',
 })
@@ -20,29 +21,31 @@ export class GenericCardListComponent {
   @Output() showDetails = new EventEmitter<number>();
   @Output() activate = new EventEmitter<number>();
 
-  isMenuOpen: boolean = false;
+  getMenuItems(): ActionMenuItem[] {
+    const items: ActionMenuItem[] = [
+      {
+        label: 'Editar',
+        action: () => this.edit.emit(this.id),
+      },
+    ];
 
-  toggleMenu(event: Event) {
-    event.stopPropagation();
-    this.isMenuOpen = !this.isMenuOpen;
-  }
+    if (this.status) {
+      items.push({
+        label: 'Desativar',
+        danger: true,
+        dividerAbove: true,
+        action: () => this.deactivate.emit(this.id),
+      });
+    } else {
+      items.push({
+        label: 'Ativar',
+        success: true,
+        dividerAbove: true,
+        action: () => this.activate.emit(this.id),
+      });
+    }
 
-  onEdit(event: Event) {
-    event.stopPropagation();
-    this.isMenuOpen = false;
-    this.edit.emit(this.id);
-  }
-
-  onActivate(event: Event) {
-    event.stopPropagation();
-    this.isMenuOpen = false;
-    this.activate.emit(this.id);
-  }
-
-  onDeactivate(event: Event) {
-    event.stopPropagation();
-    this.isMenuOpen = false;
-    this.deactivate.emit(this.id);
+    return items;
   }
 
   onShowDetails(event: Event) {

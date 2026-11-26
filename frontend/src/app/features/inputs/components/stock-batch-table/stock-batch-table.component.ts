@@ -1,19 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
-import { LucideEllipsis } from '@lucide/angular';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { SearchBarComponent } from '../../../../shared/components/lists/search-bar/search-bar-component';
 import { PaginationComponent } from '../../../../shared/components/lists/generic-pagination/pagination-component';
 import { GenericTableComponent } from '../../../../shared/components/tables/generic-table/generic-table.component';
 import { TableColumn } from '../../../../shared/components/tables/generic-table/table-column.model';
+import { ActionMenuComponent } from '../../../../shared/components/ui/action-menu/action-menu.component';
+import { ActionMenuItem } from '../../../../shared/components/ui/action-menu/action-menu-item.model';
 import { InputBatchTableItem } from '../../models/input-batch.model';
 import { BatchStatus } from '../../../../shared/enums/batch-status';
 
 /**
  * Dumb Component que empacota a visualização da tabela densa de lotes de insumos,
- * definindo as colunas variáveis, ações de linha (menu de 3 pontinhos para editar/ativar/desativar)
+ * definindo as colunas variáveis, ações de linha via ActionMenuComponent
  * e integrando com o GenericTableComponent, SearchBarComponent e o PaginationComponent reutilizável.
  */
 @Component({
@@ -21,13 +20,11 @@ import { BatchStatus } from '../../../../shared/enums/batch-status';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
-    OverlayModule,
-    LucideEllipsis,
     ButtonComponent,
     SearchBarComponent,
     PaginationComponent,
     GenericTableComponent,
+    ActionMenuComponent,
   ],
   templateUrl: './stock-batch-table.component.html',
   styleUrls: ['./stock-batch-table.component.scss'],
@@ -45,28 +42,11 @@ export class StockBatchTableComponent implements OnInit {
   @Output() edit = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();
   @Output() activate = new EventEmitter<number>();
+  @Output() newBatch = new EventEmitter<void>();
 
   @ViewChild('actionsTemplate', { static: true }) actionsTemplate!: TemplateRef<any>;
 
   columns: TableColumn<InputBatchTableItem>[] = [];
-  openMenuRowId: number | null = null;
-
-  readonly overlayPositions: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetY: 4,
-    },
-    {
-      originX: 'end',
-      originY: 'top',
-      overlayX: 'end',
-      overlayY: 'bottom',
-      offsetY: -4,
-    },
-  ];
 
   ngOnInit(): void {
     this.columns = [
@@ -92,27 +72,31 @@ export class StockBatchTableComponent implements OnInit {
     ];
   }
 
-  toggleMenu(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = this.openMenuRowId === id ? null : id;
-  }
+  getBatchActions(row: InputBatchTableItem): ActionMenuItem[] {
+    const actions: ActionMenuItem[] = [
+      {
+        label: 'Editar',
+        action: () => this.edit.emit(row.id),
+      },
+    ];
 
-  onEdit(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.edit.emit(id);
-  }
+    if (row.status !== 'INACTIVE') {
+      actions.push({
+        label: 'Desativar',
+        danger: true,
+        dividerAbove: true,
+        action: () => this.deactivate.emit(row.id),
+      });
+    } else {
+      actions.push({
+        label: 'Ativar',
+        success: true,
+        dividerAbove: true,
+        action: () => this.activate.emit(row.id),
+      });
+    }
 
-  onDeactivate(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.deactivate.emit(id);
-  }
-
-  onActivate(id: number, event: Event): void {
-    event.stopPropagation();
-    this.openMenuRowId = null;
-    this.activate.emit(id);
+    return actions;
   }
 
   private getStatusClass(status: BatchStatus | string): string {

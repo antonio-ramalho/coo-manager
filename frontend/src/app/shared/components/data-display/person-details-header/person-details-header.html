@@ -1,32 +1,31 @@
-<div class="flex justify-between items-start pb-5 border-b border-(--border-neutral) shrink-0">
+<div class="header-root">
+  <div class="profile-group">
+    <div class="avatar-placeholder"></div>
 
-  <div class="flex gap-4 items-center">
-    <div class="w-16 h-16 rounded-full bg-(--border-hover) shrink-0"></div>
-
-    <div class="flex flex-col">
-      <div class="flex items-center gap-3">
-        <h2 class="txt-h2">{{ name }}</h2>
-        @if (status === 'ACTIVE') {
-          <span class="text-[10px] font-bold uppercase tracking-wider text-(--text-main) border border-(--primary-base) px-2 py-1 rounded-md bg-(--primary-light)">
+    <div class="profile-info">
+      <div class="name-status-row">
+        <h2 class="person-name" [title]="name">{{ name }}</h2>
+        @if (status === Status.ACTIVE || status === 'ACTIVE') {
+          <span class="status-badge status-active">
             {{ status | statusPipe }}
           </span>
         }
         @else {
-          <span class="text-[10px] font-bold uppercase tracking-wider text-(--text-main) border border-(--red-alert) px-2 py-1 rounded-md bg-(--primary-red-alert)">
+          <span class="status-badge status-inactive">
             {{ status | statusPipe }}
           </span>
         }
       </div>
-      <span class="txt-aux mt-1">{{ documentNumber | cpfCnpj}}</span>
+      <span class="document-text">{{ documentNumber | cpfCnpj }}</span>
     </div>
   </div>
 
-  <div class="flex items-center gap-2">
+  <div class="actions-group">
     <button appButton variant="surface" size="icon">
       <svg lucideMessageCircle class="w-5 h-5"></svg>
     </button>
     <button appButton variant="surface" size="icon" (click)="onEditClient($event)">
-      <svg lucideEdit class="w-5 h-5"></svg>
+      <svg lucideSquarePen class="w-5 h-5"></svg>
     </button>
   </div>
 </div>

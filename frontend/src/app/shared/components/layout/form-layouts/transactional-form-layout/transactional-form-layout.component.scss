@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+}
+
+.transactional-form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 0.75rem 3rem 0.75rem;
+
+  @media (min-width: 640px) {
+    padding: 0 1rem 3.5rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 1.5rem 4rem 1.5rem;
+  }
+}
+
+.transactional-header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: var(--bg-app);
+  padding-bottom: 0.25rem;
+}
+
+.transactional-form-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}

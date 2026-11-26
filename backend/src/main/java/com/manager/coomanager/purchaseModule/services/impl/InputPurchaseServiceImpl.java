@@ -1,10 +1,10 @@
 package com.manager.coomanager.purchaseModule.services.impl;
 
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
-import com.manager.coomanager.personModule.entities.Person;
-import com.manager.coomanager.personModule.repositories.PersonRepository;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
+import com.manager.coomanager.shared.domain.person.Person;
+import com.manager.coomanager.customerModule.repositories.PersonRepository;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseDto;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseInsertDto;
 import com.manager.coomanager.purchaseModule.dto.inputPurchase.InputPurchaseMinDto;

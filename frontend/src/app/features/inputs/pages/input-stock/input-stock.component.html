@@ -1,8 +1,5 @@
-<!-- Bloqueio no mobile via diretiva @if: não executa subscrições pesadas em telas menores -->
 @if (!isDesktop()) {
-<app-desktop-only-notice featureName="Estoque e Inventário">
-  <a appButton variant="primary" routerLink="/home/insumos/lotes/cadastro">Novo lote</a>
-</app-desktop-only-notice>
+<app-desktop-only-notice featureName="Estoque e Inventário"></app-desktop-only-notice>
 } @else {
 <div class="content-interface inventory-container">
   <header class="header-container">
@@ -12,30 +9,57 @@
   <div class="inventory-layout custom-scrollbar">
     <section class="main-column">
       @if (summary$ | async; as summary) {
-      <app-stock-kpi-cards class="shrink-0" [totalStockValue]="summary.totalStockValue"
+      <app-stock-kpi-cards class="kpi-cards-wrapper" [totalStockValue]="summary.totalStockValue"
         [occupancy]="summary.occupancy"></app-stock-kpi-cards>
       } @else {
-      <div class="card p-6 flex justify-center text-(--text-aux) text-sm shrink-0">
+      <div class="card loading-card">
         <app-loading-spinner size="sm" message="Carregando dados do inventário..."></app-loading-spinner>
       </div>
       }
 
       @if (pagedBatches$ | async; as batchPage) {
-      <app-stock-batch-table class="flex-1 min-h-0 flex flex-col" [batches]="batchPage.content"
+      <app-stock-batch-table class="batch-table-wrapper" [batches]="batchPage.content"
         [loading]="loadingBatches" [currentPage]="batchPage.pageable.pageNumber + 1"
         [totalElements]="batchPage.totalElements" (searchChange)="onSearchChange($event)"
         (pageChange)="onPageChange($event)" (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)"
-        (activate)="onActivateBatch($event)"></app-stock-batch-table>
+        (activate)="onActivateBatch($event)" (newBatch)="openNewBatchModal()"></app-stock-batch-table>
       }
     </section>
 
     <aside class="sidebar-column custom-scrollbar">
       <app-stock-sidebar-widgets [expiringBatches]="(expiringBatches$ | async) ?? []"
-      [expiredBatches]="(expiredBatches$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
-      [selectedExpiredDays]="(expiredDays$ | async) ?? 3" [loadingExpiring]="loadingExpiring"
-      [loadingExpired]="loadingExpired" (expiringDaysChange)="onExpiringDaysChange($event)"
-      (expiredDaysChange)="onExpiredDaysChange($event)"></app-stock-sidebar-widgets>
+        [expiredBatches]="(expiredBatches$ | async) ?? []" [selectedExpiringDays]="(expiringDays$ | async) ?? 3"
+        [selectedExpiredDays]="(expiredDays$ | async) ?? 3" [loadingExpiring]="loadingExpiring"
+        [loadingExpired]="loadingExpired" (expiringDaysChange)="onExpiringDaysChange($event)"
+        (expiredDaysChange)="onExpiredDaysChange($event)"></app-stock-sidebar-widgets>
     </aside>
   </div>
 </div>
+
+<app-base-modal
+  [isOpen]="isBatchModalOpen()"
+  [title]="editingBatchId() ? 'Editar Lote' : 'Cadastrar Novo Lote'"
+  [subtitle]="editingBatchId() ? 'Atualize as informações do lote selecionado' : 'Preencha os dados do lote para dar entrada no inventário de insumos'"
+  size="lg"
+  minHeight="580px"
+  (close)="closeBatchModal()"
+>
+  <div modal-body>
+    <app-batch-form
+      [group]="batchForm"
+      [showProductSelect]="!editingBatchId()"
+      [products]="products()"
+      [searchProductsFn]="searchProductsFn"
+    ></app-batch-form>
+  </div>
+
+  <div modal-footer class="modal-footer-actions">
+    <button type="button" appButton variant="outline" (click)="closeBatchModal()" [disabled]="isSavingBatch()">
+      Cancelar
+    </button>
+    <button type="button" appButton variant="primary" (click)="onSaveBatch()" [loading]="isSavingBatch()">
+      {{ editingBatchId() ? 'Salvar Alterações' : 'Cadastrar Lote' }}
+    </button>
+  </div>
+</app-base-modal>
 }

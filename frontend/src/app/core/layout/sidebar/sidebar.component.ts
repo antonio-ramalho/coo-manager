@@ -2,16 +2,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   LucideBarcode,
+  LucideBuilding,
   LucideChevronLeft,
   LucideChevronRight,
   LucideDollarSign,
   LucideLayoutDashboard,
   LucideShoppingCart,
   LucideTruck,
+  LucideUserCheck,
   LucideUsers,
   LucideX,
 } from '@lucide/angular';
 import { NavSection } from '../../models/nav-item.model';
+import { APP_CONFIG } from '../../constants/app.constants';
 
 /**
  * Dumb Component responsável pela renderização da barra lateral de navegação.
@@ -30,6 +33,8 @@ import { NavSection } from '../../models/nav-item.model';
     LucideUsers,
     LucideShoppingCart,
     LucideBarcode,
+    LucideBuilding,
+    LucideUserCheck,
     LucideX,
   ],
   templateUrl: './sidebar.component.html',
@@ -42,6 +47,8 @@ export class SidebarComponent {
 
   @Output() toggleCollapse = new EventEmitter<void>();
   @Output() closeMobile = new EventEmitter<void>();
+
+  readonly appConfig = APP_CONFIG;
   @Output() navigate = new EventEmitter<void>();
 
   onNavigate(): void {

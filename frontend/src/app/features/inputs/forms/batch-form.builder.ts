@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from '../../../shared/validators/custom-validators';
+import { CustomValidators } from '../../../shared/validators';
 
 export function buildBatchForm(fb: FormBuilder, isStandalone: boolean = false): FormGroup {
   return fb.group({

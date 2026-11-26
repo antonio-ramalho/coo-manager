@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { LucideCalendar, LucideFileText, LucideUser, LucideUserCheck } from '@lucide/angular';
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
 import { formatDocument } from '../../../../shared/utils/document-format';
+import { Status } from '../../../../shared/enums/status';
 import { SaleClientPreview } from '../../models/sales-transaction.model';
 
 /**
@@ -27,6 +28,8 @@ import { SaleClientPreview } from '../../models/sales-transaction.model';
 export class SaleClientStepComponent {
   @Input() clientPreview: SaleClientPreview | null = null;
   @Input() isLoadingDetails = false;
+
+  readonly Status = Status;
 
   formatDoc(doc: string): string {
     return formatDocument(doc);

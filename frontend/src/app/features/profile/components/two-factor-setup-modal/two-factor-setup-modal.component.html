@@ -1,0 +1,71 @@
+<app-base-modal [isOpen]="isOpen" [title]="'Ativar Autenticação em Duas Etapas'"
+  [subtitle]="'Configure o aplicativo autenticador no seu celular para aumentar a segurança.'" size="md"
+  (close)="onClose()">
+  <div class="modal-body">
+    <!-- Passo 1: Leitura do QR Code -->
+    <div class="step-card">
+      <span class="step-badge">Passo 1</span>
+      <h4 class="step-title">Escaneie o QR Code</h4>
+      <p class="step-description">
+        Abra seu aplicativo autenticador (Google Authenticator, Microsoft Authenticator, Authy ou similar) e aponte a
+        câmera para o QR Code abaixo:
+      </p>
+
+      <div class="qr-container">
+        @if (qrSvg) {
+        <div class="qr-wrapper" [innerHTML]="qrSvg"></div>
+        } @else {
+        <div class="qr-placeholder">Gerando QR Code...</div>
+        }
+      </div>
+    </div>
+
+    <!-- Passo 2: Digitação Manual (Alternativa) -->
+    <div class="step-card">
+      <span class="step-badge">Passo 2</span>
+      <h4 class="step-title">Ou insira a chave manualmente</h4>
+      <p class="step-description">
+        Se não conseguir escanear, digite ou copie o código secreto diretamente no aplicativo:
+      </p>
+
+      <div class="secret-box">
+        <code class="secret-code">{{ secret }}</code>
+        <button type="button" (click)="copySecret()" class="btn-copy" aria-label="Copiar chave secreta">
+          @if (copied) {
+          <svg lucideCheck class="copy-icon"></svg>
+          } @else {
+          <svg lucideCopy class="copy-icon"></svg>
+          }
+          <span>{{ copied ? 'Copiado!' : 'Copiar' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Passo 3: Confirmação do Código -->
+    <div class="step-card">
+      <span class="step-badge">Passo 3</span>
+      <h4 class="step-title">Confirme com o código gerado</h4>
+      <p class="step-description">
+        Insira o código numérico de 6 dígitos exibido no seu aplicativo autenticador para validar a sincronização:
+      </p>
+
+      <div class="code-input-wrapper">
+        <input type="text" [formControl]="codeControl" placeholder="000000" maxlength="6" class="code-input"
+          [class.input-error]="codeControl.touched && codeControl.invalid" />
+      </div>
+      @if (codeControl.touched && codeControl.invalid) {
+      <span class="error-text">O código deve conter exatamente 6 dígitos numéricos.</span>
+      }
+    </div>
+  </div>
+
+  <div slot="footer" class="modal-footer">
+    <button appButton variant="outline" (click)="onClose()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button appButton variant="primary" (click)="onSubmit()" [disabled]="codeControl.invalid || loading"
+      [loading]="loading">
+      Verificar e Ativar
+    </button>
+  </div>
+</app-base-modal>

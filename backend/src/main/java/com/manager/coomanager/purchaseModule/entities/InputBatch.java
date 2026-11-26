@@ -1,10 +1,12 @@
 package com.manager.coomanager.purchaseModule.entities;
 
-import com.manager.coomanager.infrastructure.valueObjects.ExpirationDate;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
+import com.manager.coomanager.shared.domain.valueobjects.ExpirationDate;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
 import com.manager.coomanager.purchaseModule.enums.ProductInventoryStatus;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
-import com.manager.coomanager.infrastructure.exceptions.InsufficientStockException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
+import com.manager.coomanager.purchaseModule.exceptions.InsufficientStockException;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serial;
@@ -16,10 +18,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_input_batch")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class InputBatch implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class InputBatch extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -61,7 +64,8 @@ public class InputBatch implements Serializable {
     private List<InputPurchaseItem> inputPurchaseItems;
 
     public InputBatch(String batchCode, Quantity currentQuantity, InputProduct inputProduct,
-                      Quantity originalQuantity, ExpirationDate expirationDate) {
+            Quantity originalQuantity, ExpirationDate expirationDate) {
+        super();
         this.batchCode = batchCode;
         this.currentQuantity = currentQuantity;
         this.inputProduct = inputProduct;
@@ -69,17 +73,21 @@ public class InputBatch implements Serializable {
         this.expirationDate = expirationDate;
         this.entryDate = LocalDate.now();
         this.uuid = UUID.randomUUID();
+        if (this.getCooperativeId() == null && inputProduct != null && inputProduct.getCooperativeId() != null) {
+            this.setCooperativeId(inputProduct.getCooperativeId());
+        }
         updateStatusByStock();
     }
 
     public InputBatch(Quantity currentQuantity, InputProduct inputProduct,
-                      Quantity originalQuantity, ExpirationDate expirationDate) {
+            Quantity originalQuantity, ExpirationDate expirationDate) {
         this(null, currentQuantity, inputProduct, originalQuantity, expirationDate);
     }
 
     public void updateExpirationDate(@NonNull ExpirationDate newDate) {
         this.expirationDate = newDate;
     }
+
     public void checkStock(Quantity amount) {
         if (amount.compareTo(this.currentQuantity) > 0) {
             throw new InsufficientStockException("Existem apenas: " + currentQuantity + " em estoque!");
@@ -119,7 +127,8 @@ public class InputBatch implements Serializable {
     }
 
     public void decreaseQuantity(@NonNull Quantity amount) {
-        if ((this.productStatus != ProductInventoryStatus.IN_STOCK && this.productStatus != ProductInventoryStatus.LOW_STOCK) ||
+        if ((this.productStatus != ProductInventoryStatus.IN_STOCK
+                && this.productStatus != ProductInventoryStatus.LOW_STOCK) ||
                 this.expirationDate.isExpired()) {
             throw new DomainException("Lote vencido ou sem estoque.");
         }

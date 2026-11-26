@@ -1,0 +1,104 @@
+@use "tailwind-ref";
+
+.modal-body {
+  @apply flex flex-col gap-4 py-2;
+}
+
+.tip-badge {
+  @apply text-[10px] font-bold uppercase tracking-wider text-emerald-800;
+}
+
+.tip-text {
+  @apply leading-relaxed text-emerald-900;
+}
+
+.step-card {
+  @apply p-4 rounded-xl border flex flex-col gap-2;
+  background-color: #f9fafb;
+  border-color: var(--border-neutral);
+}
+
+.step-badge {
+  @apply inline-flex self-start px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider;
+  background-color: #f0fdf4;
+  color: var(--primary-base);
+  border: 1px solid #bbf7d0;
+}
+
+.step-title {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.step-description {
+  @apply text-xs leading-relaxed;
+  color: var(--text-aux);
+}
+
+.qr-container {
+  @apply flex justify-center items-center py-2;
+}
+
+.qr-wrapper {
+  @apply p-2 rounded-xl bg-white shadow-sm border border-neutral-200 w-48 h-48 flex items-center justify-center;
+}
+
+.qr-placeholder {
+  @apply text-xs italic;
+  color: var(--text-aux);
+}
+
+.secret-box {
+  @apply flex items-center justify-between p-2.5 rounded-lg border gap-2;
+  background-color: #ffffff;
+  border-color: var(--border-neutral);
+}
+
+.secret-code {
+  @apply text-xs font-mono font-bold tracking-widest break-all select-all;
+  color: var(--text-main);
+}
+
+.btn-copy {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors shrink-0;
+  background-color: #f9fafb;
+  border-color: var(--border-neutral);
+  color: var(--text-main);
+
+  &:hover {
+    border-color: var(--primary-base);
+    color: var(--primary-base);
+  }
+}
+
+.copy-icon {
+  @apply w-3.5 h-3.5;
+}
+
+.code-input-wrapper {
+  @apply flex justify-center py-1;
+}
+
+.code-input {
+  @apply w-48 py-2.5 px-4 text-center text-2xl font-mono font-bold tracking-[0.35em] rounded-lg border outline-none transition-all;
+  background-color: #ffffff;
+  border-color: var(--border-neutral);
+  color: var(--text-main);
+
+  &:focus {
+    border-color: var(--primary-base);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+  }
+
+  &.input-error {
+    border-color: #ef4444;
+  }
+}
+
+.error-text {
+  @apply text-xs font-medium text-red-500 text-center;
+}
+
+.modal-footer {
+  @apply flex items-center justify-end gap-3 w-full pt-2;
+}

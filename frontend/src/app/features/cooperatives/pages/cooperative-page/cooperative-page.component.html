@@ -1,0 +1,186 @@
+<div class="page-container">
+  <!-- Cabeçalho -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dados da Cooperativa</h1>
+      <p class="page-subtitle">Informações cadastrais, Inscrição Estadual e localização da entidade</p>
+    </div>
+    @if (cooperative() && !isLoading()) {
+      <div class="header-actions">
+        @if (!isEditing()) {
+          <button appButton variant="primary" (click)="toggleEdit()">
+            <span>Editar Informações</span>
+          </button>
+        } @else {
+          <button appButton variant="outline" (click)="toggleEdit()" [disabled]="isSaving()">
+            <span>Cancelar</span>
+          </button>
+          <button appButton variant="primary" (click)="onSave()" [loading]="isSaving()">
+            <span>Salvar Alterações</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+    <div class="loading-box">
+      <app-loading-spinner size="lg"></app-loading-spinner>
+      <span class="loading-label">Carregando dados organizacionais...</span>
+    </div>
+  }
+
+  <!-- Conteúdo Principal -->
+  @if (!isLoading() && cooperative(); as coop) {
+    <!-- Modo Visualização -->
+    @if (!isEditing()) {
+      <div class="cooperative-grid">
+        <div class="content-card col-span-corp">
+          <h2 class="card-title">Identificação Corporativa</h2>
+          <div class="corp-info-grid">
+            <div class="info-item">
+              <span class="info-label">Razão Social</span>
+              <span class="info-value font-semibold">{{ coop.legalName }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Nome Fantasia</span>
+              <span class="info-value">{{ coop.tradeName }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">CNPJ</span>
+              <span class="info-value font-mono">{{ coop.cnpj }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Inscrição Estadual</span>
+              <span class="info-value font-mono">{{ coop.stateRegistration }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">E-mail Institucional</span>
+              <span class="info-value">{{ coop.email }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Telefone de Contato</span>
+              <span class="info-value">{{ coop.phone }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Data de Fundação</span>
+              <span class="info-value">{{ coop.foundationDate || 'Não informada' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Data de Cadastro no Sistema</span>
+              <span class="info-value info-highlight">
+                {{ coop.registrationDate | date: 'dd/MM/yyyy HH:mm' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2 class="card-title">Status da Conta</h2>
+          <div class="status-list">
+            <div class="status-row">
+              <span class="status-row-label">Situação Cadastral</span>
+              <span class="badge" [class.badge-active]="coop.status === Status.ACTIVE">
+                {{ coop.status === Status.ACTIVE ? 'Ativa' : coop.status }}
+              </span>
+            </div>
+            <div class="status-row">
+              <span class="status-row-label">Identificador de Tenant</span>
+              <span class="tenant-id">ID #{{ coop.id }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card col-span-full">
+          <h2 class="card-title">Sede e Endereço</h2>
+          <div class="address-info-grid">
+            <div class="info-item col-span-street">
+              <span class="info-label">Logradouro</span>
+              <span class="info-value">{{ coop.address.street }}, nº {{ coop.address.number }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Bairro</span>
+              <span class="info-value">{{ coop.address.neighborhood }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Cidade / UF</span>
+              <span class="info-value">{{ coop.address.city }} - {{ coop.address.state }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">CEP</span>
+              <span class="info-value font-mono">{{ coop.address.zipCode }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (isEditing()) {
+      <form [formGroup]="cooperativeForm" class="content-card form-card">
+        <h2 class="card-title mb-4">Editar Dados Cadastrais</h2>
+
+        <div class="form-grid-corp">
+          <div class="form-group">
+            <label class="form-label">Razão Social <span class="txt-required">*</span></label>
+            <input type="text" formControlName="legalName" class="form-input" />
+            <app-input-error [control]="cooperativeForm.get('legalName')" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nome Fantasia <span class="txt-required">*</span></label>
+            <input type="text" formControlName="tradeName" class="form-input" />
+            <app-input-error [control]="cooperativeForm.get('tradeName')" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">CNPJ (Imutável)</label>
+            <input type="text" formControlName="cnpj" class="form-input input-disabled" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Inscrição Estadual <span class="txt-required">*</span></label>
+            <input type="text" formControlName="stateRegistration" class="form-input" placeholder="Dígitos ou ISENTO" />
+            <app-input-error [control]="cooperativeForm.get('stateRegistration')" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">E-mail Institucional <span class="txt-required">*</span></label>
+            <input type="email" formControlName="email" class="form-input" />
+            <app-input-error [control]="cooperativeForm.get('email')" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Telefone <span class="txt-required">*</span></label>
+            <input type="text" formControlName="phone" class="form-input" />
+            <app-input-error [control]="cooperativeForm.get('phone')" />
+          </div>
+        </div>
+
+        <h3 class="card-subtitle mt-6 mb-3">Endereço</h3>
+        <div formGroupName="address" class="form-grid-address">
+          <div class="form-group col-span-street">
+            <label class="form-label">Rua / Logradouro <span class="txt-required">*</span></label>
+            <input type="text" formControlName="street" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número <span class="txt-required">*</span></label>
+            <input type="text" formControlName="number" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bairro <span class="txt-required">*</span></label>
+            <input type="text" formControlName="neighborhood" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cidade <span class="txt-required">*</span></label>
+            <input type="text" formControlName="city" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado (UF) <span class="txt-required">*</span></label>
+            <input type="text" formControlName="state" class="form-input" />
+          </div>
+        </div>
+      </form>
+    }
+  }
+</div>

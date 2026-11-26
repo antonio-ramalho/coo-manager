@@ -2,9 +2,11 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map } from 'rxjs';
 
-import { PageTitleComponent } from '../../../../shared/components/layout/page-title/page-title.component';
+import { StandardFormLayoutComponent } from '../../../../shared/components/layout/form-layouts/standard-form-layout/standard-form-layout.component';
 import { StepperComponent } from '../../../../shared/components/layout/stepper/stepper.component';
 import { PersonForm } from '../../../../shared/components/forms/person-form/person-form-component';
 import { NaturalPersonFormComponent } from '../../../../shared/components/forms/natural-person-form/natural-person-form-component';
@@ -26,7 +28,7 @@ import { Client, ClientPayload } from '../../models/client.model';
   selector: 'app-client-form',
   imports: [
     ReactiveFormsModule,
-    PageTitleComponent,
+    StandardFormLayoutComponent,
     StepperComponent,
     PersonForm,
     NaturalPersonFormComponent,
@@ -34,6 +36,7 @@ import { Client, ClientPayload } from '../../models/client.model';
     AddressFormComponent,
   ],
   templateUrl: './client-form.component.html',
+  styleUrl: './client-form.component.scss',
 })
 export class ClientFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -42,6 +45,12 @@ export class ClientFormComponent implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isDesktop = toSignal(
+    this.breakpointObserver.observe('(min-width: 768px)').pipe(map((result) => result.matches)),
+    { initialValue: true },
+  );
 
   readonly PersonType = PersonType;
   readonly masterForm: FormGroup = buildClientForm(this.fb);

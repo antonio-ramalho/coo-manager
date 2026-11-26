@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { LucideMonitor } from '@lucide/angular';
+import { APP_CONFIG } from '../../../../core/constants/app.constants';
 
 /**
  * Dumb component para degradação graciosa em telas de alta densidade de dados.
@@ -12,4 +13,5 @@ import { LucideMonitor } from '@lucide/angular';
 })
 export class DesktopOnlyNoticeComponent {
   @Input({ required: true }) featureName!: string;
+  readonly appConfig = APP_CONFIG;
 }

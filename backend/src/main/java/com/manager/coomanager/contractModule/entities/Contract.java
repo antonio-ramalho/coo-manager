@@ -1,19 +1,21 @@
 package com.manager.coomanager.contractModule.entities;
 
-import com.manager.coomanager.produtcModule.entities.AgriculturalProduct;
-import com.manager.coomanager.personModule.entities.ConsumerUnit;
-import com.manager.coomanager.personModule.entities.Farmer;
-import com.manager.coomanager.personModule.entities.Institution;
-import com.manager.coomanager.infrastructure.valueObjects.Price;
-import com.manager.coomanager.infrastructure.valueObjects.Quantity;
-import com.manager.coomanager.personModule.enums.DocumentStatus;
+import com.manager.coomanager.productModule.entities.AgriculturalProduct;
+import com.manager.coomanager.contractModule.entities.ConsumerUnit;
+import com.manager.coomanager.farmerModule.entities.Farmer;
+import com.manager.coomanager.contractModule.entities.Institution;
+import com.manager.coomanager.shared.domain.valueobjects.Price;
+import com.manager.coomanager.shared.domain.valueobjects.Quantity;
+import com.manager.coomanager.farmerModule.enums.DocumentStatus;
 import com.manager.coomanager.contractModule.enums.ParticipationLimitRule;
 import com.manager.coomanager.contractModule.enums.ProductDeliveryRule;
-import com.manager.coomanager.infrastructure.exceptions.DomainException;
+import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import com.manager.coomanager.shared.domain.entities.TenantEntity;
+import org.hibernate.annotations.Filter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,10 +24,11 @@ import java.util.*;
 
 @Entity
 @Table(name = "tb_contracts")
+@Filter(name = "tenantFilter", condition = "cooperative_id = :cooperativeId")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Contract implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Contract extends TenantEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

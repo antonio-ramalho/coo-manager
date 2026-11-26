@@ -1,0 +1,180 @@
+@use "tailwind-ref";
+
+.login-wrapper {
+  @apply min-h-screen flex items-center justify-center;
+  background-color: var(--bg-app);
+  padding: 1.5rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+}
+
+.login-header {
+  @apply text-center;
+  margin-bottom: 2rem;
+}
+
+.logo-badge {
+  @apply inline-flex items-center justify-center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-card);
+  background-color: var(--primary-light);
+  margin-bottom: 0.75rem;
+
+  .logo-icon {
+    color: var(--primary-base);
+  }
+}
+
+.login-title {
+  @apply text-2xl font-bold;
+  color: var(--text-main);
+  letter-spacing: -0.025em;
+  margin-bottom: 0.25rem;
+}
+
+.login-subtitle {
+  @apply text-sm;
+  color: var(--text-aux);
+}
+
+.alert-box {
+  @apply flex items-center;
+  gap: 0.75rem;
+  background-color: var(--primary-red-alert);
+  border: var(--border-width) solid #ffcdd2;
+  color: var(--red-alert);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-btn);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+
+  .alert-icon {
+    @apply shrink-0;
+    color: var(--red-alert);
+  }
+}
+
+.login-form {
+  @apply flex flex-col;
+  gap: 1.25rem;
+}
+
+.submit-btn {
+  @apply w-full;
+  margin-top: 0.5rem;
+}
+
+.divider {
+  @apply flex items-center;
+  margin: 1.5rem 0;
+
+  .divider-line {
+    @apply flex-1;
+    height: 1px;
+    background-color: var(--border-neutral);
+  }
+
+  .divider-text {
+    @apply px-3 text-xs uppercase tracking-wider;
+    color: var(--text-aux);
+  }
+}
+
+.google-btn {
+  @apply w-full flex items-center justify-center cursor-pointer transition-colors duration-200;
+  padding: 0.625rem 1rem;
+  background-color: var(--bg-surface);
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-btn);
+
+  &:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .google-icon {
+    @apply w-5 h-5;
+    margin-right: 0.75rem;
+  }
+}
+
+.totp-container {
+  @apply flex flex-col items-center text-center;
+}
+
+.totp-badge {
+  @apply inline-flex items-center justify-center rounded-full;
+  width: 60px;
+  height: 60px;
+  background-color: var(--primary-light);
+  margin-bottom: 1rem;
+
+  .totp-icon {
+    color: var(--primary-base);
+  }
+}
+
+.totp-title {
+  @apply text-xl font-bold;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.totp-instruction {
+  @apply text-sm;
+  color: var(--text-aux);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.totp-form {
+  @apply mt-4;
+}
+
+.totp-input {
+  width: 200px;
+  margin: 0 auto;
+  font-family: monospace;
+  font-size: 1.75rem;
+  letter-spacing: 0.35em;
+  text-align: center;
+  padding: 0.625rem;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--border-neutral);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-base);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+  }
+}
+
+.back-btn {
+  @apply text-sm transition-colors cursor-pointer;
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-aux);
+
+  &:hover {
+    color: var(--primary-base);
+    text-decoration: underline;
+  }
+}

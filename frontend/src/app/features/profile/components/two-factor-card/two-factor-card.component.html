@@ -1,0 +1,70 @@
+<div class="two-factor-card">
+  <div class="card-header">
+    <div class="header-icon-container" [class.icon-active]="twoFactorEnabled" [class.icon-inactive]="!twoFactorEnabled">
+      @if (twoFactorEnabled) {
+      <svg lucideShieldCheck class="header-icon"></svg>
+      } @else {
+      <svg lucideShield class="header-icon"></svg>
+      }
+    </div>
+
+    <div class="header-info">
+      <div class="title-row">
+        <h2 class="card-title">Autenticação em Duas Etapas</h2>
+        <span class="status-pill" [class.pill-active]="twoFactorEnabled" [class.pill-inactive]="!twoFactorEnabled">
+          @if (twoFactorEnabled) {
+          <svg lucideCheckCircle2 class="pill-icon"></svg>
+          } @else {
+          <svg lucideAlertTriangle class="pill-icon"></svg>
+          }
+          {{ twoFactorEnabled ? 'Ativo' : 'Inativo' }}
+        </span>
+      </div>
+      <p class="card-subtitle">
+        Adicione uma camada adicional de proteção exigindo um código gerado por aplicativo autenticador no seu
+        smartphone ao entrar no sistema.
+      </p>
+    </div>
+  </div>
+
+  <div class="card-divider"></div>
+
+  <div class="card-body">
+    @if (twoFactorEnabled) {
+    <div class="status-box box-active">
+      <svg lucideSmartphone class="box-icon"></svg>
+      <div class="box-content">
+        <h4 class="box-title">Proteção 2FA Ativada</h4>
+        <p class="box-desc">
+          Sua conta está protegida. Sempre que você efetuar login em um novo dispositivo, será solicitada a chave
+          temporária de 6 dígitos do seu aplicativo autenticador.
+        </p>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button appButton variant="outline" (click)="onDisable()" class="btn-disable-2fa">
+        Desativar Autenticação em Duas Etapas
+      </button>
+    </div>
+    } @else {
+    <div class="status-box box-inactive">
+      <svg lucideAlertTriangle class="box-icon"></svg>
+      <div class="box-content">
+        <h4 class="box-title">Segurança Recomendada</h4>
+        <p class="box-desc">
+          Recomendamos fortemente a ativação da autenticação de dois fatores para proteger os dados sensíveis dos
+          cooperados, insumos e finanças
+          contra acessos não autorizados.
+        </p>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button appButton variant="primary" (click)="onSetup()">
+        Configurar Segundo Fator
+      </button>
+    </div>
+    }
+  </div>
+</div>

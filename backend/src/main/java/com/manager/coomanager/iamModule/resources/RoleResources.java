@@ -43,7 +43,7 @@ public class RoleResources {
     @PutMapping("/{id}")
     public ResponseEntity<RoleResponseDto> update(@PathVariable Long id, @RequestBody RoleRequestDto dto) {
         RoleResponseDto updated = roleService.update(id, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(updated);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

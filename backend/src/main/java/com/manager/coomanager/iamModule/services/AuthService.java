@@ -64,7 +64,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponseDto verifyTwoFactor(TotpVerifyRequestDto dto) {
         if (dto.preAuthToken() == null || dto.code() == null) {
-            throw new BadCredentialsException("Token parcial e código TOTP são obrigatórios.");
+            throw new BadCredentialsException("Token parcial e código são obrigatórios.");
         }
 
         if (!jwtService.validateToken(dto.preAuthToken()) || !jwtService.isPreAuthToken(dto.preAuthToken())) {
@@ -82,7 +82,7 @@ public class AuthService {
 
         boolean isValid = totpService.verifyCode(user.getTwoFactorSecret(), dto.code());
         if (!isValid) {
-            throw new BadCredentialsException("Código 2FA incorreto ou expirado.");
+            throw new BadCredentialsException("Código incorreto ou expirado.");
         }
 
         String accessToken = jwtService.generateAccessToken(user);
@@ -103,7 +103,7 @@ public class AuthService {
 
         boolean isValid = totpService.verifyCode(dto.secret(), dto.code());
         if (!isValid) {
-            throw new DomainException("Código TOTP inválido. Verifique o aplicativo autenticador e tente novamente.");
+            throw new DomainException("Código inválido. Verifique o aplicativo autenticador e tente novamente.");
         }
 
         user.enableTwoFactor(dto.secret());
@@ -115,12 +115,12 @@ public class AuthService {
         User user = getAuthenticatedUserEntity();
 
         if (!user.isTwoFactorEnabled()) {
-            throw new DomainException("O 2FA já se encontra desativado.");
+            throw new DomainException("A autenticação de dois fatores já se encontra desativado.");
         }
 
         boolean isValid = totpService.verifyCode(user.getTwoFactorSecret(), code);
         if (!isValid) {
-            throw new DomainException("Código TOTP incorreto. Não foi possível desativar o 2FA.");
+            throw new DomainException("Código incorreto. Não foi possível desativar a autenticação de dois fatores.");
         }
 
         user.disableTwoFactor();

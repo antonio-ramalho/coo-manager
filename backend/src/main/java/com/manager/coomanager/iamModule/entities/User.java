@@ -105,7 +105,7 @@ public class User implements Serializable {
     }
 
     public void enableTwoFactor(String secret) {
-        this.twoFactorSecret = Objects.requireNonNull(secret, "O segredo 2FA não pode ser nulo.");
+        this.twoFactorSecret = Objects.requireNonNull(secret, "O código não pode ser nulo.");
         this.twoFactorEnabled = true;
     }
 

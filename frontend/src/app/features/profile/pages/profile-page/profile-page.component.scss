@@ -1,0 +1,165 @@
+@use "tailwind-ref";
+
+.profile-layout {
+  @apply min-h-screen flex flex-col;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+}
+
+.profile-topbar {
+  @apply sticky top-0 z-30 border-b;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.topbar-inner {
+  @apply max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between;
+}
+
+.topbar-brand {
+  @apply flex items-center gap-3 sm:gap-4;
+}
+
+.btn-back {
+  @apply inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-semibold border transition-all;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  color: var(--text-main);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  &:hover {
+    border-color: var(--primary-base);
+    color: var(--primary-base);
+    background-color: var(--bg-surface-hover);
+  }
+}
+
+.back-icon {
+  @apply w-4 h-4;
+}
+
+.brand-divider {
+  @apply h-6 w-px;
+  background-color: var(--border-neutral);
+}
+
+.brand-info {
+  @apply hidden sm:flex flex-col;
+}
+
+.brand-title {
+  @apply text-sm font-bold tracking-tight leading-none;
+  color: var(--text-main);
+}
+
+.brand-subtitle {
+  @apply text-[11px] font-medium leading-tight mt-0.5;
+  color: var(--text-aux);
+}
+
+.topbar-user {
+  @apply flex items-center gap-3;
+}
+
+.user-chip {
+  @apply flex flex-col items-end;
+}
+
+.chip-name {
+  @apply text-sm font-bold leading-tight;
+  color: var(--text-main);
+}
+
+.chip-coop {
+  @apply text-xs leading-tight mt-0.5;
+  color: var(--text-aux);
+}
+
+.profile-main {
+  @apply flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8;
+}
+
+.loading-state {
+  @apply flex items-center justify-center py-20;
+}
+
+.profile-grid {
+  @apply grid grid-cols-1 md:grid-cols-12 gap-8 items-start;
+}
+
+.submenu-container {
+  @apply md:col-span-4 lg:col-span-4;
+}
+
+.submenu-nav {
+  @apply flex flex-col gap-1.5 rounded-xl border p-2.5;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  box-shadow: var(--shadow-card);
+}
+
+.submenu-item {
+  @apply flex items-start gap-3.5 p-3.5 rounded-lg text-left transition-all border border-transparent;
+  color: var(--text-aux);
+
+  &:hover {
+    background-color: var(--bg-surface-hover);
+    color: var(--text-main);
+  }
+
+  &.active {
+    background-color: #f0fdf4;
+    color: var(--primary-base);
+    border-color: rgba(22, 163, 74, 0.25);
+    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.06);
+
+    .nav-icon {
+      color: var(--primary-base);
+    }
+
+    .nav-label {
+      color: var(--text-main);
+      @apply font-bold;
+    }
+  }
+}
+
+.nav-icon {
+  @apply w-5 h-5 shrink-0 mt-0.5;
+  color: var(--text-aux);
+}
+
+.nav-text-group {
+  @apply flex flex-col gap-0.5 min-w-0 flex-1;
+}
+
+.label-badge-row {
+  @apply flex items-center justify-between gap-1.5;
+}
+
+.nav-label {
+  @apply text-sm font-medium;
+  color: var(--text-main);
+}
+
+.nav-sub {
+  @apply text-xs;
+  color: var(--text-aux);
+}
+
+.tab-pill {
+  @apply text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full;
+
+  &.pill-active {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+
+  &.pill-inactive {
+    @apply bg-amber-50 text-amber-700 border border-amber-200;
+  }
+}
+
+.tab-content-area {
+  @apply md:col-span-8 lg:col-span-8 min-w-0;
+}

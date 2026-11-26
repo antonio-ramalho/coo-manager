@@ -59,7 +59,7 @@ export class TopbarComponent {
     return [
       {
         label: 'Meu Perfil',
-        action: () => this.navigateTo('/home/funcionarios'),
+        action: () => this.navigateTo('/perfil'),
       },
       {
         label: 'Configurações',

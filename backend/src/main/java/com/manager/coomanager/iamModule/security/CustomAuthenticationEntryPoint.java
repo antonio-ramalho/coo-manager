@@ -14,7 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Ponto de entrada customizado para requisições não autenticadas (HTTP 401 Unauthorized).
+ * Ponto de entrada customizado para requisições não autenticadas (HTTP 401
+ * Unauthorized).
  */
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -23,8 +24,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request,
-                         HttpServletResponse response,
-                         AuthenticationException authException) throws IOException {
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
@@ -32,10 +33,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         body.put("timestamp", Instant.now().toString());
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
-        body.put("message", "Acesso não autorizado. Token JWT ausente, inválido ou expirado.");
+        body.put("message",
+                "Acesso não autorizado. Verifique suas credenciais ou entre em contato com um administrador.");
         body.put("path", request.getRequestURI());
 
         objectMapper.writeValue(response.getOutputStream(), body);
     }
 }
-

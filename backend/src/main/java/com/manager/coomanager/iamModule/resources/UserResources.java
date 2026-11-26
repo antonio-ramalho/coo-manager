@@ -1,10 +1,12 @@
 package com.manager.coomanager.iamModule.resources;
 
+import com.manager.coomanager.iamModule.dto.ChangePasswordDto;
 import com.manager.coomanager.iamModule.dto.UserMinDto;
 import com.manager.coomanager.iamModule.dto.UserRequestDto;
 import com.manager.coomanager.iamModule.dto.UserResponseDto;
 import com.manager.coomanager.iamModule.dto.UserUpdateDto;
 import com.manager.coomanager.iamModule.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +59,14 @@ public class UserResources {
     @PreAuthorize("hasAuthority('USER_MANAGE') or (authentication.principal != null and authentication.principal.id == #id)")
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
         UserResponseDto updated = userService.update(id, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(updated);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}/change-password")
+    @PreAuthorize("authentication.principal != null and authentication.principal.id == #id")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordDto dto) {
+        userService.changePassword(id, dto);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/activate")

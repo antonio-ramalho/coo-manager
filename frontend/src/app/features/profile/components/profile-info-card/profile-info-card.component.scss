@@ -1,0 +1,129 @@
+@use "tailwind-ref";
+
+.profile-card {
+  @apply rounded-xl border p-6;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  box-shadow: var(--shadow-card);
+}
+
+.card-header {
+  @apply flex flex-col sm:flex-row items-center sm:items-start gap-5;
+}
+
+.avatar-container {
+  @apply w-20 h-20 rounded-full flex items-center justify-center font-bold text-2xl text-white shrink-0 shadow-sm;
+  background: linear-gradient(135deg, var(--primary-base) 0%, #15803d 100%);
+}
+
+.avatar-initials {
+  @apply select-none tracking-wider;
+}
+
+.header-details {
+  @apply flex flex-col items-center sm:items-start gap-1 min-w-0;
+}
+
+.user-fullname {
+  @apply text-2xl font-bold tracking-tight;
+  color: var(--text-main);
+  overflow-wrap: break-word;
+}
+
+.user-email-text {
+  @apply flex items-center gap-1.5 text-sm;
+  color: var(--text-aux);
+  overflow-wrap: break-word;
+}
+
+.info-icon {
+  @apply w-4 h-4 shrink-0;
+}
+
+.status-badge-container {
+  @apply mt-2;
+}
+
+.status-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  background-color: #f3f4f6;
+  color: var(--text-aux);
+
+  &.badge-active {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+}
+
+.card-divider {
+  @apply my-6 border-t;
+  border-color: var(--border-neutral);
+}
+
+.card-body {
+  @apply flex flex-col gap-6;
+}
+
+.info-section {
+  @apply flex flex-col gap-3;
+}
+
+.section-title {
+  @apply flex items-center gap-2 text-base font-semibold;
+  color: var(--text-main);
+}
+
+.section-icon {
+  @apply w-5 h-5;
+  color: var(--primary-base);
+}
+
+.info-box {
+  @apply flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 p-3.5 rounded-lg border;
+  background-color: #f9fafb;
+  border-color: var(--border-neutral);
+}
+
+.info-label {
+  @apply text-xs font-medium uppercase tracking-wider;
+  color: var(--text-aux);
+}
+
+.info-value {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.roles-grid {
+  @apply flex flex-wrap gap-2.5;
+}
+
+.role-badge-card {
+  @apply flex flex-col p-3 rounded-lg border min-w-[160px];
+  background-color: #f9fafb;
+  border-color: var(--border-neutral);
+}
+
+.role-name {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.role-desc {
+  @apply text-xs mt-0.5;
+  color: var(--text-aux);
+}
+
+.empty-roles {
+  @apply text-sm italic;
+  color: var(--text-aux);
+}
+
+.security-notice {
+  @apply p-3.5 rounded-lg border text-xs;
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.notice-text {
+  @apply leading-relaxed text-blue-900;
+}

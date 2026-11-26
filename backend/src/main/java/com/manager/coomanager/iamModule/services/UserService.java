@@ -7,6 +7,7 @@ import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException
 import com.manager.coomanager.iamModule.security.UserPrincipal;
 import com.manager.coomanager.shared.domain.valueobjects.Email;
 import com.manager.coomanager.shared.domain.valueobjects.PasswordHash;
+import com.manager.coomanager.iamModule.dto.ChangePasswordDto;
 import com.manager.coomanager.iamModule.dto.UserMinDto;
 import com.manager.coomanager.iamModule.dto.UserRequestDto;
 import com.manager.coomanager.iamModule.dto.UserResponseDto;
@@ -137,6 +138,34 @@ public class UserService {
 
         User updated = userRepository.save(user);
         return new UserResponseDto(updated);
+    }
+
+    @Transactional
+    public void changePassword(Long id, ChangePasswordDto dto) {
+        if (!dto.newPassword().equals(dto.confirmPassword())) {
+            throw new DomainException("A nova senha e a confirmação de senha não conferem.");
+        }
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o ID: " + id));
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof UserPrincipal p) {
+            if (!Objects.equals(id, p.getId())) {
+                throw new AccessDeniedException("Você só tem permissão para alterar a sua própria senha.");
+            }
+        }
+
+        if (!passwordEncoder.matches(dto.currentPassword(), user.getPasswordHash().getHash())) {
+            throw new DomainException("A senha atual informada está incorreta.");
+        }
+
+        if (passwordEncoder.matches(dto.newPassword(), user.getPasswordHash().getHash())) {
+            throw new DomainException("A nova senha não pode ser idêntica à senha atual.");
+        }
+
+        user.updatePassword(new PasswordHash(passwordEncoder.encode(dto.newPassword())));
+        userRepository.save(user);
     }
 
     @Transactional

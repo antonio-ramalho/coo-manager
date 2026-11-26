@@ -13,6 +13,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'perfil',
+    loadComponent: () =>
+      import('./features/profile/pages/profile-page/profile-page.component').then(
+        (m) => m.ProfilePageComponent,
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: 'home',
     component: AdminLayoutComponent,
     canActivate: [authGuard],
@@ -81,6 +89,11 @@ export const routes: Routes = [
           ).then((m) => m.EmployeesPageComponent),
         canActivate: [permissionGuard],
         data: { permission: Permission.USER_MANAGE },
+      },
+      {
+        path: 'perfil',
+        redirectTo: '/perfil',
+        pathMatch: 'full',
       },
     ],
   },

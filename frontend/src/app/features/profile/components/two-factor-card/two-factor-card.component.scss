@@ -1,0 +1,119 @@
+@use "tailwind-ref";
+
+.two-factor-card {
+  @apply rounded-xl border p-6;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  box-shadow: var(--shadow-card);
+}
+
+.card-header {
+  @apply flex flex-col sm:flex-row items-start gap-4;
+}
+
+.header-icon-container {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border;
+
+  &.icon-active {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: var(--primary-base);
+  }
+
+  &.icon-inactive {
+    background-color: #fefce8;
+    border-color: #fef08a;
+    color: #ca8a04;
+  }
+}
+
+.header-icon {
+  @apply w-6 h-6;
+}
+
+.header-info {
+  @apply flex flex-col gap-1.5 flex-1 min-w-0;
+}
+
+.title-row {
+  @apply flex flex-wrap items-center gap-2.5;
+}
+
+.card-title {
+  @apply text-xl font-bold tracking-tight;
+  color: var(--text-main);
+}
+
+.status-pill {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+
+  &.pill-active {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+
+  &.pill-inactive {
+    @apply bg-amber-50 text-amber-700 border border-amber-200;
+  }
+}
+
+.pill-icon {
+  @apply w-3.5 h-3.5;
+}
+
+.card-subtitle {
+  @apply text-sm leading-relaxed;
+  color: var(--text-aux);
+}
+
+.card-divider {
+  @apply my-6 border-t;
+  border-color: var(--border-neutral);
+}
+
+.card-body {
+  @apply flex flex-col gap-6;
+}
+
+.status-box {
+  @apply flex items-start gap-3.5 p-4 rounded-xl border;
+
+  &.box-active {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+
+    .box-icon {
+      color: var(--primary-base);
+    }
+  }
+
+  &.box-inactive {
+    background-color: #fefce8;
+    border-color: #fef08a;
+
+    .box-icon {
+      color: #ca8a04;
+    }
+  }
+}
+
+.box-icon {
+  @apply w-5 h-5 shrink-0 mt-0.5;
+}
+
+.box-content {
+  @apply flex flex-col gap-1;
+}
+
+.box-title {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.box-desc {
+  @apply text-xs leading-relaxed;
+  color: var(--text-aux);
+}
+
+.action-row {
+  @apply flex items-center justify-start;
+}

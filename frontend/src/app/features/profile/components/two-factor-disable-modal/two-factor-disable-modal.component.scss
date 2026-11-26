@@ -1,0 +1,64 @@
+@use "tailwind-ref";
+
+.modal-body {
+  @apply flex flex-col gap-4 py-2;
+}
+
+.warning-alert {
+  @apply flex items-start gap-3 p-3.5 rounded-xl border;
+  background-color: #fef2f2;
+  border-color: #fecaca;
+}
+
+.warning-icon {
+  @apply w-5 h-5 text-red-500 shrink-0 mt-0.5;
+}
+
+.warning-content {
+  @apply flex flex-col gap-0.5;
+}
+
+.warning-title {
+  @apply text-xs font-semibold text-red-700;
+}
+
+.warning-text {
+  @apply text-xs leading-relaxed text-red-900;
+}
+
+.form-section {
+  @apply flex flex-col gap-2 pt-1;
+}
+
+.field-label {
+  @apply text-xs font-medium text-center;
+  color: var(--text-main);
+}
+
+.code-wrapper {
+  @apply flex justify-center py-1;
+}
+
+.code-input {
+  @apply w-44 py-2 px-3 text-center text-xl font-mono font-bold tracking-[0.35em] rounded-lg border outline-none transition-all;
+  background-color: #f9fafb;
+  border-color: var(--border-neutral);
+  color: var(--text-main);
+
+  &:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  }
+
+  &.input-error {
+    border-color: #ef4444;
+  }
+}
+
+.error-text {
+  @apply text-xs font-medium text-red-500 text-center;
+}
+
+.modal-footer {
+  @apply flex items-center justify-end gap-3 w-full pt-2;
+}

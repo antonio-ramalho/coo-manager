@@ -6,7 +6,12 @@ Sistema que ajuda cooperativas de agricultura familiar a gerenciar editais públ
 
 > Projeto pessoal e não comercial, criado para estudar programação orientada a objetos, arquitetura de software e desenvolvimento de APIs a partir de problemas reais do meu trabalho. Todos os dados são fictícios.
 >
-> Nota: a API roda no plano gratuito do Render, que desliga a aplicação quando ela fica sem uso. A primeira requisição pode demorar alguns minutos; depois disso, o sistema responde normalmente. A aplicação não possui autenticação; os dados são fictícios e qualquer pessoa pode alterá-los.
+> Nota: a API roda no plano gratuito do Render, que desliga a aplicação quando ela fica sem uso. A primeira requisição pode demorar alguns minutos (cold start); depois disso, o sistema responde normalmente.
+>
+> 🔐 **Acesso de Demonstração (Credenciais de Teste):**
+> O sistema conta com autenticação e controle de acesso completo (JWT, RBAC multi-tenant e 2FA/TOTP). Para acessar a aplicação:
+> - **E-mail:** `admin.gmail@gmail.com`
+> - **Senha:** `Afr@4899709`
 
 *English summary: a full stack system (Spring Boot + Angular) that helps small family-farming cooperatives manage public procurement notices, farmers and deliveries, automatically validating each notice's business rules. Personal learning project, fictional data.*
 
@@ -41,6 +46,14 @@ Controlar tudo isso manualmente é difícil e propenso a erros. É aí que entra
 - **Compras e lotes:** registro de compras de insumos e controle dos lotes.
 - **Logística:** geração de termos de expedição das entregas.
 
+**Segurança, Autenticação e Multi-tenancy (IAM)**
+- **Autenticação Stateless:** login seguro via JWT com expiração e renovação.
+- **Login Social (OAuth2):** autenticação integrada com conta Google.
+- **Segundo Fator (2FA / TOTP):** autenticação em duas etapas via código QR para Google Authenticator e Microsoft Authenticator.
+- **Controle de Acesso (RBAC):** perfis e permissões granulares por cargo (Admin, Gerente, Operador, etc.).
+- **Multi-tenancy:** isolamento lógico estrito de dados por cooperativa em todas as consultas e operações.
+- **Gestão de Perfil:** tela de autoatendimento para troca de senha com indicador de força/complexidade e gestão de colaboradores da cooperativa.
+
 ## Arquitetura
 
 ```mermaid
@@ -50,10 +63,18 @@ graph TD
     end
 
     subgraph APILayer ["Backend API (Spring Boot 4.0.5 - Java 25) - Porta: 8080"]
-        CORS["CorsConfig<br/>(Allowed Origins: localhost:4200 / Vercel)"]
+        CORS["Spring Security (CORS / CSRF)<br/>(Allowed Origins: localhost:4200 / *.vercel.app)"]
         Swagger["OpenAPI / Swagger UI<br/>(/swagger-ui/index.html)"]
 
+        subgraph IAMSecurity ["Módulo de Segurança e IAM"]
+            AUTH["Auth & OAuth2 (Google)"]
+            JWT["JwtAuthenticationFilter"]
+            RBAC["Controle de Acesso / RBAC"]
+            TOTP["2FA / TOTP (Authenticator)"]
+        end
+
         subgraph Controllers ["Controllers / Resources (@RestController)"]
+            RC0["AuthResources / UserResources / RoleResources"]
             RC1["ContractResources"]
             RC2["ClientResources"]
             RC3["FarmerResources"]
@@ -67,6 +88,7 @@ graph TD
         end
 
         subgraph ServicesLayer ["Camada de Serviços (@Service)"]
+            S0["AuthService / UserService / RoleService"]
             S1["ContractService"]
             S2["PersonServices (Client, Farmer, etc.)"]
             S3["ProductServices (InputProduct)"]
@@ -76,7 +98,7 @@ graph TD
         subgraph DomainAndInfra ["Domínio, Infraestrutura e Repositórios"]
             VO["Value Objects<br/>(Cpf, Cnpj, Cep, Address, Price, Quantity...)"]
             EX["GlobalExceptionHandler (@RestControllerAdvice)"]
-            REPOS["Spring Data JPA Repositories"]
+            REPOS["Spring Data JPA Repositories (Multi-tenant)"]
             LOGIS["LogisticModule<br/>(DispatchTerm, DispatchTermItem, Repository)"]
         end
     end
@@ -86,8 +108,9 @@ graph TD
         DB_PROD[("PostgreSQL (Supabase Nuvem)<br/>Perfil: prod")]
     end
 
-    SPA -->|"Requisições HTTP REST (JSON)"| CORS
-    CORS --> Controllers
+    SPA -->|"Requisições HTTP REST (Bearer JWT)"| CORS
+    CORS --> IAMSecurity
+    IAMSecurity --> Controllers
     Controllers --> ServicesLayer
     ServicesLayer --> REPOS
     REPOS -->|"Hibernate / JPA (dev)"| DB_DEV
@@ -102,7 +125,7 @@ O back-end segue uma **arquitetura em camadas** (Resources, Services, Repositori
 
 | Camada | Tecnologias |
 |---|---|
-| Back-end | Java 25, Spring Boot 4.0.5, Spring Data JPA e Hibernate |
+| Back-end | Java 25, Spring Boot 4.0.5, Spring Security 6 (JWT, OAuth2, 2FA/TOTP), Spring Data JPA e Hibernate |
 | Front-end | Angular 21 (standalone components, componentes dumb e smart), TypeScript, TailwindCSS, SCSS |
 | Banco de dados | MySQL (desenvolvimento) e PostgreSQL no Supabase (produção) |
 | Testes | JUnit 5 |
@@ -166,7 +189,7 @@ Este projeto me ensinou muito em três frentes: modelagem, desenvolvimento full 
 
 **De zero a uma aplicação publicada.** Antes deste projeto, eu não tinha noção de APIs REST, front-end, banco de dados e deploy. Hoje entendo o básico de cada uma dessas áreas e construí e publiquei uma aplicação funcional, com testes automatizados em parte das regras e documentação da API.
 
-**Próximos passos.** Pretendo me aprofundar em testes e em segurança e autenticação, temas que já estudei, mas ainda não dominei o suficiente.
+**Próximos passos.** Com a autenticação, controle de permissões e segurança multi-tenant consolidados, os próximos passos envolvem ampliar a cobertura de testes automatizados e evoluir os fluxos de autoatendimento e landing page institucional.
 
 ## Por que este projeto
 

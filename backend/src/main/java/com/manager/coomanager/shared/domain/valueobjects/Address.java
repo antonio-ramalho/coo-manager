@@ -1,7 +1,7 @@
 package com.manager.coomanager.shared.domain.valueobjects;
 
 import com.manager.coomanager.shared.domain.exceptions.DomainException;
-import com.manager.coomanager.personModule.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

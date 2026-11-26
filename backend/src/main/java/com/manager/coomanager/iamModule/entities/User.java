@@ -3,7 +3,7 @@ package com.manager.coomanager.iamModule.entities;
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.shared.domain.valueobjects.Email;
 import com.manager.coomanager.shared.domain.valueobjects.PasswordHash;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 import com.manager.coomanager.iamModule.enums.Permission;
 import org.hibernate.annotations.Filter;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.manager.coomanager.cooperativeModule.dto;
 
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 
 import java.time.LocalDateTime;
 

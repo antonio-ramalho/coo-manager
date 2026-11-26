@@ -5,7 +5,7 @@ import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException
 import com.manager.coomanager.iamModule.security.JwtService;
 import com.manager.coomanager.iamModule.security.TotpService;
 import com.manager.coomanager.shared.domain.valueobjects.Email;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 import com.manager.coomanager.iamModule.dto.*;
 import com.manager.coomanager.iamModule.entities.User;
 import com.manager.coomanager.iamModule.repositories.UserRepository;

@@ -4,7 +4,7 @@ import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.cooperativeModule.repositories.CooperativeRepository;
 import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.shared.domain.exceptions.ResourceNotFoundException;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 import com.manager.coomanager.iamModule.dto.UserRequestDto;
 import org.springframework.stereotype.Component;
 

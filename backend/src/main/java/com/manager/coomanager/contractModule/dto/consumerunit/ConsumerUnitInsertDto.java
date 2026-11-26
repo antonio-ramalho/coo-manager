@@ -1,0 +1,22 @@
+package com.manager.coomanager.contractModule.dto.consumerunit;
+
+import com.manager.coomanager.shared.domain.valueobjects.dto.AddressDto;
+import com.manager.coomanager.contractModule.dto.agent.AgentInsertDto;
+import java.time.LocalDate;
+import java.util.List;
+
+public record ConsumerUnitInsertDto (
+
+        String legalName,
+        String tradeName,
+        String cnpj,
+        String addressEmail,
+        String phoneNumber,
+        LocalDate birthDate,
+        boolean isSubsidiaryCNPJ,
+        AddressDto address,
+        AddressDto deliveryAddress,
+        List<AgentInsertDto> agents
+) {}
+
+

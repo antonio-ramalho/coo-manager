@@ -1,12 +1,12 @@
 package com.manager.coomanager.contractModule.entities;
 
 import com.manager.coomanager.productModule.entities.AgriculturalProduct;
-import com.manager.coomanager.personModule.entities.ConsumerUnit;
-import com.manager.coomanager.personModule.entities.Farmer;
-import com.manager.coomanager.personModule.entities.Institution;
+import com.manager.coomanager.contractModule.entities.ConsumerUnit;
+import com.manager.coomanager.farmerModule.entities.Farmer;
+import com.manager.coomanager.contractModule.entities.Institution;
 import com.manager.coomanager.shared.domain.valueobjects.Price;
 import com.manager.coomanager.shared.domain.valueobjects.Quantity;
-import com.manager.coomanager.personModule.enums.DocumentStatus;
+import com.manager.coomanager.farmerModule.enums.DocumentStatus;
 import com.manager.coomanager.contractModule.enums.ParticipationLimitRule;
 import com.manager.coomanager.contractModule.enums.ProductDeliveryRule;
 import com.manager.coomanager.shared.domain.exceptions.DomainException;

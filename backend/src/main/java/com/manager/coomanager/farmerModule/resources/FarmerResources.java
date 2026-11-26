@@ -1,0 +1,54 @@
+package com.manager.coomanager.farmerModule.resources;
+
+import com.manager.coomanager.farmerModule.dto.farmer.FarmerDto;
+import com.manager.coomanager.farmerModule.dto.farmer.FarmerInsertDto;
+import com.manager.coomanager.farmerModule.dto.farmer.FarmerMinDto;
+import com.manager.coomanager.farmerModule.dto.farmer.FarmerUpdateDto;
+import com.manager.coomanager.farmerModule.services.FarmerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/farmers")
+public class FarmerResources {
+
+    @Autowired
+    private FarmerService service;
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('FARMER_READ')")
+    public ResponseEntity<List<FarmerMinDto>> findAllByStatus() {
+        List <FarmerMinDto> list = service.findAllByStatus();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('FARMER_READ')")
+    public ResponseEntity<FarmerDto> findByStatusAndId(@PathVariable Long id) {
+        FarmerDto obj = service.findByStatusAndId(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('FARMER_WRITE')")
+    public ResponseEntity<FarmerDto> insert(@RequestBody FarmerInsertDto dto) {
+        FarmerDto newFarmer = service.insert(dto);
+        return ResponseEntity.ok().body(newFarmer);
+    }
+
+    @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('FARMER_WRITE')")
+    public ResponseEntity<FarmerDto> update(@PathVariable Long id, @RequestBody FarmerUpdateDto dto) {
+        return ResponseEntity.ok().body(service.update(id, dto));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('FARMER_WRITE')")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

@@ -4,7 +4,7 @@ import com.manager.coomanager.contractModule.entities.Contract;
 import com.manager.coomanager.contractModule.dto.contractConsumer.ContractConsumerDto;
 import com.manager.coomanager.contractModule.dto.contractedProduct.ContractedProductDto;
 import com.manager.coomanager.contractModule.dto.farmerContractDto.FarmerContractDto;
-import com.manager.coomanager.personModule.dto.institution.InstitutionMinDto;
+import com.manager.coomanager.contractModule.dto.institution.InstitutionMinDto;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;

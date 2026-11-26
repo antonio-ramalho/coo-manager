@@ -1,7 +1,7 @@
 package com.manager.coomanager.shared.domain.valueobjects.dto;
 
 import com.manager.coomanager.shared.domain.valueobjects.Address;
-import com.manager.coomanager.personModule.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
 
 public record AddressDto(
         String street,

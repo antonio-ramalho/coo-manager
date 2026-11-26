@@ -1,7 +1,7 @@
 package com.manager.coomanager.cooperativeModule.entities;
 
 import com.manager.coomanager.shared.domain.valueobjects.*;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

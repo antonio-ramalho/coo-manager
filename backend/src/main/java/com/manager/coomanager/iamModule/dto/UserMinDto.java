@@ -1,6 +1,6 @@
 package com.manager.coomanager.iamModule.dto;
 
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.enums.Status;
 import com.manager.coomanager.iamModule.entities.Role;
 import com.manager.coomanager.iamModule.entities.User;
 

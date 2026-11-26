@@ -4,12 +4,12 @@
   (close)="onClose()"
   ariaLabel="Detalhes da venda"
 >
-  <div modal-header-icon class="w-8 h-8 rounded-full bg-[var(--primary-light)] text-[var(--primary-base)] flex items-center justify-center shrink-0">
+  <div modal-header-icon class="dialog-header-icon">
     <svg lucideReceiptText class="w-5 h-5"></svg>
   </div>
 
-  <div modal-title class="flex items-center gap-2 flex-wrap">
-    <h3 class="txt-h2 text-lg">
+  <div modal-title class="dialog-title-wrapper">
+    <h3 class="dialog-title">
       @if (sale) {
         Venda {{ sale.uuid | receiptCode }}
       } @else {
@@ -28,7 +28,7 @@
 
   <div modal-body>
     @if (sale) {
-      <p class="text-xs text-[var(--text-aux)] -mt-2 mb-4">
+      <p class="dialog-subtitle">
         Registrada em {{ sale.purchaseDate | date:'dd/MM/yyyy' }} • Visualização somente leitura
       </p>
     }
@@ -44,11 +44,10 @@
           <span class="text-xs font-semibold text-[var(--text-aux)] uppercase tracking-wider">
             Dados do Cliente
           </span>
-          <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full"
-            [class.bg-[var(--primary-light)]]="sale.clientStatus === 'ACTIVE'"
-            [class.text-[var(--primary-hover)]]="sale.clientStatus === 'ACTIVE'"
-            [class.bg-red-50]="sale.clientStatus !== 'ACTIVE'" [class.text-red-700]="sale.clientStatus !== 'ACTIVE'">
-            {{ sale.clientStatus === 'ACTIVE' ? 'Cadastro Ativo' : 'Cadastro Inativo' }}
+          <span class="client-status-pill"
+            [class.status-active]="sale.clientStatus === Status.ACTIVE"
+            [class.status-inactive]="sale.clientStatus !== Status.ACTIVE">
+            {{ sale.clientStatus === Status.ACTIVE ? 'Cadastro Ativo' : 'Cadastro Inativo' }}
           </span>
         </div>
 

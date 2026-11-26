@@ -131,6 +131,7 @@ export class EmployeesPageComponent implements OnInit {
   readonly isRolesModalOpen = signal<boolean>(false);
   readonly editingEmployeeId = signal<number | null>(null);
   readonly isSaving = signal<boolean>(false);
+  readonly isSavingRole = signal<boolean>(false);
 
   readonly editingRole = signal<RoleAuth | null>(null);
 
@@ -435,6 +436,10 @@ export class EmployeesPageComponent implements OnInit {
       return;
     }
 
+    if (this.isSavingRole()) {
+      return;
+    }
+
     const coopId = this.authService.tenantId();
     const editing = this.editingRole();
     const formVal = this.roleForm.value;
@@ -446,17 +451,21 @@ export class EmployeesPageComponent implements OnInit {
       permissions: formVal.permissions,
     };
 
+    this.isSavingRole.set(true);
+
     const request$ = editing
       ? this.employeeService.updateRole(editing.id, dto)
       : this.employeeService.saveRole(dto);
 
     request$.subscribe({
       next: () => {
+        this.isSavingRole.set(false);
         this.toastService.showSuccess('Cargo salvo com sucesso!');
         this.resetRoleForm();
         this.loadRoles();
       },
       error: (err) => {
+        this.isSavingRole.set(false);
         this.toastService.showError(err.error?.message || 'Falha ao salvar cargo.');
       },
     });

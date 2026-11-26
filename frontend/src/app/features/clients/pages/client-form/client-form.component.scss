@@ -1,3 +1,14 @@
+@use "tailwind-ref";
+
 :host {
-    height: 100%;
+  @apply h-full block;
+}
+
+.form-container {
+  @apply flex flex-col flex-1 w-full h-full min-h-0;
+}
+
+.step-title {
+  @apply text-xl font-semibold mb-3;
+  color: var(--text-main);
 }

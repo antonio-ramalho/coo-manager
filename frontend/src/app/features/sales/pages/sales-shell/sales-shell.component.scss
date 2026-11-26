@@ -1,7 +1,9 @@
+@use "tailwind-ref";
+
 :host {
-  display: flex;
-  flex: 1 1 0%;
-  height: 100%;
-  min-height: 0;
-  width: 100%;
+  @apply flex-1 flex h-full min-h-0 w-full;
+}
+
+.shell-container {
+  @apply flex flex-col flex-1 h-full min-h-0 w-full;
 }

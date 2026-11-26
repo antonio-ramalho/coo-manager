@@ -14,6 +14,7 @@ import { ReceiptCodePipe } from '../../../../shared/pipes/receipt-code.pipe';
 import { CpfCnpjPipe } from '../../../../shared/pipes/cpf-cnpj-pipe';
 import { PaymentStatusPipe } from '../../../../shared/pipes/payment-status.pipe';
 import { PaymentStatus, PAYMENT_STATUS_CLASSES } from '../../../../shared/enums/payment-status.enum';
+import { Status } from '../../../../shared/enums/status';
 import { SalesDto } from '../../models/sales-transaction.model';
 
 /**
@@ -48,6 +49,8 @@ export class SaleDetailsDialogComponent {
   @Input() sale: SalesDto | null = null;
 
   @Output() close = new EventEmitter<void>();
+
+  readonly Status = Status;
 
   getStatusBadgeClass(status: PaymentStatus | string): string {
     const normalized = (typeof status === 'string' ? status.toUpperCase() : status) as PaymentStatus;

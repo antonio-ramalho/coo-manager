@@ -17,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-admin-layout',
   imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   templateUrl: './admin-layout.component.html',
+  styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);

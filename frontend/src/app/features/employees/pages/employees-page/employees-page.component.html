@@ -34,13 +34,13 @@
 }
 
 <ng-template #rolesTpl let-row>
-  <div class="flex flex-wrap gap-1">
+  <div class="roles-tags-wrapper">
     @if (row.roleNames && row.roleNames.length > 0) {
     @for (roleName of row.roleNames; track roleName) {
     <span class="role-badge">{{ roleName }}</span>
     }
     } @else {
-    <span class="text-xs text-[var(--text-aux)] italic">Sem cargo atribuído</span>
+    <span class="no-role-text">Sem cargo atribuído</span>
     }
   </div>
 </ng-template>
@@ -63,39 +63,41 @@
   minHeight="540px"
   (close)="closeEmployeeModal()">
   <div modal-body>
-    <form [formGroup]="employeeForm" (ngSubmit)="onSaveEmployee()" class="flex flex-col gap-4">
+    <form [formGroup]="employeeForm" (ngSubmit)="onSaveEmployee()" class="employee-form-layout">
       <div class="form-group">
-        <label class="form-label" for="fullName">Nome Completo <span class="txt-required">*</span></label>
-        <input id="fullName" type="text" formControlName="fullName" class="form-input"
+        <label class="txt-label" for="fullName">Nome Completo <span class="txt-required">*</span></label>
+        <input id="fullName" type="text" formControlName="fullName" class="input-base"
+          [class.input-error]="employeeForm.get('fullName')?.invalid && employeeForm.get('fullName')?.touched"
           placeholder="Ex: Maria dos Santos" />
         <app-input-error [control]="employeeForm.get('fullName')"></app-input-error>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="email">E-mail Institucional <span class="txt-required">*</span></label>
-        <input id="email" type="email" formControlName="email" class="form-input"
+        <label class="txt-label" for="email">E-mail Institucional <span class="txt-required">*</span></label>
+        <input id="email" type="email" formControlName="email" class="input-base"
+          [class.input-error]="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched"
           placeholder="Ex: maria.santos@cooperativa.agr.br" />
         <app-input-error [control]="employeeForm.get('email')"></app-input-error>
       </div>
 
       @if (!editingEmployeeId()) {
       <div class="form-group">
-        <label class="form-label" for="password">Senha Inicial <span class="txt-required">*</span></label>
-        <input id="password" type="password" formControlName="password" class="form-input"
+        <label class="txt-label" for="password">Senha Inicial <span class="txt-required">*</span></label>
+        <input id="password" type="password" formControlName="password" class="input-base"
+          [class.input-error]="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched"
           placeholder="Mínimo de 6 caracteres" />
         <app-input-error [control]="employeeForm.get('password')"></app-input-error>
       </div>
       }
 
       <div class="form-group">
-        <label class="form-label">Cargos e Perfis de Acesso <span class="txt-required">*</span></label>
+        <label class="txt-label">Cargos e Perfis de Acesso <span class="txt-required">*</span></label>
         @if (isCurrentLoggedInUser(editingEmployeeId())) {
-        <div class="p-2.5 rounded bg-amber-50 border border-amber-200 text-amber-800 text-xs mb-2">
+        <div class="self-lock-alert">
           Por segurança, não é permitido alterar seus próprios cargos de acesso.
         </div>
         }
-        <div class="roles-grid" [class.opacity-60]="isCurrentLoggedInUser(editingEmployeeId())"
-          [class.pointer-events-none]="isCurrentLoggedInUser(editingEmployeeId())">
+        <div class="roles-grid" [class.roles-locked]="isCurrentLoggedInUser(editingEmployeeId())">
           @for (role of roles(); track role.id) {
           <label class="role-checkbox-card" [class.selected]="isRoleSelected(role.id)">
             <input type="checkbox" [checked]="isRoleSelected(role.id)" (change)="toggleRoleSelection(role.id)"
@@ -110,7 +112,7 @@
     </form>
   </div>
 
-  <div modal-footer class="flex items-center justify-end gap-3 w-full">
+  <div modal-footer class="modal-footer-actions">
     <button type="button" appButton variant="outline" (click)="closeEmployeeModal()" [disabled]="isSaving()">
       Cancelar
     </button>
@@ -123,10 +125,10 @@
 <app-base-modal [isOpen]="isRolesModalOpen()" [noPadding]="true" title="Gestão de Cargos e Permissões"
   subtitle="Defina permissões por módulo e atribua aos funcionários da cooperativa" size="xl"
   (close)="closeRolesModal()">
-  <div modal-body class="p-0">
+  <div modal-body class="roles-modal-body">
     <div class="roles-manager-container">
       <aside class="roles-sidebar">
-        <div class="mb-3">
+        <div class="sidebar-header">
           <h3 class="sidebar-title">Cargos Existentes</h3>
         </div>
 
@@ -155,31 +157,32 @@
 
       <main class="roles-editor">
         <form [formGroup]="roleForm" (ngSubmit)="onSaveRole()" id="roleFormElement">
-          <div class="editor-header flex-shrink-0">
-            <h3 class="text-base font-semibold text-[var(--text-main)]">
+          <div class="editor-header">
+            <h3 class="editor-title">
               {{ editingRole() ? 'Editar Cargo: ' + editingRole()?.name : 'Criar Novo Cargo' }}
             </h3>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 flex-shrink-0">
+          <div class="role-fields-grid">
             <div class="form-group">
-              <label class="form-label" for="roleName">Nome do Cargo <span class="txt-required">*</span></label>
-              <input id="roleName" type="text" formControlName="name" class="form-input"
+              <label class="txt-label" for="roleName">Nome do Cargo <span class="txt-required">*</span></label>
+              <input id="roleName" type="text" formControlName="name" class="input-base"
+                [class.input-error]="roleForm.get('name')?.invalid && roleForm.get('name')?.touched"
                 placeholder="Ex: Gestor de Vendas" />
               <app-input-error [control]="roleForm.get('name')"></app-input-error>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="roleDesc">Descrição</label>
-              <input id="roleDesc" type="text" formControlName="description" class="form-input"
+              <label class="txt-label" for="roleDesc">Descrição</label>
+              <input id="roleDesc" type="text" formControlName="description" class="input-base"
                 placeholder="Ex: Acesso a emissão de vendas e contratos" />
             </div>
           </div>
 
           <div class="permissions-matrix">
-            <h4 class="matrix-title flex-shrink-0">Permissões de Acesso por Módulo <span class="txt-required">*</span></h4>
+            <h4 class="matrix-title">Permissões de Acesso por Módulo <span class="txt-required">*</span></h4>
             <div class="permissions-scroll-container custom-scrollbar">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="permissions-grid">
                 @for (group of permissionGroups; track group.module) {
                 <div class="permission-group-card">
                   <h5 class="group-header">{{ group.name }}</h5>
@@ -202,7 +205,7 @@
     </div>
   </div>
 
-  <div modal-footer class="flex items-center justify-between w-full">
+  <div modal-footer class="roles-footer-actions">
     <div>
       @if (editingRole()) {
       <button type="button" appButton variant="outline" (click)="resetRoleForm()">
@@ -210,11 +213,11 @@
       </button>
       }
     </div>
-    <div class="flex items-center gap-3">
+    <div class="roles-footer-buttons">
       <button type="button" appButton variant="outline" (click)="closeRolesModal()">
         Fechar
       </button>
-      <button type="submit" form="roleFormElement" (click)="onSaveRole()" appButton variant="primary">
+      <button type="submit" form="roleFormElement" [disabled]="isSavingRole()" appButton variant="primary">
         {{ editingRole() ? 'Atualizar Cargo' : 'Salvar Novo Cargo' }}
       </button>
     </div>

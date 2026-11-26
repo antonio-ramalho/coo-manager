@@ -11,6 +11,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
+import { APP_CONFIG } from '../../../../core/constants/app.constants';
 
 @Component({
   selector: 'app-login-page',
@@ -30,6 +31,7 @@ export class LoginPageComponent implements OnInit {
   readonly is2faStep = signal(false);
   readonly preAuthToken = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
+  readonly appConfig = APP_CONFIG;
 
   loginForm!: FormGroup;
   totpForm!: FormGroup;

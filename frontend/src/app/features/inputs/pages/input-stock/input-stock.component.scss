@@ -29,6 +29,23 @@
   }
 }
 
+.kpi-cards-wrapper {
+  @apply shrink-0;
+}
+
+.loading-card {
+  @apply p-6 flex justify-center text-sm shrink-0;
+  color: var(--text-aux);
+}
+
+.batch-table-wrapper {
+  @apply flex-1 min-h-0 flex flex-col;
+}
+
+.modal-footer-actions {
+  @apply flex items-center justify-end gap-3 w-full;
+}
+
 @media (max-width: 1200px) {
   .inventory-container {
     overflow-y: auto;

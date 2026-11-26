@@ -1,0 +1,125 @@
+@use "tailwind-ref";
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-neutral);
+  background-color: var(--bg-surface);
+  padding: 0.75rem 1rem;
+  border-bottom-left-radius: var(--radius-card);
+  border-bottom-right-radius: var(--radius-card);
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.pagination-mobile {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 640px) {
+    display: none;
+  }
+
+  .page-indicator-mobile {
+    font-size: 0.75rem;
+    color: var(--text-aux);
+    font-weight: 500;
+  }
+}
+
+.pagination-desktop {
+  display: none;
+
+  @media (min-width: 640px) {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .page-info-text {
+    font-size: 0.875rem;
+    color: var(--text-aux);
+
+    .page-number-highlight {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .page-total-count {
+      color: var(--text-aux);
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+.pagination-nav-group {
+  display: inline-flex;
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow-btn);
+  border: 1px solid var(--border-neutral);
+  overflow: hidden;
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+
+    &:first-child {
+      border-right: 1px solid var(--border-neutral);
+    }
+
+    &:hover:not(:disabled) {
+      background-color: var(--bg-surface-hover);
+      color: var(--primary-base);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .nav-arrow-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+.btn-mobile-nav {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border-neutral);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: var(--bg-surface-hover);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

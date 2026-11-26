@@ -1,0 +1,53 @@
+@use "tailwind-ref";
+
+.header-root {
+  @apply flex justify-between items-start pb-5 border-b shrink-0 min-w-0;
+  border-color: var(--border-neutral);
+}
+
+.profile-group {
+  @apply flex gap-4 items-center min-w-0 flex-1;
+
+  .avatar-placeholder {
+    @apply w-16 h-16 rounded-full shrink-0;
+    background-color: var(--border-hover);
+  }
+
+  .profile-info {
+    @apply flex flex-col min-w-0 flex-1;
+
+    .name-status-row {
+      @apply flex items-center gap-3 min-w-0;
+
+      .person-name {
+        @apply text-xl font-bold truncate max-w-full;
+        color: var(--text-main);
+      }
+    }
+
+    .document-text {
+      @apply text-sm mt-1;
+      color: var(--text-aux);
+    }
+  }
+}
+
+.status-badge {
+  @apply text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md border shrink-0;
+
+  &.status-active {
+    border-color: var(--primary-base);
+    background-color: var(--primary-light);
+    color: var(--text-main);
+  }
+
+  &.status-inactive {
+    border-color: var(--red-alert);
+    background-color: var(--primary-red-alert);
+    color: var(--text-main);
+  }
+}
+
+.actions-group {
+  @apply flex items-center gap-2 shrink-0;
+}

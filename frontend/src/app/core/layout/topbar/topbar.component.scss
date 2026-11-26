@@ -1,0 +1,122 @@
+@use "tailwind-ref";
+
+:host {
+  @apply w-full block shrink-0;
+}
+
+.topbar-header {
+  @apply flex justify-between items-center w-full h-18 px-4 md:px-8 border-b shrink-0;
+  background-color: #ffffff;
+  border-color: var(--border-neutral);
+}
+
+.left-section {
+  @apply flex items-center gap-4 h-full;
+}
+
+.btn-mobile-menu {
+  @apply p-2 rounded-lg md:hidden focus:outline-none transition-colors;
+  color: var(--text-aux);
+
+  &:hover {
+    color: var(--text-main);
+    background-color: var(--bg-surface-hover);
+  }
+
+  .menu-icon {
+    @apply w-6 h-6;
+  }
+}
+
+.right-section {
+  @apply flex items-center gap-3 sm:gap-6;
+}
+
+.quick-actions-group {
+  @apply flex items-center gap-1 sm:gap-2;
+}
+
+.btn-icon-action {
+  @apply p-2 rounded-full transition-colors focus:outline-none relative;
+  color: var(--text-aux);
+
+  &:hover {
+    color: var(--text-main);
+    background-color: var(--bg-surface-hover);
+  }
+
+  .icon-svg {
+    @apply w-5 h-5;
+  }
+}
+
+.notification-badge {
+  @apply absolute top-2 right-2.5 w-2 h-2 rounded-full;
+  background-color: #ef4444;
+}
+
+.divider-vertical {
+  @apply w-px h-8;
+  background-color: var(--border-neutral);
+}
+
+.user-menu-trigger {
+  @apply flex items-center gap-2.5 sm:gap-3 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl cursor-pointer transition-all select-none border;
+  border-color: transparent;
+
+  &:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-neutral);
+  }
+}
+
+.user-avatar {
+  @apply w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center overflow-hidden shrink-0;
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-neutral);
+  color: var(--text-aux);
+
+  .avatar-icon {
+    @apply w-5 h-5;
+  }
+}
+
+.user-info-text {
+  @apply hidden sm:flex flex-col text-left;
+
+  .user-name {
+    @apply text-sm font-semibold leading-tight;
+    color: var(--text-main);
+  }
+
+  .user-role {
+    @apply text-xs truncate max-w-[130px] leading-tight mt-0.5;
+    color: var(--text-aux);
+  }
+}
+
+.chevron-icon {
+  @apply w-4 h-4 transition-transform duration-200;
+  color: var(--text-aux);
+}
+
+.menu-header-content {
+  @apply px-4 py-2.5 border-b;
+  border-color: var(--border-neutral);
+  background-color: var(--bg-surface-hover);
+
+  .connected-label {
+    @apply text-[11px] font-medium block uppercase tracking-wider;
+    color: var(--text-aux);
+  }
+
+  .connected-name {
+    @apply text-sm font-semibold block truncate mt-0.5;
+    color: var(--text-main);
+  }
+
+  .connected-email {
+    @apply text-xs block truncate;
+    color: var(--text-aux);
+  }
+}

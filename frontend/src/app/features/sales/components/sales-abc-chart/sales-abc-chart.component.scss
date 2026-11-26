@@ -1,9 +1,21 @@
+@use "tailwind-ref";
+
 :host {
   display: flex;
   flex-direction: column;
   flex: 1;
   height: 100%;
   min-height: 0;
+}
+
+.chart-title {
+  @apply text-base md:text-lg font-semibold;
+  color: var(--text-main);
+}
+
+.chart-subtitle {
+  @apply text-xs mt-0.5;
+  color: var(--text-aux);
 }
 
 .chart-card {

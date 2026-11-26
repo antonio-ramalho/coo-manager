@@ -1,0 +1,46 @@
+@use "tailwind-ref";
+
+:host {
+  @apply flex h-screen w-full overflow-hidden block;
+}
+
+.app-layout-root {
+  @apply flex h-screen w-full overflow-hidden;
+  background-color: var(--bg-app);
+}
+
+.mobile-overlay {
+  @apply fixed inset-0 z-40 bg-black/50 transition-opacity md:hidden;
+}
+
+.sidebar-wrapper {
+  @apply transition-transform duration-300 md:static md:translate-x-0 h-full;
+
+  &.sidebar-mobile {
+    @apply fixed inset-y-0 left-0 z-50;
+  }
+
+  &.sidebar-closed {
+    @apply -translate-x-full;
+  }
+
+  &.sidebar-open {
+    @apply translate-x-0;
+  }
+}
+
+.main-content-column {
+  @apply flex min-w-0 flex-1 flex-col h-full overflow-hidden;
+}
+
+.main-outlet {
+  @apply min-h-0 flex-1 flex flex-col;
+
+  &.overflow-hidden {
+    overflow: hidden;
+  }
+
+  &.overflow-scroll {
+    overflow-y: auto;
+  }
+}

@@ -3,7 +3,7 @@
   featureName="Cadastro de Clientes"
   (cancel)="cancel()"
 >
-  <form [formGroup]="masterForm" (ngSubmit)="save()" (submit)="$event.preventDefault()" class="flex flex-col flex-1 w-full h-full min-h-0">
+  <form [formGroup]="masterForm" (ngSubmit)="save()" (submit)="$event.preventDefault()" class="form-container">
     <app-stepper-layout
       [steps]="stepLabels"
       [currentStep]="currentPage"
@@ -16,11 +16,11 @@
     >
       @switch (currentPage) {
         @case (1) {
-          <h3 class="txt-h2 mb-3">Informações Básicas</h3>
+          <h3 class="step-title">Informações Básicas</h3>
           <app-person-form [group]="basicInfoGroup"></app-person-form>
         }
         @case (2) {
-          <h3 class="txt-h2 mb-3">Dados Específicos</h3>
+          <h3 class="step-title">Dados Específicos</h3>
           @if (personType === PersonType.NATURAL) {
             <app-natural-person-form-component [group]="specificDataGroup"></app-natural-person-form-component>
           } @else {
@@ -28,7 +28,7 @@
           }
         }
         @case (3) {
-          <h3 class="txt-h2 mb-3">Endereço</h3>
+          <h3 class="step-title">Endereço</h3>
           <app-address-form [group]="addressGroup"></app-address-form>
         }
       }

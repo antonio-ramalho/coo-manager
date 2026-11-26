@@ -1,25 +1,30 @@
 @import 'tailwindcss';
 
 :root {
+  /* Cores de Superfície e Fundo */
   --bg-app: #edf3fb;
   --bg-surface: #ffffff;
   --bg-surface-hover: #f9fafb;
 
+  /* Cores Primárias (Verde Cooperativa) */
   --primary-base: #16a34a;
   --primary-hover: #15803d;
   --primary-light: #dcfce7;
 
-  --red-alert: #E53935;
-  --primary-red-alert: #FFEBEE;
+  /* Alertas e Estados */
+  --red-alert: #e53935;
+  --primary-red-alert: #ffebee;
   --yellow-alert: #fffad0;
   --yellow-alert-hover: #e2dc37;
 
   --blue: #0891b2;
   --orange: #d97706;
 
+  /* Tipografia */
   --text-main: #111827;
   --text-aux: #6b7280;
 
+  /* Bordas e Espaçamentos */
   --border-neutral: #e5e7eb;
   --border-hover: #d1d5db;
   --space-layout: 1.5rem;
@@ -30,8 +35,19 @@
   --radius-card: 12px;
   --radius-btn: 8px;
 
+  /* Sombras */
   --shadow-card: 0px 4px 6px -1px rgba(0, 0, 0, 0.05), 0px 2px 4px -1px rgba(0, 0, 0, 0.03);
   --shadow-btn: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   1. CSS Reset & Normalização do Navegador
+   ========================================================================== */
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -39,8 +55,48 @@ body {
   font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
   background-color: var(--bg-app);
   color: var(--text-main);
+  line-height: 1.5;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--primary-base);
+  outline-offset: 2px;
+}
+
+/* Normalização de Inputs e Selects */
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Remove setas padrão de inputs numéricos globalmente */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Remove barras de rolagem nativas quando solicitado */
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -50,6 +106,33 @@ body {
   display: none;
 }
 
+/* Barra de Rolagem Customizada e Elegante */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-hover);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-aux);
+  }
+}
+
+/* ==========================================================================
+   2. Super-Classes Tipográficas (Consistência Visual Global)
+   ========================================================================== */
 .txt-h1 {
   @apply text-3xl font-bold tracking-tight;
   color: var(--text-main);
@@ -57,6 +140,11 @@ body {
 
 .txt-h2 {
   @apply text-xl font-semibold;
+  color: var(--text-main);
+}
+
+.txt-h3 {
+  @apply text-lg font-semibold;
   color: var(--text-main);
 }
 
@@ -86,18 +174,24 @@ body {
   color: var(--text-aux);
 }
 
+.txt-error {
+  @apply text-xs font-medium;
+  color: var(--red-alert);
+}
+
+/* ==========================================================================
+   3. Super-Classes de Layout e Containers
+   ========================================================================== */
 .content-interface {
   padding: var(--space-layout);
   width: 100%;
   height: 100%;
 }
 
-.input-base {
-  @apply px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-btn)] focus:outline-none focus:border-[var(--primary-base)] focus:ring-1 focus:ring-[var(--primary-base)] transition-colors placeholder:text-[var(--text-aux)];
-}
-
-.input-error {
-  @apply border-[var(--red-alert)] focus:border-[var(--red-alert)] focus:ring-[var(--red-alert)];
+.page-container {
+  @apply w-full h-full flex flex-col;
+  padding: var(--space-layout);
+  gap: var(--space-layout);
 }
 
 .interface-flex-collum {
@@ -112,7 +206,38 @@ body {
   gap: var(--space-layout);
 }
 
-.card {
+/* Grids Responsivos para Dashboards e Formulários */
+.grid-responsive-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-content);
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-content);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-content);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ==========================================================================
+   4. Super-Classes de Cartões (Cards)
+   ========================================================================== */
+.card,
+.card-base {
   background-color: var(--bg-surface);
   border: var(--border-width) solid var(--border-neutral);
   border-radius: var(--radius-card);
@@ -125,6 +250,7 @@ body {
   background-color: var(--bg-surface);
   border: var(--border-width) solid var(--border-neutral);
   border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   padding: var(--space-content);
 }
 
@@ -133,32 +259,91 @@ body {
   border-color: var(--border-hover);
 }
 
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-hover) transparent;
+/* ==========================================================================
+   Contenção e Quebra Universal de Dados e Textos
+   ========================================================================== */
+.card,
+.card-base,
+.card-interactive,
+.content-card,
+.info-item,
+.data-container,
+.spans-container {
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
 
-  &::-webkit-scrollbar {
-    width: 6px;
+.truncate-data {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.break-data {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.break-email,
+.break-url {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   5. Super-Classes de Formulários e Inputs
+   ========================================================================== */
+.form-group {
+  @apply flex flex-col;
+  gap: 0.375rem;
+}
+
+.input-base {
+  @apply px-3 py-2 transition-colors duration-200;
+  background-color: var(--bg-surface);
+  border: var(--border-width) solid var(--border-neutral);
+  border-radius: var(--radius-btn);
+  color: var(--text-main);
+
+  &::placeholder {
+    color: var(--text-aux);
   }
 
-  &::-webkit-scrollbar-track {
-    background: transparent;
+  &:focus {
+    outline: none;
+    border-color: var(--primary-base);
+    box-shadow: 0 0 0 1px var(--primary-base);
   }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--border-hover);
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--border-hover);
+  &:disabled {
+    background-color: var(--bg-app);
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 }
 
-@import "flatpickr/dist/flatpickr.css";
+.input-error {
+  border-color: var(--red-alert) !important;
+
+  &:focus {
+    box-shadow: 0 0 0 1px var(--red-alert) !important;
+  }
+}
+
+/* ==========================================================================
+   6. Flatpickr Calendar Styling
+   ========================================================================== */
+@import 'flatpickr/dist/flatpickr.css';
 
 .flatpickr-calendar {
   font-family: inherit;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 .flatpickr-day.selected,
@@ -182,16 +367,4 @@ body {
   background: var(--primary-base) !important;
   border-color: var(--primary-base) !important;
   color: #fff !important;
-}
-
-/* Remove setas padrão de inputs numéricos globalmente */
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
 }

@@ -1,10 +1,7 @@
-<header
-  class="flex justify-between items-center w-full h-18 px-4 md:px-8 bg-white border-b border-(--border-neutral) shrink-0">
-  <div class="flex items-center gap-4 h-full">
-    <button type="button" (click)="menuClick.emit()"
-      class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-lg md:hidden focus:outline-none"
-      aria-label="Abrir menu">
-      <svg lucideMenu class="w-6 h-6"></svg>
+<header class="topbar-header">
+  <div class="left-section">
+    <button type="button" (click)="menuClick.emit()" class="btn-mobile-menu" aria-label="Abrir menu">
+      <svg lucideMenu class="menu-icon"></svg>
     </button>
 
     @if (isDesktop && subNavTabs(); as tabs) {
@@ -16,22 +13,18 @@
     </div>
   </div>
 
-  <div class="flex items-center gap-3 sm:gap-6">
-    <div class="flex items-center gap-1 sm:gap-2">
-      <button type="button"
-        class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none"
-        aria-label="Buscar">
-        <svg lucideSearch class="w-5 h-5"></svg>
+  <div class="right-section">
+    <div class="quick-actions-group">
+      <button type="button" class="btn-icon-action" aria-label="Buscar">
+        <svg lucideSearch class="icon-svg"></svg>
       </button>
-      <button type="button"
-        class="p-2 text-(--text-aux) hover:text-(--text-main) hover:bg-(--bg-surface-hover) rounded-full transition-colors focus:outline-none relative"
-        aria-label="Notificações">
-        <svg lucideBell class="w-5 h-5"></svg>
-        <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full"></span>
+      <button type="button" class="btn-icon-action" aria-label="Notificações">
+        <svg lucideBell class="icon-svg"></svg>
+        <span class="notification-badge"></span>
       </button>
     </div>
 
-    <div class="w-px h-8 bg-(--border-neutral)"></div>
+    <div class="divider-vertical"></div>
 
     <div class="relative">
       <app-action-menu
@@ -40,30 +33,25 @@
         placement="bottom-right"
         triggerAriaLabel="Abrir menu do usuário"
       >
-        <div
-          menu-trigger
-          class="flex items-center gap-2.5 sm:gap-3 p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl cursor-pointer hover:bg-[var(--bg-surface-hover)] transition-all select-none border border-transparent hover:border-[var(--border-neutral)]"
-        >
-          <div
-            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex items-center justify-center overflow-hidden shrink-0"
-          >
-            <svg lucideUser class="w-5 h-5 text-[var(--text-aux)]"></svg>
+        <div menu-trigger class="user-menu-trigger">
+          <div class="user-avatar">
+            <svg lucideUser class="avatar-icon"></svg>
           </div>
-          <div class="hidden sm:flex flex-col text-left">
-            <span class="text-sm font-semibold text-[var(--text-main)] leading-tight">
+          <div class="user-info-text">
+            <span class="user-name">
               {{ getUserName() }}
             </span>
-            <span class="text-xs text-[var(--text-aux)] truncate max-w-[130px] leading-tight mt-0.5">
+            <span class="user-role">
               {{ getUserRole() }}
             </span>
           </div>
-          <svg lucideChevronDown class="w-4 h-4 text-[var(--text-aux)] transition-transform duration-200"></svg>
+          <svg lucideChevronDown class="chevron-icon"></svg>
         </div>
 
-        <div menu-header class="px-4 py-2.5 border-b border-[var(--border-neutral)] bg-[var(--bg-surface-hover)]">
-          <span class="text-[11px] font-medium text-[var(--text-aux)] block uppercase tracking-wider">Conectado como</span>
-          <span class="text-sm font-semibold text-[var(--text-main)] block truncate mt-0.5">{{ getUserName() }}</span>
-          <span class="text-xs text-[var(--text-aux)] block truncate">{{ currentUser()?.email }}</span>
+        <div menu-header class="menu-header-content">
+          <span class="connected-label">Conectado como</span>
+          <span class="connected-name">{{ getUserName() }}</span>
+          <span class="connected-email">{{ currentUser()?.email }}</span>
         </div>
       </app-action-menu>
     </div>

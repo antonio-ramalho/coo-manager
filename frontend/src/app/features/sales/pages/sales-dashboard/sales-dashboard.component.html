@@ -28,12 +28,12 @@
     </div>
   </section>
   } @else if (loading) {
-  <div class="card p-10 flex flex-col items-center justify-center text-[var(--text-aux)]">
+  <div class="card dashboard-feedback-card">
     <app-loading-spinner size="lg" message="Carregando métricas e gráficos do dashboard de BI..."></app-loading-spinner>
   </div>
   } @else {
-  <div class="card p-10 flex flex-col items-center justify-center text-[var(--text-aux)]">
-    <span class="text-sm">Não foi possível carregar as métricas de vendas no momento.</span>
+  <div class="card dashboard-feedback-card">
+    <span class="error-msg">Não foi possível carregar as métricas de vendas no momento.</span>
   </div>
   }
 </div>

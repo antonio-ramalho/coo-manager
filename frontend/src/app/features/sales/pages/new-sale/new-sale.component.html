@@ -4,16 +4,15 @@
   (cancel)="cancel()"
 >
   <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()"
-    class="flex flex-col w-full min-h-0 h-full pb-4">
+    class="form-container">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="isSubmitDisabled" [isSubmitting]="isSubmitting()" [fluidHeight]="true" [horizontalLayout]="true"
       (next)="nextPage()" (back)="backPage()" (cancel)="cancel()">
 
       @switch (currentPage) {
         @case (1) {
-          <div stepperTopCard
-            class="bg-[var(--bg-surface)] border border-[var(--border-neutral)] rounded-[var(--radius-card)] p-4 sm:p-5 shadow-xs relative z-20 shrink-0">
-            <div class="flex flex-col gap-1.5 max-w-2xl">
+          <div stepperTopCard class="client-search-card">
+            <div class="search-input-wrapper">
               <label class="txt-label" for="clientSearch">Buscar Cliente</label>
               <app-searchable-select id="clientSearch" formControlName="personId" valueKey="id" [searchFn]="searchClientsFn"
                 [labelFormatter]="clientLabelFormatter" (selectedOptionChange)="onClientSelected($event)"
@@ -26,7 +25,7 @@
           </div>
         }
         @case (2) {
-          <app-sale-cart-step stepperTopCard class="relative z-20" [formGroup]="salesForm"
+          <app-sale-cart-step stepperTopCard class="cart-step-wrapper" [formGroup]="salesForm"
             [searchBatchesFn]="searchBatchesFn" (batchSelected)="onBatchSelected($event)"
             (removeItem)="onRemoveItem($event)">
           </app-sale-cart-step>
@@ -39,22 +38,20 @@
           </app-sale-client-step>
         }
         @case (2) {
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div
-              class="p-3.5 rounded-lg bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex flex-col gap-1">
+          <div class="sale-summary-grid">
+            <div class="summary-card">
               <span class="txt-label">Itens no Carrinho</span>
-              <span class="text-xl font-bold text-[var(--text-main)]">
+              <span class="summary-value">
                 {{ salesForm.controls.items.length }}
-                <span class="text-sm font-medium text-[var(--text-aux)]">
+                <span class="summary-unit">
                   {{ salesForm.controls.items.length === 1 ? 'item' : 'itens' }}
                 </span>
               </span>
             </div>
 
-            <div
-              class="p-3.5 rounded-lg bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex flex-col gap-1">
+            <div class="summary-card">
               <span class="txt-label">Valor Total da Venda</span>
-              <span class="text-xl font-extrabold text-[var(--primary-base)]">
+              <span class="summary-value-highlight">
                 {{ totalSaleValue() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
               </span>
             </div>

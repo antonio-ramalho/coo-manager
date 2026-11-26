@@ -1,17 +1,17 @@
 <div
-  class="card-interactive flex justify-between p-3 transition-all duration-200 cursor-pointer w-full"
+  class="card-interactive flex justify-between p-3 transition-all duration-200 cursor-pointer w-full min-w-0"
 >
-  <div class="flex justify-between gap-2 size-full">
-    <div class="flex items-start gap-3 justify-between">
-      <div class="flex flex-col">
-        <span class="text-base font-semibold text-(--text-main) truncate max-w-full block">{{
+  <div class="flex justify-between gap-2 size-full min-w-0">
+    <div class="flex items-start gap-3 justify-between min-w-0 flex-1">
+      <div class="flex flex-col min-w-0 flex-1">
+        <span class="text-base font-semibold text-(--text-main) truncate max-w-full block" [title]="title">{{
           title
         }}</span>
-        <span class="text-xs text-(--text-aux)">{{ subtitle }}</span>
+        <span class="text-xs text-(--text-aux) truncate max-w-full block" [title]="subtitle">{{ subtitle }}</span>
       </div>
     </div>
 
-    <div class="flex flex-col items-center justify-between">
+    <div class="flex flex-col items-center justify-between shrink-0">
       <div (click)="$event.stopPropagation()">
         <app-action-menu
           [items]="getMenuItems()"

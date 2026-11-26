@@ -8,10 +8,10 @@
     <button type="button" appButton variant="primary" routerLink="/home/clientes/cadastro">Novo cliente</button>
   </header>
 
-  <div class="flex-1 flex min-h-0" style="gap: var(--space-layout)">
+  <div class="content-body">
     <aside class="aside-container custom-scrollbar">
       @let pageData = (page$ | async) ?? { content: [], totalElements: 0 };
-      <app-generic-list class="flex-1 flex flex-col min-h-0" [items]="pageData.content"
+      <app-generic-list class="client-list" [items]="pageData.content"
         [totalItems]="pageData.totalElements" [currentPage]="currentPage" [loading]="loadingList"
         loadingText="Buscando clientes..." searchPlaceholder="Buscar por nome, CPF ou CNPJ..."
         altText="Nenhum cliente encontrado." (searchChanged)="applyFilters($event)" (pageChanged)="swappedPage($event)"
@@ -30,7 +30,7 @@
       <app-client-details-panel [details]="details" (edit)="editClient($event)"></app-client-details-panel>
       } @else {
       <div class="card card-details-container">
-        <div class="empty-state text-(--text-aux) text-sm">Selecione um cliente na lista para ver os detalhes.</div>
+        <div class="empty-state-message">Selecione um cliente na lista para ver os detalhes.</div>
       </div>
       }
     </main>

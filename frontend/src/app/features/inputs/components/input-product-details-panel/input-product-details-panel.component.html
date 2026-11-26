@@ -1,21 +1,34 @@
-<app-details-layout-component class="h-full">
-  <app-product-details-header details-header [id]="product.id" [name]="product.productName" [code]="product.productCode"
-    [status]="product.productCatalogStatus" (editProduct)="edit.emit($event)">
+<app-details-layout-component class="layout-container">
+  <app-product-details-header
+    details-header
+    [id]="product.id"
+    [name]="product.productName"
+    [code]="product.productCode"
+    [status]="product.productCatalogStatus"
+    (editProduct)="edit.emit($event)">
   </app-product-details-header>
 
-  <div details-body class="flex flex-col gap-4">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <app-product-basic-info-card [id]="product.id" [price]="product.price.value" [measureUnit]="product.measureUnit"
-        [ncm]="product.ncm" [productCode]="product.productCode">
+  <div details-body class="details-body-container">
+    <div class="cards-grid">
+      <app-product-basic-info-card
+        [id]="product.id"
+        [price]="product.price.value"
+        [measureUnit]="product.measureUnit"
+        [ncm]="product.ncm"
+        [productCode]="product.productCode">
       </app-product-basic-info-card>
 
-      <app-product-stock-summary-card [batches]="product.batches ?? []" [unitPrice]="product.price.value"
+      <app-product-stock-summary-card
+        [batches]="product.batches ?? []"
+        [unitPrice]="product.price.value"
         [measureUnit]="product.measureUnit">
       </app-product-stock-summary-card>
     </div>
 
-    <div class="w-full">
-      <app-product-batches-card [batches]="product.batches ?? []" [measureUnit]="product.measureUnit">
+    <div class="batches-section">
+      <app-product-batches-card
+        [batches]="product.batches ?? []"
+        [measureUnit]="product.measureUnit">
       </app-product-batches-card>
     </div>
   </div>

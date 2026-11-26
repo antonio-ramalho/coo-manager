@@ -1,41 +1,45 @@
-<div class="col-span-1 min-h-full min-w-0 border border-(--border-neutral) rounded-(--radius-card) p-4 flex flex-col gap-4">
-  <h3 class="text-sm font-semibold text-(--text-main)">Informações básicas</h3>
+<div class="basic-info-card">
+  <h3 class="card-title">Informações básicas</h3>
 
-  <div class="flex gap-3 items-start min-w-0">
-    <svg lucideCake class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
-    <div class="flex flex-col min-w-0 flex-1">
-      <span class="text-xs text-(--text-aux)"> {{ documentLabel }}</span>
-      <span class="text-sm font-medium text-(--text-main) break-words">{{ documentNumber | cpfCnpj }}</span>
+  <div class="info-row">
+    <svg lucideCake class="row-icon"></svg>
+    <div class="row-content">
+      <span class="row-label">{{ documentLabel }}</span>
+      <span class="row-value">{{ documentNumber | cpfCnpj }}</span>
     </div>
   </div>
+
   @if (personType == 'NATURAL') {
-    <div class="flex gap-3 items-start min-w-0">
-      <svg lucideVenus class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
-      <div class="flex flex-col min-w-0 flex-1">
-        <span class="text-xs text-(--text-aux)">Gênero</span>
-        <span class="text-sm font-medium text-(--text-main) break-words">{{ gender | genderLabel}}</span>
+    <div class="info-row">
+      <svg lucideVenus class="row-icon"></svg>
+      <div class="row-content">
+        <span class="row-label">Gênero</span>
+        <span class="row-value">{{ gender | genderLabel }}</span>
       </div>
     </div>
   }
-  <div class="flex gap-3 items-start min-w-0">
-    <svg lucideCake class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
-    <div class="flex flex-col min-w-0 flex-1">
-      <span class="text-xs text-(--text-aux)"> {{ dataLabel }}</span>
-      <span class="text-sm font-medium text-(--text-main) break-words">{{ dataValue | date:'dd/MM/yyyy' }}</span>
+
+  <div class="info-row">
+    <svg lucideCake class="row-icon"></svg>
+    <div class="row-content">
+      <span class="row-label">{{ dataLabel }}</span>
+      <span class="row-value">{{ dataValue | date:'dd/MM/yyyy' }}</span>
     </div>
   </div>
-  <div class="flex gap-3 items-start min-w-0">
-    <svg lucidePhone class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
-    <div class="flex flex-col min-w-0 flex-1">
-      <span class="text-xs text-(--text-aux)">Número de celular</span>
-      <span class="text-sm font-medium text-(--text-main) break-words">{{ phone | phone }}</span>
+
+  <div class="info-row">
+    <svg lucidePhone class="row-icon"></svg>
+    <div class="row-content">
+      <span class="row-label">Número de celular</span>
+      <span class="row-value">{{ phone | phone }}</span>
     </div>
   </div>
-  <div class="flex gap-3 items-start min-w-0">
-    <svg lucideMail class="w-4 h-4 text-(--text-aux) mt-0.5 shrink-0"></svg>
-    <div class="flex flex-col min-w-0 flex-1">
-      <span class="text-xs text-(--text-aux)">Email</span>
-      <span class="text-sm font-medium text-(--text-main) break-all">{{ email }}</span>
+
+  <div class="info-row">
+    <svg lucideMail class="row-icon"></svg>
+    <div class="row-content">
+      <span class="row-label">Email</span>
+      <span class="row-value break-email">{{ email }}</span>
     </div>
   </div>
 </div>

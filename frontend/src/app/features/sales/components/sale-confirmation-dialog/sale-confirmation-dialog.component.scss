@@ -1,3 +1,53 @@
+@use "tailwind-ref";
+
+.dialog-header-icon {
+  @apply w-8 h-8 rounded-full flex items-center justify-center shrink-0;
+  background-color: var(--primary-light);
+  color: var(--primary-base);
+}
+
+.summary-label {
+  @apply text-xs font-semibold uppercase tracking-wider block;
+  color: var(--text-aux);
+}
+
+.client-row {
+  @apply flex items-baseline justify-between mt-1;
+
+  .client-name {
+    @apply text-sm font-bold;
+    color: var(--text-main);
+  }
+
+  .client-doc {
+    @apply text-xs font-mono;
+    color: var(--text-aux);
+  }
+}
+
+.items-count-label {
+  @apply mb-2;
+}
+
+.item-product-name {
+  @apply font-medium block;
+  color: var(--text-main);
+}
+
+.item-batch-code {
+  @apply text-xs font-mono;
+  color: var(--text-aux);
+}
+
+.total-value {
+  @apply text-2xl font-extrabold;
+  color: var(--primary-base);
+}
+
+.dialog-footer {
+  @apply flex items-center justify-end gap-3 w-full;
+}
+
 .client-summary-card {
   padding: 0.875rem 1rem;
   background-color: var(--primary-light);

@@ -1,3 +1,39 @@
+@use "tailwind-ref";
+
+.dialog-header-icon {
+  @apply w-8 h-8 rounded-full flex items-center justify-center shrink-0;
+  background-color: var(--primary-light);
+  color: var(--primary-base);
+}
+
+.dialog-title-wrapper {
+  @apply flex items-center gap-2 flex-wrap;
+}
+
+.dialog-title {
+  @apply text-lg font-semibold;
+  color: var(--text-main);
+}
+
+.dialog-subtitle {
+  @apply text-xs -mt-2 mb-4;
+  color: var(--text-aux);
+}
+
+.client-status-pill {
+  @apply px-2 py-0.5 text-[11px] font-semibold rounded-full;
+
+  &.status-active {
+    background-color: var(--primary-light);
+    color: var(--primary-hover);
+  }
+
+  &.status-inactive {
+    background-color: var(--primary-red-alert);
+    color: var(--red-alert);
+  }
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;

@@ -9,16 +9,16 @@
   <div class="inventory-layout custom-scrollbar">
     <section class="main-column">
       @if (summary$ | async; as summary) {
-      <app-stock-kpi-cards class="shrink-0" [totalStockValue]="summary.totalStockValue"
+      <app-stock-kpi-cards class="kpi-cards-wrapper" [totalStockValue]="summary.totalStockValue"
         [occupancy]="summary.occupancy"></app-stock-kpi-cards>
       } @else {
-      <div class="card p-6 flex justify-center text-(--text-aux) text-sm shrink-0">
+      <div class="card loading-card">
         <app-loading-spinner size="sm" message="Carregando dados do inventário..."></app-loading-spinner>
       </div>
       }
 
       @if (pagedBatches$ | async; as batchPage) {
-      <app-stock-batch-table class="flex-1 min-h-0 flex flex-col" [batches]="batchPage.content"
+      <app-stock-batch-table class="batch-table-wrapper" [batches]="batchPage.content"
         [loading]="loadingBatches" [currentPage]="batchPage.pageable.pageNumber + 1"
         [totalElements]="batchPage.totalElements" (searchChange)="onSearchChange($event)"
         (pageChange)="onPageChange($event)" (edit)="onEditBatch($event)" (deactivate)="onDeactivateBatch($event)"
@@ -53,7 +53,7 @@
     ></app-batch-form>
   </div>
 
-  <div modal-footer class="flex items-center justify-end gap-3 w-full">
+  <div modal-footer class="modal-footer-actions">
     <button type="button" appButton variant="outline" (click)="closeBatchModal()" [disabled]="isSavingBatch()">
       Cancelar
     </button>

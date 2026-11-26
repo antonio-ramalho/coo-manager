@@ -13,7 +13,7 @@
   <div class="sales-layout custom-scrollbar">
     <section class="main-column">
       @if (pagedSales$ | async; as salesPage) {
-      <app-sales-table class="flex-1 min-h-0 flex flex-col" [sales]="salesPage.content" [loading]="loadingSales"
+      <app-sales-table class="sales-table" [sales]="salesPage.content" [loading]="loadingSales"
         [currentPage]="salesPage.pageable.pageNumber + 1" [totalElements]="salesPage.totalElements"
         (searchChange)="onSearchChange($event)" (pageChange)="onPageChange($event)"
         (viewDetails)="onViewDetails($event)" (registerPayment)="onRegisterPayment($event)"

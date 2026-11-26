@@ -1,0 +1,40 @@
+@use "tailwind-ref";
+
+.basic-info-card {
+  @apply border p-4 flex flex-col gap-4 min-h-full min-w-0;
+  border-radius: var(--radius-card);
+  border-color: var(--border-neutral);
+  background-color: var(--bg-surface);
+}
+
+.card-title {
+  @apply text-sm font-semibold;
+  color: var(--text-main);
+}
+
+.info-row {
+  @apply flex gap-3 items-start min-w-0;
+
+  .row-icon {
+    @apply w-4 h-4 mt-0.5 shrink-0;
+    color: var(--text-aux);
+  }
+
+  .row-content {
+    @apply flex flex-col min-w-0 flex-1;
+
+    .row-label {
+      @apply text-xs;
+      color: var(--text-aux);
+    }
+
+    .row-value {
+      @apply text-sm font-medium break-words;
+      color: var(--text-main);
+
+      &.break-email {
+        word-break: break-all;
+      }
+    }
+  }
+}

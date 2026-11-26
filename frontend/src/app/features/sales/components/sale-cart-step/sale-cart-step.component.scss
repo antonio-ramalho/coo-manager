@@ -1,5 +1,205 @@
+@use "tailwind-ref";
+
 :host {
-  display: block;
-  width: 100%;
+  @apply block w-full;
   min-height: 420px;
+}
+
+.cart-container {
+  @apply flex flex-col w-full shadow-xs overflow-visible border;
+  min-height: 420px;
+  background-color: var(--bg-surface);
+  border-color: var(--border-neutral);
+  border-radius: var(--radius-card);
+}
+
+.cart-header {
+  @apply p-4 flex items-center justify-between gap-3 border-b;
+  border-color: var(--border-neutral);
+  background-color: var(--bg-surface);
+  border-top-left-radius: var(--radius-card);
+  border-top-right-radius: var(--radius-card);
+}
+
+.header-title-group {
+  @apply flex items-center gap-2;
+
+  .package-icon {
+    @apply w-5 h-5;
+    color: var(--text-aux);
+  }
+
+  .header-title {
+    @apply font-bold text-base;
+    color: var(--text-main);
+  }
+}
+
+.btn-new-item {
+  @apply gap-1.5;
+}
+
+.empty-cart-state {
+  @apply flex-1 p-10 flex flex-col items-center justify-center text-center;
+  min-height: 220px;
+
+  .empty-cart-icon {
+    @apply w-12 h-12 rounded-full border flex items-center justify-center mb-3;
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-neutral);
+    color: var(--text-aux);
+
+    .cart-icon {
+      @apply w-6 h-6;
+    }
+  }
+
+  .empty-cart-title {
+    @apply text-sm font-medium;
+    color: var(--text-main);
+  }
+
+  .empty-cart-desc {
+    @apply text-xs mt-1 max-w-sm;
+    color: var(--text-aux);
+  }
+}
+
+.table-scroll-container {
+  @apply overflow-x-auto lg:overflow-visible;
+}
+
+.cart-table {
+  @apply w-full text-left text-sm border-collapse;
+}
+
+.table-head-row {
+  @apply text-xs uppercase tracking-wider border-b;
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-neutral);
+  color: var(--text-aux);
+
+  .col-head {
+    @apply py-3 px-4 font-semibold;
+  }
+}
+
+.table-body {
+  @apply divide-y;
+  border-color: var(--border-neutral);
+
+  .table-row-item {
+    @apply transition-colors;
+
+    &:hover {
+      background-color: var(--bg-surface-hover);
+    }
+  }
+
+  .table-row-add {
+    @apply relative z-30;
+    background-color: var(--bg-surface-hover);
+  }
+}
+
+.col-cell {
+  @apply py-3 px-4 align-middle;
+}
+
+.product-info-cell {
+  @apply flex flex-col;
+
+  .product-name {
+    @apply font-medium;
+    color: var(--text-main);
+  }
+
+  .batch-badge-wrapper {
+    @apply text-xs flex items-center gap-1 mt-0.5;
+    color: var(--text-aux);
+
+    .batch-code-badge {
+      @apply px-1.5 py-0.5 rounded font-mono text-[11px] border;
+      background-color: var(--bg-surface-hover);
+      border-color: var(--border-neutral);
+      color: var(--text-aux);
+    }
+  }
+}
+
+.stock-badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border;
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-neutral);
+  color: var(--text-main);
+}
+
+.col-price {
+  @apply text-left font-medium;
+  color: var(--text-main);
+}
+
+.quantity-cell-wrapper {
+  @apply flex flex-col items-start;
+
+  .quantity-input-group {
+    @apply flex items-center gap-1.5;
+
+    .quantity-input {
+      @apply w-12 text-center py-1 px-1.5 text-sm border transition-colors;
+      border-radius: var(--radius-btn);
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+      border-color: var(--border-neutral);
+
+      &:focus {
+        border-color: var(--primary-base);
+        outline: none;
+        box-shadow: 0 0 0 1px var(--primary-base);
+      }
+
+      &.input-invalid {
+        border-color: var(--red-alert);
+      }
+    }
+
+    .unit-label {
+      @apply text-xs font-medium;
+      color: var(--text-aux);
+    }
+  }
+
+  .qty-error-msg {
+    @apply text-[11px] mt-1;
+    color: var(--red-alert);
+  }
+}
+
+.col-total {
+  @apply text-left font-bold;
+  color: var(--text-main);
+}
+
+.btn-action-icon {
+  @apply p-1.5 transition-colors cursor-pointer;
+  border-radius: var(--radius-btn);
+  color: var(--text-aux);
+
+  &:hover {
+    color: var(--red-alert);
+    background-color: var(--primary-red-alert);
+  }
+
+  .action-icon {
+    @apply w-4 h-4;
+  }
+}
+
+.col-search {
+  @apply min-w-[260px] text-left;
+}
+
+.col-empty-dash {
+  @apply text-left text-xs;
+  color: var(--text-aux);
 }

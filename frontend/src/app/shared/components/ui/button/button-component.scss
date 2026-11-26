@@ -1,0 +1,79 @@
+@use "tailwind-ref";
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  flex-shrink: 0;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+
+  &.variant-primary {
+    background-color: var(--primary-base) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--primary-base) !important;
+    box-shadow: var(--shadow-btn);
+
+    &:hover:not([disabled]):not(.disabled):not(.is-disabled) {
+      background-color: var(--primary-hover) !important;
+      border-color: var(--primary-hover) !important;
+    }
+  }
+
+  &.variant-outline {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-neutral) !important;
+    box-shadow: var(--shadow-btn);
+
+    &:hover:not([disabled]):not(.disabled):not(.is-disabled) {
+      background-color: var(--bg-surface-hover) !important;
+      border-color: var(--border-hover) !important;
+    }
+  }
+
+  &.variant-surface {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-aux) !important;
+    border: 1px solid var(--border-neutral) !important;
+    box-shadow: var(--shadow-btn);
+
+    &:hover:not([disabled]):not(.disabled):not(.is-disabled) {
+      background-color: var(--primary-light) !important;
+      color: var(--primary-base) !important;
+      border-color: var(--primary-base) !important;
+    }
+  }
+
+  &.size-default {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &.size-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.5rem;
+  }
+
+  &.size-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border-radius: 9999px;
+  }
+
+  &.is-loading,
+  &.is-disabled,
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+}

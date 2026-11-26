@@ -14,6 +14,7 @@ import {
   LucideX,
 } from '@lucide/angular';
 import { NavSection } from '../../models/nav-item.model';
+import { APP_CONFIG } from '../../constants/app.constants';
 
 /**
  * Dumb Component responsável pela renderização da barra lateral de navegação.
@@ -46,6 +47,8 @@ export class SidebarComponent {
 
   @Output() toggleCollapse = new EventEmitter<void>();
   @Output() closeMobile = new EventEmitter<void>();
+
+  readonly appConfig = APP_CONFIG;
   @Output() navigate = new EventEmitter<void>();
 
   onNavigate(): void {

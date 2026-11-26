@@ -33,6 +33,15 @@
   }
 }
 
+.dashboard-feedback-card {
+  @apply p-10 flex flex-col items-center justify-center;
+  color: var(--text-aux);
+
+  .error-msg {
+    @apply text-sm;
+  }
+}
+
 @media (max-width: 768px) {
   .charts-grid {
     grid-template-columns: 1fr;

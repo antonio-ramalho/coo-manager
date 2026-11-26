@@ -12,6 +12,7 @@ import { SubNavService } from '../../../../core/services/sub-nav.service';
 import { SubNavTab } from '../../../../shared/components/layout/sub-nav/sub-nav.component';
 import { ToastService } from '../../../../core/services/toast.service';
 import { CooperativeResponse } from '../../../../core/models/cooperative.models';
+import { Status } from '../../../../shared/enums/status';
 import { ButtonComponent } from '../../../../shared/components/ui/button/button-component';
 import { InputErrorComponent } from '../../../../shared/components/forms/input-error/input-error-component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/ui/loading-spinner/loading-spinner.component';
@@ -36,6 +37,8 @@ export class CooperativePageComponent implements OnInit {
   private readonly subNavService = inject(SubNavService);
   private readonly toastService = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
+
+  readonly Status = Status;
 
   readonly tabs: SubNavTab[] = [
     { label: 'Cooperativa', route: '/home/cooperativa', exact: true },

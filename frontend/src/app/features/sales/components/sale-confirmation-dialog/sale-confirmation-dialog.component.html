@@ -6,25 +6,25 @@
   (close)="onCancel()"
   ariaLabel="Confirmar Venda"
 >
-  <div modal-header-icon class="w-8 h-8 rounded-full bg-[var(--primary-light)] text-[var(--primary-base)] flex items-center justify-center shrink-0">
+  <div modal-header-icon class="dialog-header-icon">
     <svg lucideCheckCircle class="w-5 h-5"></svg>
   </div>
 
   <div modal-body>
     <!-- Resumo do Cliente -->
     <div class="client-summary-card">
-      <span class="text-xs font-semibold text-[var(--text-aux)] uppercase tracking-wider">Cliente / Cooperado</span>
-      <div class="flex items-baseline justify-between mt-1">
-        <span class="text-sm font-bold text-[var(--text-main)]">{{ clientName }}</span>
+      <span class="summary-label">Cliente / Cooperado</span>
+      <div class="client-row">
+        <span class="client-name">{{ clientName }}</span>
         @if (clientDocument) {
-        <span class="text-xs font-mono text-[var(--text-aux)]">{{ clientDocument }}</span>
+        <span class="client-doc">{{ clientDocument }}</span>
         }
       </div>
     </div>
 
     <!-- Resumo dos Itens -->
     <div class="items-summary-container">
-      <span class="text-xs font-semibold text-[var(--text-aux)] uppercase tracking-wider mb-2 block">
+      <span class="summary-label items-count-label">
         Itens da Venda ({{ items.length }})
       </span>
 
@@ -42,8 +42,8 @@
             @for (item of items; track $index) {
             <tr>
               <td>
-                <span class="font-medium text-[var(--text-main)] block">{{ item.productName }}</span>
-                <span class="text-xs text-[var(--text-aux)] font-mono">{{ item.batchCode }}</span>
+                <span class="item-product-name">{{ item.productName }}</span>
+                <span class="item-batch-code">{{ item.batchCode }}</span>
               </td>
               <td class="text-center font-medium">
                 {{ item.quantity }} {{ item.measureUnit | measureUnitAbbr }}
@@ -63,14 +63,14 @@
 
     <!-- Total da Venda -->
     <div class="total-summary-card">
-      <span class="text-xs uppercase font-semibold text-[var(--text-aux)]">Valor Total a Pagar</span>
-      <span class="text-2xl font-extrabold text-[var(--primary-base)]">
+      <span class="summary-label">Valor Total a Pagar</span>
+      <span class="total-value">
         {{ totalValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
       </span>
     </div>
   </div>
 
-  <div modal-footer class="flex items-center justify-end gap-3 w-full">
+  <div modal-footer class="dialog-footer">
     <button type="button" appButton variant="surface" (click)="onCancel()" [disabled]="isSubmitting">
       Voltar e Editar
     </button>

@@ -36,6 +36,7 @@ export interface CurrentUser {
     ActionMenuComponent,
   ],
   templateUrl: './topbar.component.html',
+  styleUrl: './topbar.component.scss',
 })
 export class TopbarComponent {
   private readonly subNavService = inject(SubNavService);

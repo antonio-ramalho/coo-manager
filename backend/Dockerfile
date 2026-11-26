@@ -3,7 +3,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y maven
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -Dmaven.test.skip=true
 
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app

@@ -5,7 +5,7 @@ import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.iamModule.security.JwtService;
 import com.manager.coomanager.iamModule.security.TotpService;
 import com.manager.coomanager.shared.domain.valueobjects.*;
-import com.manager.coomanager.personModule.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
 import com.manager.coomanager.iamModule.dto.LoginRequestDto;
 import com.manager.coomanager.iamModule.dto.LoginResponseDto;
 import com.manager.coomanager.iamModule.dto.TotpVerifyRequestDto;

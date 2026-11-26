@@ -2,7 +2,7 @@ package com.manager.coomanager.iamModule.security;
 
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.shared.domain.valueobjects.*;
-import com.manager.coomanager.personModule.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
 import com.manager.coomanager.iamModule.entities.User;
 import com.manager.coomanager.iamModule.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

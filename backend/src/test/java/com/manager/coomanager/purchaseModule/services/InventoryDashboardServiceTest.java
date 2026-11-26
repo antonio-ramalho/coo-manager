@@ -12,7 +12,7 @@ import com.manager.coomanager.purchaseModule.dto.dashboard.InventoryDashboardDto
 import com.manager.coomanager.purchaseModule.dto.dashboard.SalesDashboardDto;
 import com.manager.coomanager.purchaseModule.entities.InputBatch;
 import com.manager.coomanager.purchaseModule.entities.InputPurchase;
-import com.manager.coomanager.personModule.entities.Person;
+import com.manager.coomanager.shared.domain.person.Person;
 import com.manager.coomanager.purchaseModule.enums.ProductInventoryStatus;
 import com.manager.coomanager.purchaseModule.repositories.InputBatchRepository;
 import com.manager.coomanager.purchaseModule.repositories.InputPurchaseRepository;

@@ -4,7 +4,7 @@ import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.cooperativeModule.repositories.CooperativeRepository;
 import com.manager.coomanager.shared.domain.exceptions.DomainException;
 import com.manager.coomanager.shared.domain.valueobjects.*;
-import com.manager.coomanager.personModule.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
 import com.manager.coomanager.iamModule.dto.RoleRequestDto;
 import com.manager.coomanager.iamModule.dto.RoleResponseDto;
 import com.manager.coomanager.iamModule.entities.Role;

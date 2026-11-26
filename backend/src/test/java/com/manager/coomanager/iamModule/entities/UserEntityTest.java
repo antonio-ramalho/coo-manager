@@ -2,8 +2,8 @@ package com.manager.coomanager.iamModule.entities;
 
 import com.manager.coomanager.cooperativeModule.entities.Cooperative;
 import com.manager.coomanager.shared.domain.valueobjects.*;
-import com.manager.coomanager.personModule.enums.BrazilianState;
-import com.manager.coomanager.personModule.enums.Status;
+import com.manager.coomanager.shared.domain.person.enums.BrazilianState;
+import com.manager.coomanager.shared.domain.enums.Status;
 import com.manager.coomanager.iamModule.enums.Permission;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

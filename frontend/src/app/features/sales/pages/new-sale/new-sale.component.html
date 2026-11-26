@@ -4,7 +4,7 @@
   (cancel)="cancel()"
 >
   <form [formGroup]="salesForm" (ngSubmit)="openConfirmationDialog()" (submit)="$event.preventDefault()"
-    class="flex flex-col w-full min-h-0 h-full">
+    class="flex flex-col w-full min-h-0 h-full pb-4">
     <app-stepper-layout [steps]="stepLabels" [currentStep]="currentPage" [nextDisabled]="isCurrentStepInvalid"
       [submitDisabled]="isSubmitDisabled" [isSubmitting]="isSubmitting()" [fluidHeight]="true" [horizontalLayout]="true"
       (next)="nextPage()" (back)="backPage()" (cancel)="cancel()">
@@ -41,7 +41,7 @@
         @case (2) {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div
-              class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+              class="p-3.5 rounded-lg bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex flex-col gap-1">
               <span class="txt-label">Itens no Carrinho</span>
               <span class="text-xl font-bold text-[var(--text-main)]">
                 {{ salesForm.controls.items.length }}
@@ -52,7 +52,7 @@
             </div>
 
             <div
-              class="p-3.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-neutral)] flex flex-col gap-1">
+              class="p-3.5 rounded-lg bg-[var(--bg-surface-hover)] border border-[var(--border-neutral)] flex flex-col gap-1">
               <span class="txt-label">Valor Total da Venda</span>
               <span class="text-xl font-extrabold text-[var(--primary-base)]">
                 {{ totalSaleValue() | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
